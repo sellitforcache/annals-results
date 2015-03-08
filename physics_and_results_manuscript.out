@@ -1,0 +1,11 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Ray Tracing and Geometry Representation with OptiX}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Instancing}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Test Geometries}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{Unionized Cross Section Data Layout}{}% 5
+\BOOKMARK [1][-]{section.4}{CUDA Kernels and Data-Parallel Tasks}{}% 6
+\BOOKMARK [2][-]{subsection.4.1}{Criticality Source}{section.4}% 7
+\BOOKMARK [1][-]{section.5}{Results}{}% 8
+\BOOKMARK [2][-]{subsection.5.1}{OptiX Scaling Study Results}{section.5}% 9
+\BOOKMARK [2][-]{subsection.5.2}{The Effects of Reference Remapping}{section.5}% 10
+\BOOKMARK [1][-]{section.6}{Conclusions}{}% 11

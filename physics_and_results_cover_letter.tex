@@ -1,0 +1,36 @@
+%Covering letter to the editor:
+%When submitting the manuscript, it is mandatory to include a covering letter to the editor. The covering letter must state:
+%(1) Subject Classification selected from the list (see guide for authors and select the most suitable ONE ONLY).
+%(2) That all the authors mutually agree that it should be submitted to BITE.
+%(3) It is the original work of the authors.
+%(4) That the manuscript was not previously submitted to BITE.
+%(5) State the novelty in results/findings, or significance of results.
+%Types of contributions: Original research papers, review articles, case studies, short communications, book reviews. Review articles would be generally solicited by the editors from the experts. However, these can be contributed by others also. In this case, authors must consult the editor by sending the extended summary (300-400 words), outline and the list of publications of authors on the topic.
+
+\documentclass{article}
+
+\begin{document}
+
+\pagenumbering{gobble}
+
+
+\title{Cover Letter for: \\ ``Algorithmic Choices in WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs''}
+\author{Ryan M. Bergmann, Jasmina L. Vuji\'c}
+\maketitle
+
+\begin{description}
+\item[Subject Classification] \hfill
+\\
+Numerical Methods Development for Reactor Physics
+
+\item[Author Agreement and Assurance] \hfill
+\\
+Authors Ryan M. Bergmann and Jasmina L. Vuji\'c mutually agree that this article should be submitted to Annals of Nuclear Engineering.  It is the original work of the authors and has not been previously submitted to Annals of Nuclear Engineering or any other journal.
+
+\item[Novelty and Significance of Results] \hfill
+\\
+General purpose graphics processing units (GPGPUs) are becoming a significant contributor to modern supercomputer computational capacities.  In order for popular, but compute-intensive, Monte Carlo reactor physics codes to take advantage of these powerful coprocessors cards, codes must be rewritten to use algorithms that perform efficiently on GPU hardware.  WARP is a code that has been developed at UC Berkeley that adapts the event-based transport method (which was developed for old vector computers) and the unionized energy grid layout for cross section data to efficiently perform continuous energy Monte Carlo neutron transport on GPUs.  It also incorporates the NVIDIA OptiX ray tracing framework and the CUDPP operations library to maximize performance.   The first development phase of WARP has shown that all aspects of the Monte Carlo transport cycle can be performed on the GPU, and that the architectural differences of GPUs can be accommodated via algorithmic choices.  WARP is currently a first step in Monte Carlo neutron transport on GPUs, and will be subject to vigorous development and feature improvement in the future.  
+
+\end{description}
+
+\end{document}

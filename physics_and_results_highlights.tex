@@ -1,0 +1,21 @@
+%Highlights are mandatory for this journal. They consist of a short collection of bullet points that convey the core findings of the article and should be submitted in a separate file in the online submission system. Please use 'Highlights' in the file name and include 3 to 5 bullet points (maximum 85 characters, including spaces, per bullet point). See http://www.elsevier.com/highlights for examples.
+
+\documentclass{article}
+
+\begin{document}
+
+\pagenumbering{gobble}
+
+\title{Highlights from:\\ ``Algorithmic Choices in WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs''}
+\author{Ryan M. Bergmann, Jasmina L. Vuji\'c}
+\maketitle
+
+\begin{itemize}
+\item WARP, a GPU-accelerated Monte Carlo neutron transport code, has been developed.
+\item The NVIDIA OptiX high-performance ray tracing library is used to process geometric data.
+\item The unionized cross section representation is modified for higher performance.
+\item Reference remapping is used to keep the GPU busy as neutron batch population reduces.
+\item Reference remapping is done using a key-value radix sort on neutron reaction type.
+\end{itemize}
+
+\end{document}
