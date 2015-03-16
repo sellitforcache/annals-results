@@ -92,7 +92,7 @@
 
 \hypersetup{colorlinks=true,
   pdftitle={Performance and Accuracy of WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs},
-  pdfauthor={Ryan M. Bergmann, Kelly Rowland, Nikola Radnovi\'c, Jasmina L. Vuji\'c}}
+  pdfauthor={Ryan M. Bergmann, Kelly Rowland, Nikola Radnovi\'c, Rachel Slaybaugh?, Jasmina L. Vuji\'c}}
 
 \journal{Annals of Nuclear Energy}
 
@@ -137,6 +137,9 @@
 
 \author{Nikola Radnovi\'c }
 \ead{radnovicn@gmail.com}
+
+\author{Rachel Slaybaugh?}
+\ead{slaybaugh@berkeley.edu}
 
 \author{Jasmina L. Vuji\'c }
 \ead{vujic@nuc.berkeley.edu}
@@ -187,24 +190,11 @@ In this paper, results calculated by WARP are compared against those calculated 
 \section{Features of WARP}
 \label{sec:features}
 
-WARP has only existed since 2013, and is not as fully-featured as more mature Monte Carlo codes.  It has the functionality necessary to compare its performance against  Serpent 2.XX.X and MCNP 6.1, but there are many areas where feature need to be added in order for WARP to become a useful engineering and scientific tool.  This section outlines the current set of features available in WARP.  
+WARP has only existed since 2013, and is not as fully-featured as more mature Monte Carlo codes.  It has the functionality necessary to compare its performance against  Serpent 2.XX.X and MCNP 6.1, and this section outlines the current set of features available in WARP.  
 
 \subsection{Physics}
 
-Cross section data compiled by the United States is distributed by the Department of Energy in \emph{ENDF} files.  ENDF stands for ``evaluated nuclear data file,'' and can contain data for nuclear decay, photons, atomic relaxation, fission yields, thermal neutron scattering, and charged particle reactions as well as neutron reactions.  The data files are called ``evaluated'' because a group of experts decides, or evaluates, what data is included in them.  The data includes theoretical calculations of cross sections based on well developed models as well as experimental data.  They also decide how to represent regimes that haven't been measured yet by comparing simulation results to experiments.   The first data released was ENDF/B-I in 1968 and the latest set is ENDF/B-VII, which was released in 2006.  
-
-The data is written in a standard format that dates back to when the data was stored on magnetic tapes, and data entries are sometimes referred to as ``tapes'' to this day.  The format is rather archaic and contains a lot of redundant information about record locations, which was useful when the tape head had to physically move between points in the tape \cite{endfnums}.  
-
-Many Monte Carlo codes read ACE-formatted data rather than the original ENDF file.  ENDF files contain a lot of data so the dataset preserves the original evaluation, but most transport codes need the data in tabular format.  This is why transport codes normally use ACE-formatted data files. \cite{jaakko}  ACE stands for ``a compact ENDF'' and strips out a lot of the extra information unnecessary for neutron transport.  ENDF tapes contain information that is valuable for charged particles and photons as well as neutrons, and this information is discarded for neutron transport. As Figure \ref{data_levels} shows, ACE files not only contain cross sections, but also angle and energy distributions used in scattering and fission.  ENDF assigns a number to each type of reaction called the \emph{MT} number.  Table \ref{MT_numbers} in Appendix B, taken from a LANL website, shows what these MT numbers mean \cite{endfnums}.  
-
-It can clearly be seen that there are many reactions a neutron can undergo, most of which have very strong energy dependence.  Most of the complexity in modeling nuclear reactors comes from the fact that the data needed to model neutrons is very complicated.  Data may be the most important part of the simulation; it is what ties the calculations to reality.  
-
-ACE data files typically come pre-processed at different temperatures.  This processing can done by a code called NJOY \cite{jaakko}, which Doppler broadens all the resonances in the cross sections and adjusts the unresolved resonance tables accordingly.  It can also thin the energy grid if requested by the user, though this reduces the accuracy of the cross sections \cite{jaakko}.  Thinning the energy grid is a computationally intensive task, and NJOY is not parallelized.  Most production codes come with their own pre-processed datasets at several temperature intervals in order to save the user the time and effort needed to process data from ENDF files.
-
-
-
-
-
+WARP loads ACE-formatted nuclear data libraries via the ace module in PyNE.  Cross section data compiled by the United States is distributed by the Department of Energy in \emph{ENDF} files.  ENDF stands for ``evaluated nuclear data file,'' and can contain data for nuclear decay, photons, atomic relaxation, fission yields, thermal neutron scattering, and charged particle reactions as well as neutron reactions.  ACE stands for ``a compact ENDF'' and strips out a lot of the extra information unnecessary for neutron transport.  Since many Monte Carlo codes read ACE-formatted data rather than the original ENDF file, WARP can eliminate one potential cause for discrepancies by loading identical data as other codes.  
 
 only neutrons of course, no photons, etc for power deposition problems
 single volume tally
@@ -242,8 +232,11 @@ limitations too
 
 CPU/GPU hardware 
 
+why running with 1e5 per batch, and 1e6, push titan to limit!
 
 \subsection{Test 1}
+
+table of isotopes, densities, dimensions for all tests
 
 jezebel
 
@@ -292,20 +285,54 @@ fixed source,  plane source at end of steel tube, u fission multiplier, flux in 
 
 table of keff, 1-norm of rel err, 1-norm of some sort of fission distribution
 
+
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
 \section{Conclusions and Future Development}
 \label{sec:conc}
 
 %WARP has shown that GPUs are an effective platform for performing Monte Carlo neutron transport with continuous energy cross sections.  Currently, WARP is the most detailed and feature-rich program in existence for performing continuous energy Monte Carlo neutron transport in general 3D geometries on GPUs, but compared to production codes like Serpent and MCNP, WARP has limited capabilities.  Despite WARP's lack of features, its novel algorithm implementations show that high performance can be achieved on a GPU despite the inherently divergent program flow and sparse data access patterns.  %WARP is not ready for everyday nuclear reactor calculations, but is a good platform for further development of GPU-accelerated Monte Carlo neutron transport.  In it's current state, it may be a useful tool for multiplication factor searches, i.e. determining reactivity coefficients by perturbing material densities or temperatures, since these types of calculations typically do not require many flux tallies. 
 %Remapping threads to active data is an effective way of raising the processing rate when the number of active neutrons becomes small; this also reduces thread divergence in reaction kernels.  Using a radix sort to do the remapping is effective since it segregates reactions into contiguous blocks, efficient since it can be done in place and in $O(kN)$ time, and can eliminate completed data from being accessed if slight modifications to the standard reaction number encodings are made.  
 
-%Most of the performance gain in remapping data references comes from being able to launch grids that are sized for only the active data rather than the entire dataset for both global and reaction kernels.  A non-remapping algorithm does not keep track of where active data is, and therefore must launch a grid that covers the entire dataset.  When the number of active neutrons drops below about 30\% of the initial number, the overhead and memory bandwidth cost of launching these extra threads, which only load a ``done'' bit and return, is more than the cost of performing the radix sort and edge detection.  The majority of the transport iterations occur  while there are less than 30\% of the initial neutrons left, and remapping references is usually worthwhile.
 
-%Using the NVIDIA OptiX ray tracing framework was also shown to be an effective way to handle the geometry representation in WARP.  OptiX is flexible, allows attachment of material and cell number to individual geometric primitives, can perform surface detection with a randomly-distributed and directed dataset, can incorporate the remapping vector created by a radix sort, and is fast enough to be used in WARP.  The acceleration structures that OptiX can automatically build over the scene geometry was the initial reason for using it, and it was determined that the BVH builder and traverser provide the best performance as does using mesh primitive instancing rather than a transform node approach.  The number of objects present in the scenes in reactors is small compared to many rendering scenes, and the SBVH acceleration structure does not perform as well. This is presumably due to some additional overhead related to traversing the objects that is not offset when few objects (less than a few hundred thousand) are present in the scene.  Primitive instance provides better performance since using transform nodes requires traversing a deeper geometry tree, which also has more (redundant) data associated to it.
 
-%As mentioned in Section \ref{sec:intro}, a forthcoming companion paper is planned that will benchmark WARP against Serpent and MCNP using identical cross section libraries and problem geometries.  In the paper, the relative accuracy and speed of WARP will be determined by comparing it to these production-level Monte Carlo neutron transport codes.
-
+there are many areas where feature need to be added in order for WARP to become a useful engineering and scientific tool - sab, unres, tallies, less intense memory layout (fractional cascade? grid thinning? on the fly temp would help a lot here too!), more geom types, meshes
 Track length tallies would be very easy to implement
 Will be released at open source software, pending DOE approval.
+
+
+The development of WARP has led to important conclusions regarding how to conduct neutron transport on GPUs.  The first is that running with large datasets, and therefore a large number of threads, is important for good performance.  It was found that in some cases, moving from $10^5$ to $10^6$ neutrons per batch in criticality mode increase performance by a factor of four or more.  It is important to keep the GPU saturated with threads so it can effectively pipeline data loads.  
+
+
+The initial goals of WARP have been completed, but there is much work still to be done if it is going to be of real use to the nuclear engineering community.  Basic functionality is currently good enough to assure the GPUs can accelerate high-fidelity Monte Carlo neutron transport calculations, which was the point of this work, but many capabilities need to be expanded and ensured to scale well to large numbers of neutrons, isotopes, and geometrical zones.
+
+The geometry is currently handled by OptiX since it provides a convenient way to obtain high-performance results, but its execution had to be coerced into providing WARP with the information it needed, namely the material number via the point-in-polygon algorithm.  The way OptiX executes this algorithm is not efficient since it must be done iteratively using OptiX's native functions instead of calculating the ordered list of intersections in a single trace.  NVIDIA is releasing ``OptiX Prime'' with OptiX 3.5 \cite{optix3.5}, which promises to provide a more ``to the metal'' ray tracing experience, and might be leveraged to provide more efficient single-traverse functionality.  OptiX could also be replaced by Rayforce \cite{rayforce}, a high-performance GPU ray tracing library developed by VSL that has this functionality built-in and is currently available free of charge for noncommercial use.
+
+The geometry routines could also be replaced by handwritten routines that use combinatorial solid geometry like Serpent and MCNP.  This would make writing input for WARP more like what most nuclear engineers are already used to and, more importantly, could provide a potential performance increase.  A universe-based CSG representation may map very well to the GPU and may even be able to fit inside of shared memory for small numbers of surfaces.  The surfaces may also be able to be bound to texture memory, which could provide a performance boost since it automatically caches for spatial locality.  
+
+Using an efficient CSG method would further lend itself to using Woodcock delta-tracking for the neutrons and thus getting rid of the tracing algorithms and libraries altogether.  These algorithms account for about 50\% of execution time, and WARP's performance could be doubled by making the geometry routines more efficient.  If OptiX is determined to be the best option out of these others, however, a routine would need to be developed to automatically space coincident surfaces appropriately without specific user input.
+
+WARP's execution can also be improved.  The amount of memory required per neutron was not tracked in this initial development, much less optimized, since developing a functioning code was the main priority.  Reducing the memory needed per neutron would be highly beneficial in the sense that more concurrent neutrons could be launched using the reclaimed memory space.  Dynamic parallelism can be implemented to minimize kernel launch overhead and host-device communication in the inner transport loop.  Dynamic parallelism is a feature introduced into the NVIDA Kepler GPUs that allows kernels to be launched from kernels, and could eliminate the host needing to contain the main transport loop.  Neither CUDPP or OptiX support its use, however.  CUDPP could be replaced with newer, higher-performance libraries (e.g.\ CUB) that do support dynamic parallelism, but OptiX would have to be replaced by a handwritten kernel to perform the necessary geometric tasks.  Textures could be thoroughly investigated as they might provide better performance in tasks where their free linear interpolation and spatial caching could provide a performance boost, like in an energy grid search on a tree structure.   Alternatively, using optimized graph search libraries, such as ``gunrock,'' could be used to perform the energy grid search.
+
+WARP also currently only supports fixed-source mode in the non-remapping version as it requires popping secondary neutrons back into the active neutron pool after every iteration of the inner transport loop.  This operation is expensive since it is a global operation that must be done often.  This algorithm could be changed to be more like a criticality run, where the primary neutrons are all transported together, then the next (smaller) generation of secondary particles are transported, then the next, and so on.  This way, the pop routine is only executed in the outer loop, and could produce faster results.  Multi-GPU support should also be added so that WARP can be used effectively on computers with more than a one GPU.
+
+If an entire overhaul of the WARP transport algorithm is feasible, using a SM-based algorithm might be investigated instead of current global one.  This type of algorithm would treat each SM as an independent processor, and would provide each a bank of neutrons to transport, as is done by Liu and Henderson \cite{tianyu,henderson}.   This way, neutron data could be stored in very fast shared memory, but using this memory space would compete with storing geometric information there.  Also, since a smaller set of neutrons could be stored, the SMs would need to communicate to determine which of the next neutrons they would take out of the global bank, or they would need to periodically rendezvous to shared source information and ensure that the distributions they use are each converged.  This type of transport algorithm would also preclude using OptiX, since it does not have SM-level functionality \cite{optix}.
+
+Data access patterns are very important on the GPU, and there are a few straight forward modifications that could be made to WARP in the future.  The first is using Legendre expansion data for the angular dependencies of anisotropic scattering instead of using tabular data.  This method uses more computation and less data than tabular distributions, and would probably perform well on the GPU.  Since global memory comes at a premium on GPUs, an on-the-fly temperature treatment for nuclides would likely be required if more than a handful of isotopes are desired at more than one temperature.  Methods like those used in Serpent could be adapted for use on the GPU \cite{serpent}.  On-the-fly methods reduce the amount of storage needed, but they require more computation per data element loaded since the loaded value is adjusted according to the temperature of the material.  This kind of method may work well on the GPU since GPUs have a larger FLOP/byte ratio than CPUs and the additional work may cost little.  Other than the how to represent and adjust the data, an efficient way to handle situations where there are many different material and isotopes present needs to be explored.  The work done by Scudiero on porting OpenMC's macroscopic cross section processing benchmarking tool, ``xsbench,'' may elucidate this endeavor \cite{openmc,scudiero}.
+
+%ADD:  neutron importance (cutoffs in subcritical mult), variance reduction tech, multiple tallies and reaction rates, BU, reproducibility, Shannon, debugging.  done.
+WARP would gain usability if more features were incorporated as well.  Currently, WARP treats all neutrons equally, but adding neutron weight would allow many variance reduction techniques to be implemented.  Importance cutoffs could be used to terminate secondary neutrons in fixed-source runs, leading to shorter runtimes; cell importances and implicit absorption could help improve tally statistics.  Developing an efficient way to include many reaction rate tallies would also make WARP useful for performing depletion analysis.  It would also be helpful for WARP to have statistical tests like Shannon entropy to ensure the fission source is fully converged before tallies and multiplication factors are accumulated.
+
+WARP still has bugs, and a large part of future development will be tracking them down to ensure that accurate results are produced.  Reproducibility using the same random number seeds will also be investigated to ensure consistent results can be produced and that there are no systematic errors present in WARP.  Ensuring reproducibility will also be necessary in making a test suite for WARP, so future users can have confidence in their results and future developers can know their modifications do not introduce new errors into WARP.
+
+
+Further, assuming the capital prices for the GPU and CPU servers outlined in Table \ref{gpu_money} and that CPU code scales linearly, the capital price per Monte Carlo ``history power,'' or histories run per second, of a GPU is 2.8 times lower than that of a CPU on average for the tests done in this work, indicating that GPUs are a sound hardware investment for running Monte Carlo neutron transport.% I think this is stated backwards. If the price per history power is higher for GPUs we should pick CPUs. Maybe you mean history power per unit cost?  yes, OOPS!  
+ This conclusion only takes the results of WARP's initial development in account, i.e.\ simple materials and a single tally.  Determining how to maintain high performance when both the number of materials and tallies are increased will be part of the future development of WARP.
+
+
 
 \section*{Acknowledgements}
 \label{sec:ack}
