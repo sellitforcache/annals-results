@@ -194,34 +194,32 @@ WARP has only existed since 2013, and is not as fully-featured as more mature Mo
 
 \subsection{Physics}
 
-only neutrons of course, no photons, etc for power deposition problems
-
-WARP loads ACE-formatted nuclear data libraries via the ``ace'' module in PyNE \cite{}.  The cross section data are then re-formatted to use a unionionzed energy grid via numpy, then then passed to the C++ routines via the Python C API.  Cross section data compiled by the United States is distributed by the Department of Energy in \emph{ENDF} files.  ENDF stands for ``evaluated nuclear data file,'' and can contain data for nuclear decay, photons, atomic relaxation, fission yields, thermal neutron scattering, and charged particle reactions as well as neutron reactions.  ACE stands for ``a compact ENDF'' and strips out a lot of the extra information unnecessary for neutron transport.  Since many Monte Carlo codes read ACE-formatted data rather than the original ENDF file, WARP can eliminate one potential cause for discrepancies by loading identical data as other codes.  
+Only neutrons are transported by WARP.  Any other particles are not considered in any way.  WARP loads ACE-formatted nuclear data libraries via the ``ace'' module in PyNE \cite{}.  The cross section data are then re-formatted to use a unionionzed energy grid via numpy, then then passed to the C++ routines via the Python C API.  Cross section data compiled by the United States is distributed by the Department of Energy in \emph{ENDF} files.  ENDF stands for ``evaluated nuclear data file,'' and can contain data for nuclear decay, photons, atomic relaxation, fission yields, thermal neutron scattering, and charged particle reactions as well as neutron reactions.  ACE stands for ``a compact ENDF'' and strips out a lot of the extra information unnecessary for neutron transport.  Since many Monte Carlo codes read ACE-formatted data rather than the original ENDF file, WARP can eliminate one potential cause for discrepancies by loading identical data as other codes.  
 
 In its current state, WARP does not use the thermal scattering (S($\alpha,$$\beta$)) tables or unresolved resonance parameters and only uses the free-gas approximation for target nuclei.  This treats the target as part of a gas at a certain temperature and does not consider anything other than purely elastic scattering. Thermal scattering and unresolved resonance data tables improve the physical fidelity of the simulation, but these features can be turned off in production codes and direct comparisons can be made without them.  Their incorporation may lead to more divergent program flow and is left as an area of future work.
 
-WARP currently also only has a handful of the most common ENDF sampling laws implemented.   These are laws 2, 3, 44,and XXX \cite{MCNP}.  Some nuclei require the remaining laws (), and therefore problems containing any such nuclides cannot be solved.
+WARP currently also only has a handful of the most common ENDF sampling laws implemented.   These are laws 2, 3, 44,and XXX \cite{MCNP}.  Some nuclei have interactions that require the remaining laws (XXX), and therefore problems containing any such nuclides cannot be solved.
 
 \subsection{Geometry}
 
-must be closed
-implicit nesting determines materials
-sphere, box, cylinder, right hexagonal prism
+The geometry representation in WARP is handled by the NVIDIA OptiX library, which provides high performance on the GPU, but imposes some limitations on the how geometries must be input.
 
+\begin{enumerate}
+\item Cells are the basic building blocks, not surfaces, and all cells must be finite and closed.
+\item Implicit nesting determines what material exists inside of a cell.  In other words, since cells are defined directly, the material of cell A is only that space where cell A is the lowest nested cell.  If cell B is within cell A, the entire space within cell B is excluded from cell A simply because cell B resides within cell A and does not need to be excluded explicitly.
+\item The only cell types available are spheres, cylinders, right rectangular prisms, and right hexagonal prisms.
+\item Only translational transforms have been implemented, although this restriction could be lifted by some additional development.
+\end{enumerate}
 
-\subsection{}
+\subsection{Features}
+
+WARP is mainly written in C/C++ and is compiled to a shared library.   and  with Python.  Pythonic wrapping is done via SWIG \cite{swig}, which automatically wraps compiled languages like C/C++ in high-level scripting languages.  With the C++ classes exposed in Python, the main() function can be replaced with a Python script, eliminating the need recompiled a main function and link it to the WARP library when different geometries or different run parameters are desired.  Of course, there is flexibility as well, and one could write a main function that could handle all conceivable cases. 
+
+The Python wrapping approach deviates from the standard flat text input file structure that many Monte Carlo codes use.  Flat text input relies on keywords and adds a layer where input files need to be parsed and data structures are then built in the application based on the information parsed from the input.  Using Python to directly access the classes and their data removes this layer, and allows a user to build complex, custom applications if necessary.  Since the results would also be resident in a Python session and would therefore be easily available to the user for potting scripts or analysis tools.  To process data in the same way from text-file-based output, the output needs to be parsed with a user written function or processed by hand, which is time consuming and can lead to human error.
 
 single volume tally
 only collision estimators
-no importance, variance reduction
-
-\subsection{Interface}
-
-Work is also underway for wrapping the WARP shared library with Python.  This would be done via SWIG \cite{swig}, a piece of software that automatically wraps compiled languages like C/C++ in high-level scripting languages.  This is being done for convenience and usability reasons.  With the C++ classes exposed in Python, the main() function can be replaced with a Python script, eliminating the need to recompile WARP applications when different geometries or different run parameters are desired.  In its current state, WARP is compiled to a shared library with an API.  This requires a small main function to be written to make an executable that calls the WARP library routines.  The library does not need to be recompiled, but the main function and executable does for the simulation parameters to be changed.   
-
-The Python wrapping approach deviates from the standard flat text input file structure that most Monte Carlo codes use.  Flat text input relies on keywords and adds a layer where input files need to be parsed and data structures are then built in the application based on the information parsed from the input.  Using Python to directly access the classes and their data removes this layer, and allows a user to build complex applications.  Since the results would also be resident in a Python session and would therefore be easily available to the user for potting scripts or analysis tools.  To process data in the same way from text-file-based output, the output needs to be parsed with a user written function or processed by hand, which is time consuming and can lead to human error.
-
-limitations too
+no importance, variance reduction, or other convergence estimation beyond relative error
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -303,9 +301,7 @@ there are many areas where feature need to be added in order for WARP to become 
 Track length tallies would be very easy to implement
 Will be released at open source software, pending DOE approval.
 
-
 The development of WARP has led to important conclusions regarding how to conduct neutron transport on GPUs.  The first is that running with large datasets, and therefore a large number of threads, is important for good performance.  It was found that in some cases, moving from $10^5$ to $10^6$ neutrons per batch in criticality mode increase performance by a factor of four or more.  It is important to keep the GPU saturated with threads so it can effectively pipeline data loads.  
-
 
 The initial goals of WARP have been completed, but there is much work still to be done if it is going to be of real use to the nuclear engineering community.  Basic functionality is currently good enough to assure the GPUs can accelerate high-fidelity Monte Carlo neutron transport calculations, which was the point of this work, but many capabilities need to be expanded and ensured to scale well to large numbers of neutrons, isotopes, and geometrical zones.
 
@@ -327,7 +323,6 @@ Data access patterns are very important on the GPU, and there are a few straight
 WARP would gain usability if more features were incorporated as well.  Currently, WARP treats all neutrons equally, but adding neutron weight would allow many variance reduction techniques to be implemented.  Importance cutoffs could be used to terminate secondary neutrons in fixed-source runs, leading to shorter runtimes; cell importances and implicit absorption could help improve tally statistics.  Developing an efficient way to include many reaction rate tallies would also make WARP useful for performing depletion analysis.  It would also be helpful for WARP to have statistical tests like Shannon entropy to ensure the fission source is fully converged before tallies and multiplication factors are accumulated.
 
 WARP still has bugs, and a large part of future development will be tracking them down to ensure that accurate results are produced.  Reproducibility using the same random number seeds will also be investigated to ensure consistent results can be produced and that there are no systematic errors present in WARP.  Ensuring reproducibility will also be necessary in making a test suite for WARP, so future users can have confidence in their results and future developers can know their modifications do not introduce new errors into WARP.
-
 
 Further, assuming the capital prices for the GPU and CPU servers outlined in Table \ref{gpu_money} and that CPU code scales linearly, the capital price per Monte Carlo ``history power,'' or histories run per second, of a GPU is 2.8 times lower than that of a CPU on average for the tests done in this work, indicating that GPUs are a sound hardware investment for running Monte Carlo neutron transport.% I think this is stated backwards. If the price per history power is higher for GPUs we should pick CPUs. Maybe you mean history power per unit cost?  yes, OOPS!  
  This conclusion only takes the results of WARP's initial development in account, i.e.\ simple materials and a single tally.  Determining how to maintain high performance when both the number of materials and tallies are increased will be part of the future development of WARP.
