@@ -194,19 +194,13 @@ WARP has only existed since 2013, and is not as fully-featured as more mature Mo
 
 \subsection{Physics}
 
-WARP loads ACE-formatted nuclear data libraries via the ace module in PyNE.  Cross section data compiled by the United States is distributed by the Department of Energy in \emph{ENDF} files.  ENDF stands for ``evaluated nuclear data file,'' and can contain data for nuclear decay, photons, atomic relaxation, fission yields, thermal neutron scattering, and charged particle reactions as well as neutron reactions.  ACE stands for ``a compact ENDF'' and strips out a lot of the extra information unnecessary for neutron transport.  Since many Monte Carlo codes read ACE-formatted data rather than the original ENDF file, WARP can eliminate one potential cause for discrepancies by loading identical data as other codes.  
-
 only neutrons of course, no photons, etc for power deposition problems
-single volume tally
-only collision estimators
 
-only free gas
+WARP loads ACE-formatted nuclear data libraries via the ``ace'' module in PyNE \cite{}.  The cross section data are then re-formatted to use a unionionzed energy grid via numpy, then then passed to the C++ routines via the Python C API.  Cross section data compiled by the United States is distributed by the Department of Energy in \emph{ENDF} files.  ENDF stands for ``evaluated nuclear data file,'' and can contain data for nuclear decay, photons, atomic relaxation, fission yields, thermal neutron scattering, and charged particle reactions as well as neutron reactions.  ACE stands for ``a compact ENDF'' and strips out a lot of the extra information unnecessary for neutron transport.  Since many Monte Carlo codes read ACE-formatted data rather than the original ENDF file, WARP can eliminate one potential cause for discrepancies by loading identical data as other codes.  
 
-In its current state, WARP does not use the thermal scattering (S($\alpha,$$\beta$)) tables or unresolved resonance parameters.   These tables improve the physical fidelity of the simulation, but these features can be turned off in production codes and direct comparisons can be made without them.  Their incorporation may lead to more divergent program flow and is left as an area of future work.
+In its current state, WARP does not use the thermal scattering (S($\alpha,$$\beta$)) tables or unresolved resonance parameters and only uses the free-gas approximation for target nuclei.  This treats the target as part of a gas at a certain temperature and does not consider anything other than purely elastic scattering. Thermal scattering and unresolved resonance data tables improve the physical fidelity of the simulation, but these features can be turned off in production codes and direct comparisons can be made without them.  Their incorporation may lead to more divergent program flow and is left as an area of future work.
 
-only some endf laws , others not implemented
--> if these were implenented, WARP could be a very good tool for parameter searches.  Once a good model if found, a production code can be used to obtain a more accurate (i.e. more physics) results.
-
+WARP currently also only has a handful of the most common ENDF sampling laws implemented.   These are laws 2, 3, 44,and XXX \cite{MCNP}.  Some nuclei require the remaining laws (), and therefore problems containing any such nuclides cannot be solved.
 
 \subsection{Geometry}
 
@@ -214,6 +208,12 @@ must be closed
 implicit nesting determines materials
 sphere, box, cylinder, right hexagonal prism
 
+
+\subsection{}
+
+single volume tally
+only collision estimators
+no importance, variance reduction
 
 \subsection{Interface}
 
