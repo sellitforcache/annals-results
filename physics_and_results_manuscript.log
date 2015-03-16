@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  8 MAR 2015 17:39
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  16 MAR 2015 10:50
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -439,13 +439,8 @@ LaTeX Info: Redefining \nameref on input line 99.
 \@outlinefile=\write4
 \openout4 = `physics_and_results_manuscript.out'.
 
-
-Overfull \hbox (6.94174pt too wide) in paragraph at lines 152--153
-[]\OT1/cmr/m/n/12 In re-cent su-per-com-put-ers, gen-eral pur-pose graph-ics pr
-o-cess-ing units (GPG-
- []
-
 LaTeX Font Info:    Try loading font information for U+msa on input line 162.
+
 (/usr/local/texlive/2013/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
@@ -457,142 +452,55 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 
 {/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+<graphics/datavtask.pdf, id=89, 537.00626pt x 525.965pt>
+File: graphics/datavtask.pdf Graphic file (type pdf)
 
-Package natbib Warning: Citation `vector' on page 2 undefined on input line 175
-.
+<use graphics/datavtask.pdf>
+Package pdftex.def Info: graphics/datavtask.pdf used on input line 175.
+(pdftex.def)             Requested size: 390.0pt x 381.97696pt.
+ [2 <./graphics/datavtask.pdf>]
 
-
-Package natbib Warning: Citation `vujic_vector' on page 2 undefined on input li
-ne 175.
-
-
-Package natbib Warning: Citation `simd_power' on page 2 undefined on input line
- 175.
-
-[2]
-
-Package natbib Warning: Citation `vector' on page 3 undefined on input line 177
-.
-
-
-Package natbib Warning: Citation `on_the_fly_remapping' on page 3 undefined on 
-input line 179.
-
-
-Package natbib Warning: Citation `nelson' on page 3 undefined on input line 181
-.
-
-
-Package natbib Warning: Citation `tianyu_snamc' on page 3 undefined on input li
-ne 181.
-
-
-Package natbib Warning: Citation `qixu' on page 3 undefined on input line 181.
-
-
-Package natbib Warning: Citation `nelson' on page 3 undefined on input line 181
-.
-
-
-Package natbib Warning: Citation `nelson' on page 3 undefined on input line 181
-.
-
-
-Package natbib Warning: Citation `nelson' on page 3 undefined on input line 181
-.
-
-
-Package natbib Warning: Citation `tianyu_snamc' on page 3 undefined on input li
-ne 181.
-
-
-Package natbib Warning: Citation `qixu' on page 3 undefined on input line 181.
-
-
-Package natbib Warning: Citation `qixu_ans_winter' on page 3 undefined on input
- line 181.
+Package natbib Warning: Citation `algorithms' on page 3 undefined on input line
+ 181.
 
 [3]
-
-Package natbib Warning: Citation `CUDPP' on page 4 undefined on input line 185.
-
-
-
-Package natbib Warning: Citation `curand' on page 4 undefined on input line 185
-.
-
-
-Package natbib Warning: Citation `optix' on page 4 undefined on input line 185.
-
-
-
-Package natbib Warning: Citation `optix' on page 4 undefined on input line 185.
-
-
-
-Package natbib Warning: Citation `mcnp' on page 4 undefined on input line 189.
-
-
-Package natbib Warning: Citation `jaakko' on page 4 undefined on input line 189
-.
-
-
-Package natbib Warning: Citation `mcnp' on page 4 undefined on input line 189.
-
-
-Package natbib Warning: Citation `pyne' on page 4 undefined on input line 189.
-
-
-Package natbib Warning: Citation `jaakko' on page 4 undefined on input line 189
-.
-
-
-Package natbib Warning: Citation `k20stat' on page 4 undefined on input line 18
-9.
-
-
-Package natbib Warning: Citation `titanstat' on page 4 undefined on input line 
-189.
-
-[4] [5] [6] [7]
 No file physics_and_results_manuscript.bbl.
 
 Package natbib Warning: There were undefined citations.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 265.
-[8]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 265.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 262.
+[4]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 262.
  (./physics_and_results_manuscript.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 265.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 265.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 262.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 262.
 Package rerunfilecheck Info: File `physics_and_results_manuscript.out' has not 
 changed.
-(rerunfilecheck)             Checksum: 0D851146A2F82F2045A60A7A43CCD6B1;712.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 265.
+(rerunfilecheck)             Checksum: 1BDF9C7F7A13DE87311EA22F5A20B1B9;924.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 262.
  ) 
 Here is how much of TeX's memory you used:
- 9047 strings out of 493315
- 133507 string characters out of 6137904
- 227608 words of memory out of 5000000
- 12364 multiletter control sequences out of 15000+600000
+ 9051 strings out of 493315
+ 133734 string characters out of 6137904
+ 223638 words of memory out of 5000000
+ 12363 multiletter control sequences out of 15000+600000
  12441 words of font info for 48 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 42i,9n,40p,1826b,472s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 42i,9n,40p,1260b,344s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
-></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb>
-</usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></
-usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></us
-r/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/
-local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/lo
-cal/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/loca
-l/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/
-texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/t
-exlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/te
-xlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on physics_and_results_manuscript.pdf (8 pages, 166779 bytes).
+></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><
+/usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></u
+sr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr
+/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/l
+ocal/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/loc
+al/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local
+/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/
+texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/t
+exlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on physics_and_results_manuscript.pdf (4 pages, 234680 bytes).
 PDF statistics:
- 146 PDF objects out of 1000 (max. 8388607)
- 123 compressed objects within 2 object streams
- 23 named destinations out of 1000 (max. 500000)
- 89 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 374 PDF objects out of 1000 (max. 8388607)
+ 245 compressed objects within 3 object streams
+ 26 named destinations out of 1000 (max. 500000)
+ 142 words of extra memory for PDF output out of 10000 (max. 10000000)
 
