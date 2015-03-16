@@ -168,7 +168,7 @@ Monte Carlo \sep Neutron Transport \sep GPU \sep CUDA \sep CUDPP \sep OptiX
 \section{Introduction}
 \label{sec:intro}
 
-Developing WARP was motivated by modern supercomputers commonly being built with graphics processing units (GPU) coprocessor cards in their nodes to increase their computational efficiency and performance \cite{}.  Compared to more common central processing units, or CPUs, GPUs have a larger aggregate memory bandwidth, much larger rate of floating-point operations per second (FLOPS), and lower energy consumption per FLOP\cite{}.  GPUs execute efficiently on data-parallel problems \cite{}, and since most CPU codes are task-parallel, the algorithms used had to be reconsidered.  Data-parallelism is simply parallelism that arrises from operating on many different pieces of data at one time, whereas task-parallelism is parallelism that arises from running many concurrent tasks at one time which act on a single piece of data.   Figure \ref{datavtask} shows and illustration of the difference between a data-parallel and a task-parallel neutron transport loop.
+Developing WARP was motivated by modern supercomputers commonly being built with graphics processing units (GPU) coprocessor cards in their nodes to increase their computational efficiency and performance \cite{}.  Compared to more common central processing units, or CPUs, GPUs have a larger aggregate memory bandwidth, much larger rate of floating-point operations per second (FLOPS), and lower energy consumption per FLOP\cite{}.  GPUs execute efficiently on data-parallel problems \cite{}, and since most CPU codes are task-parallel, the algorithms used had to be reconsidered.  Data-parallelism is simply parallelism that arises from operating on many different pieces of data at one time, whereas task-parallelism is parallelism that arises from running many concurrent tasks at one time which act on a single piece of data.   Figure \ref{datavtask} shows and illustration of the difference between a data-parallel and a task-parallel neutron transport loop.
 
 \begin{figure}[h!] 
   \centering
@@ -176,7 +176,7 @@ Developing WARP was motivated by modern supercomputers commonly being built with
      \caption{Data-parallel neutron trasport loop vs. a task-parallel transport loop for N neutrons in parallel.  \label{datavtask} }
 \end{figure}
 
-Execution on GPUs also requires additional data management, since the on-chip memory of the GPU is separate from the host CPUs memory \cite{}.  Execution on NVIDIA GPUs also required code to be written in CUDA, which is basically a set of extensions for C/C++.  The simplest way to accommodate all these requirements was to write a new code from scratch, and ultimately resulted in WARP.  
+Execution on GPUs also requires additional data management, since the on-chip memory of the GPU is separate from the host CPUs memory \cite{cuda}.  Execution on NVIDIA GPUs also required code to be written in CUDA, which is a set of extensions for C/C++.  The simplest way to accommodate all these requirements was to write a new code from scratch, which ultimately resulted in WARP.  
 
 In this paper, results calculated by WARP are compared against those calculated by Serpent 2.XX.X and MCNP 6.1, two widely-used production-level Monte Carlo neutron transport codes, in order to ensure the accuracy of WARP and to highlight its performance differences.  The details about the algorithms used in WARP are discussed in \cite{algorithms}.
 
@@ -187,17 +187,49 @@ In this paper, results calculated by WARP are compared against those calculated 
 \section{Features of WARP}
 \label{sec:features}
 
+WARP has only existed since 2013, and is not as fully-featured as more mature Monte Carlo codes.  It has the functionality necessary to compare its performance against  Serpent 2.XX.X and MCNP 6.1, but there are many areas where feature need to be added in order for WARP to become a useful engineering and scientific tool.  This section outlines the current set of features available in WARP.  
+
 \subsection{Physics}
 
-limitations too
+Cross section data compiled by the United States is distributed by the Department of Energy in \emph{ENDF} files.  ENDF stands for ``evaluated nuclear data file,'' and can contain data for nuclear decay, photons, atomic relaxation, fission yields, thermal neutron scattering, and charged particle reactions as well as neutron reactions.  The data files are called ``evaluated'' because a group of experts decides, or evaluates, what data is included in them.  The data includes theoretical calculations of cross sections based on well developed models as well as experimental data.  They also decide how to represent regimes that haven't been measured yet by comparing simulation results to experiments.   The first data released was ENDF/B-I in 1968 and the latest set is ENDF/B-VII, which was released in 2006.  
 
+The data is written in a standard format that dates back to when the data was stored on magnetic tapes, and data entries are sometimes referred to as ``tapes'' to this day.  The format is rather archaic and contains a lot of redundant information about record locations, which was useful when the tape head had to physically move between points in the tape \cite{endfnums}.  
+
+Many Monte Carlo codes read ACE-formatted data rather than the original ENDF file.  ENDF files contain a lot of data so the dataset preserves the original evaluation, but most transport codes need the data in tabular format.  This is why transport codes normally use ACE-formatted data files. \cite{jaakko}  ACE stands for ``a compact ENDF'' and strips out a lot of the extra information unnecessary for neutron transport.  ENDF tapes contain information that is valuable for charged particles and photons as well as neutrons, and this information is discarded for neutron transport. As Figure \ref{data_levels} shows, ACE files not only contain cross sections, but also angle and energy distributions used in scattering and fission.  ENDF assigns a number to each type of reaction called the \emph{MT} number.  Table \ref{MT_numbers} in Appendix B, taken from a LANL website, shows what these MT numbers mean \cite{endfnums}.  
+
+It can clearly be seen that there are many reactions a neutron can undergo, most of which have very strong energy dependence.  Most of the complexity in modeling nuclear reactors comes from the fact that the data needed to model neutrons is very complicated.  Data may be the most important part of the simulation; it is what ties the calculations to reality.  
+
+ACE data files typically come pre-processed at different temperatures.  This processing can done by a code called NJOY \cite{jaakko}, which Doppler broadens all the resonances in the cross sections and adjusts the unresolved resonance tables accordingly.  It can also thin the energy grid if requested by the user, though this reduces the accuracy of the cross sections \cite{jaakko}.  Thinning the energy grid is a computationally intensive task, and NJOY is not parallelized.  Most production codes come with their own pre-processed datasets at several temperature intervals in order to save the user the time and effort needed to process data from ENDF files.
+
+
+
+
+
+
+only neutrons of course, no photons, etc for power deposition problems
+single volume tally
+only collision estimators
+
+only free gas
+
+In its current state, WARP does not use the thermal scattering (S($\alpha,$$\beta$)) tables or unresolved resonance parameters.   These tables improve the physical fidelity of the simulation, but these features can be turned off in production codes and direct comparisons can be made without them.  Their incorporation may lead to more divergent program flow and is left as an area of future work.
+
+only some endf laws , others not implemented
+-> if these were implenented, WARP could be a very good tool for parameter searches.  Once a good model if found, a production code can be used to obtain a more accurate (i.e. more physics) results.
 
 
 \subsection{Geometry}
 
-limitations too
+must be closed
+implicit nesting determines materials
+sphere, box, cylinder, right hexagonal prism
+
 
 \subsection{Interface}
+
+Work is also underway for wrapping the WARP shared library with Python.  This would be done via SWIG \cite{swig}, a piece of software that automatically wraps compiled languages like C/C++ in high-level scripting languages.  This is being done for convenience and usability reasons.  With the C++ classes exposed in Python, the main() function can be replaced with a Python script, eliminating the need to recompile WARP applications when different geometries or different run parameters are desired.  In its current state, WARP is compiled to a shared library with an API.  This requires a small main function to be written to make an executable that calls the WARP library routines.  The library does not need to be recompiled, but the main function and executable does for the simulation parameters to be changed.   
+
+The Python wrapping approach deviates from the standard flat text input file structure that most Monte Carlo codes use.  Flat text input relies on keywords and adds a layer where input files need to be parsed and data structures are then built in the application based on the information parsed from the input.  Using Python to directly access the classes and their data removes this layer, and allows a user to build complex applications.  Since the results would also be resident in a Python session and would therefore be easily available to the user for potting scripts or analysis tools.  To process data in the same way from text-file-based output, the output needs to be parsed with a user written function or processed by hand, which is time consuming and can lead to human error.
 
 limitations too
 
@@ -208,11 +240,37 @@ limitations too
 \section{Tests}
 \label{sec:tests}
 
+CPU/GPU hardware 
+
 
 \subsection{Test 1}
+
+jezebel
+
 \subsection{Test 2}
+
+pin cell
+
 \subsection{Test 3}
+
+hom. pebble in flibe?
+
 \subsection{Test 4}
+
+sodium with SS clad over metallic fuel?
+
+\subsection{Test 5}
+
+assembly w clad in water
+
+
+\subsection{Test 6}
+
+fixed source, fusion 14.1 mev neutrons in shells of lithium and SiC and steel?  flux in sic first wall
+
+\subsection{Test 7}
+
+fixed source,  plane source at end of steel tube, u fission multiplier, flux in volume after u
 
 
 
@@ -226,9 +284,13 @@ limitations too
 \subsection{Test 2}
 \subsection{Test 3}
 \subsection{Test 4}
+\subsection{Test 5}
+\subsection{Test 6}
+\subsection{Test 7}
 
 \subsection{Summary}
 
+table of keff, 1-norm of rel err, 1-norm of some sort of fission distribution
 
 \section{Conclusions and Future Development}
 \label{sec:conc}
@@ -242,7 +304,8 @@ limitations too
 
 %As mentioned in Section \ref{sec:intro}, a forthcoming companion paper is planned that will benchmark WARP against Serpent and MCNP using identical cross section libraries and problem geometries.  In the paper, the relative accuracy and speed of WARP will be determined by comparing it to these production-level Monte Carlo neutron transport codes.
 
-
+Track length tallies would be very easy to implement
+Will be released at open source software, pending DOE approval.
 
 \section*{Acknowledgements}
 \label{sec:ack}
