@@ -121,7 +121,7 @@
 %% \address{Address\fnref{label3}}
 %% \fntext[label3]{}
 
-\title{Performance and Accuracy of WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs}
+\title{Relative Performance and Accuracy of WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs}
 
 %% use optional labels to link authors explicitly to addresses:
 %% \author[label1,label2]{<author name>}
@@ -198,11 +198,11 @@ Only neutrons are transported by WARP.  Any other particles are not considered i
 
 In its current state, WARP does not use the thermal scattering (S($\alpha,$$\beta$)) tables or unresolved resonance parameters and only uses the free-gas approximation for target nuclei.  This treats the target as part of a gas at a certain temperature and does not consider anything other than purely elastic scattering. Thermal scattering and unresolved resonance data tables improve the physical fidelity of the simulation, but these features can be turned off in production codes and direct comparisons can be made without them.  Their incorporation may lead to more divergent program flow and is left as an area of future work.
 
-WARP currently also only has a handful of the most common ENDF sampling laws implemented.   These are laws 2, 3, 44,and XXX \cite{MCNP}.  Some nuclei have interactions that require the remaining laws (XXX), and therefore problems containing any such nuclides cannot be solved.
+WARP currently also only has a handful of the most common ENDF sampling laws implemented.   These are laws 3 (level scattering), 4 (continuous tabular distribution), and 44 (Kalbach-87 Formalism) \cite{MCNP}.  Some nuclei have interactions that require the remaining laws (1, 2, 5, 7, 9, 11, 22, 24, 61, 66, 67) and therefore problems containing any such nuclides cannot be solved.
 
 \subsection{Geometry}
 
-The geometry representation in WARP is handled by the NVIDIA OptiX library, which provides high performance on the GPU, but imposes some limitations on the how geometries must be input.
+The geometry representation in WARP is handled by the NVIDIA OptiX library.  It provides high performance on the GPU, but imposes some limitations on the how geometries must be input.  These limitations restrict the kinds of benchmarks that can be done.
 
 \begin{enumerate}
 \item Cells are the basic building blocks, not surfaces, and all cells must be finite and closed.
@@ -211,16 +211,14 @@ The geometry representation in WARP is handled by the NVIDIA OptiX library, whic
 \item Only translational transforms have been implemented, although this restriction could be lifted by some additional development.
 \end{enumerate}
 
+
 \subsection{Features}
 
 WARP is mainly written in C/C++ and is compiled to a shared library.   and  with Python.  Pythonic wrapping is done via SWIG \cite{swig}, which automatically wraps compiled languages like C/C++ in high-level scripting languages.  With the C++ classes exposed in Python, the main() function can be replaced with a Python script, eliminating the need recompiled a main function and link it to the WARP library when different geometries or different run parameters are desired.  Of course, there is flexibility as well, and one could write a main function that could handle all conceivable cases. 
 
 The Python wrapping approach deviates from the standard flat text input file structure that many Monte Carlo codes use.  Flat text input relies on keywords and adds a layer where input files need to be parsed and data structures are then built in the application based on the information parsed from the input.  Using Python to directly access the classes and their data removes this layer, and allows a user to build complex, custom applications if necessary.  Since the results would also be resident in a Python session and would therefore be easily available to the user for potting scripts or analysis tools.  To process data in the same way from text-file-based output, the output needs to be parsed with a user written function or processed by hand, which is time consuming and can lead to human error.
 
-single volume tally
-only collision estimators
-no importance, variance reduction, or other convergence estimation beyond relative error
-
+WARP only has collision estimators implemented for both flux and multiplication factor estimation.  The relative error of these estimations are calculated, but any additional convergence estimation beyond relative error has not been implemented.  WARP is also only able to estimate the flux in a single volume.  No variance reduction schemes have been implemented either, and WARP treats all neutrons as having the same importance.
 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
@@ -228,41 +226,57 @@ no importance, variance reduction, or other convergence estimation beyond relati
 \section{Tests}
 \label{sec:tests}
 
-CPU/GPU hardware 
+CPU/GPU hardware, why chosen - workstation and cluster versions of cpu and gpu, make "history power" historys/s per purchase cost for each unit (whether that is card or node or workstation) and histories/s per watt. 
 
-why running with 1e5 per batch, and 1e6, push titan to limit!
+table:
 
-\subsection{Test 1}
+Bk node
+some high performing workstation (mine?)
+m270
+k20
+titan
+FOR EACH:  price, memory, processors, threads, frequencies, 
 
-table of isotopes, densities, dimensions for all tests
-
-jezebel
-
-\subsection{Test 2}
-
-pin cell
-
-\subsection{Test 3}
-
-hom. pebble in flibe?
-
-\subsection{Test 4}
-
-sodium with SS clad over metallic fuel?
-
-\subsection{Test 5}
-
-assembly w clad in water
+run at maximum number of histories per batch as possible for GPUs 
+run CPUs at maximum number of MPI processes and OMP threads in the station or node, but with identical batch parameters as the GPU runs
 
 
-\subsection{Test 6}
+\subsection{Test 1 - ``Jezebel'' Bare Pu Sphere}
 
-fixed source, fusion 14.1 mev neutrons in shells of lithium and SiC and steel?  flux in sic first wall
+criticality
+table of isotopes, densities, dimensions
 
-\subsection{Test 7}
+\subsection{Test 2 - UO$_2$ Pin Cell in Light Water}
 
-fixed source,  plane source at end of steel tube, u fission multiplier, flux in volume after u
+criticality
+table of isotopes, densities, dimensions
 
+\subsection{Test 3 - Homogenized Fuel Pebble in FLiBe?}
+
+criticality
+table of isotopes, densities, dimensions
+
+\subsection{Test 4 - Stainless Steel-clad Metallic U Pin Cell in Liquid Sodium?}
+
+criticality
+table of isotopes, densities, dimensions
+
+\subsection{Test 5 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
+
+criticality
+table of isotopes, densities, dimensions
+
+\subsection{Test 6 - D-T Fusion Neutrons in Shells of Lithium, SiC, and Steel}
+
+fixed source
+table of isotopes, densities, dimensions
+flux in sic first wall
+
+\subsection{Test 7 - Plane Source in Steel Tube, Metallic U Fission Multiplier}
+
+fixed source
+table of isotopes, densities, dimensions
+flux in volume after u
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -272,16 +286,55 @@ fixed source,  plane source at end of steel tube, u fission multiplier, flux in 
 \label{sec:results}
 
 \subsection{Test 1}
+
+fission source
+keff
+flux
+runtime
+
 \subsection{Test 2}
+
+fission source
+keff
+flux
+runtime
+
 \subsection{Test 3}
+
+fission source
+keff
+flux
+runtime
+
 \subsection{Test 4}
+
+fission source
+keff
+flux
+runtime
+
 \subsection{Test 5}
+
+fission source
+keff
+flux
+runtime
+
 \subsection{Test 6}
+
+flux
+runtime
+
 \subsection{Test 7}
+
+flux
+runtime
 
 \subsection{Summary}
 
-table of keff, 1-norm of rel err, 1-norm of some sort of fission distribution
+table of keff, 1-norm of rel err, 1-norm of some sort of fission distribution, runtimes
+
+table of history powers
 
 
 
@@ -295,11 +348,6 @@ table of keff, 1-norm of rel err, 1-norm of some sort of fission distribution
 %WARP has shown that GPUs are an effective platform for performing Monte Carlo neutron transport with continuous energy cross sections.  Currently, WARP is the most detailed and feature-rich program in existence for performing continuous energy Monte Carlo neutron transport in general 3D geometries on GPUs, but compared to production codes like Serpent and MCNP, WARP has limited capabilities.  Despite WARP's lack of features, its novel algorithm implementations show that high performance can be achieved on a GPU despite the inherently divergent program flow and sparse data access patterns.  %WARP is not ready for everyday nuclear reactor calculations, but is a good platform for further development of GPU-accelerated Monte Carlo neutron transport.  In it's current state, it may be a useful tool for multiplication factor searches, i.e. determining reactivity coefficients by perturbing material densities or temperatures, since these types of calculations typically do not require many flux tallies. 
 %Remapping threads to active data is an effective way of raising the processing rate when the number of active neutrons becomes small; this also reduces thread divergence in reaction kernels.  Using a radix sort to do the remapping is effective since it segregates reactions into contiguous blocks, efficient since it can be done in place and in $O(kN)$ time, and can eliminate completed data from being accessed if slight modifications to the standard reaction number encodings are made.  
 
-
-
-there are many areas where feature need to be added in order for WARP to become a useful engineering and scientific tool - sab, unres, tallies, less intense memory layout (fractional cascade? grid thinning? on the fly temp would help a lot here too!), more geom types, meshes
-Track length tallies would be very easy to implement
-Will be released at open source software, pending DOE approval.
 
 The development of WARP has led to important conclusions regarding how to conduct neutron transport on GPUs.  The first is that running with large datasets, and therefore a large number of threads, is important for good performance.  It was found that in some cases, moving from $10^5$ to $10^6$ neutrons per batch in criticality mode increase performance by a factor of four or more.  It is important to keep the GPU saturated with threads so it can effectively pipeline data loads.  
 
@@ -327,7 +375,10 @@ WARP still has bugs, and a large part of future development will be tracking the
 Further, assuming the capital prices for the GPU and CPU servers outlined in Table \ref{gpu_money} and that CPU code scales linearly, the capital price per Monte Carlo ``history power,'' or histories run per second, of a GPU is 2.8 times lower than that of a CPU on average for the tests done in this work, indicating that GPUs are a sound hardware investment for running Monte Carlo neutron transport.% I think this is stated backwards. If the price per history power is higher for GPUs we should pick CPUs. Maybe you mean history power per unit cost?  yes, OOPS!  
  This conclusion only takes the results of WARP's initial development in account, i.e.\ simple materials and a single tally.  Determining how to maintain high performance when both the number of materials and tallies are increased will be part of the future development of WARP.
 
-
+there are many areas where feature need to be added in order for WARP to become a useful engineering and scientific tool - sab, unres, tallies, less intense memory layout (fractional cascade? grid thinning? on the fly temp would help a lot here too!), more geom types, meshes
+Track length tallies would be very easy to implement
+variance reduction, especially importances (neutron and cell) would also be very easy to implement
+Will be released at open source software, pending DOE approval.
 
 \section*{Acknowledgements}
 \label{sec:ack}
