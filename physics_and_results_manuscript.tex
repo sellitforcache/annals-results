@@ -223,31 +223,48 @@ WARP only has collision estimators implemented for both flux and multiplication 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
+\newpage
 \section{Tests}
 \label{sec:tests}
 
 Various CPU and GPU hardware were chose to test WARP on to give a comprehensive view of the platforms that Monte Carlo neutron transport is typically performed on.  For the CPU platforms, a cluster node and a workstation are used.  For the GPU platforms, a mobile graphics card, a consumer-level graphics card, and compute-specific card are used. The benchmark cases are run at maximum number of histories per criticality batch as possible for the specific GPUs (this is where they perform the best, but is limited by on-card memory), and the CPU cases are run with identical batch parameters.  The CPU cases are run with the maximum number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole.
-
-
-table:
-
-Bk node
-some high performing workstation (mine?)
-m270
-k20
-titan
-FOR EACH:  , 
 
 \begin{table}[h]
 \centering
 \caption{The platforms used in the benchmark cases and their specifications}
 \label{platform_table}
 \small
-\begin{tabular}{| l | r | r | r | r | r | r |}
+\begin{tabular}{| l | r | r | r | r |}
 \hline
-\multirow{2}{*}{Platform} &  Cost  & Local   & Memory    & Physical   & Processor  & Maximum \\
-                          & (USD)  & Memory  & Frequency & Processors & Frequency  & Threads \\
+\multirow{2}{*}{Platform} &  Cost   &Total Power  & Local       & Memory     \\
+                                       & (USD)  &(Watts) & Memory  & Frequency \\
 \hline
+Hp X270 Workstation     &    xxx    & xxx &  xxx         &  xxx                      \\
+\hline
+PSSC xxx                      &    xxx   &xxx&  xxx        &  xxx                    \\
+\hline
+NVIDIA 270m                &    xxx   &xxx&  xxx        &  xxx                 \\
+\hline
+NVIDIA Tesla k20         &    xxx     &xxx&  4.8  GB      &  2.6 GHz                  \\
+\hline
+NVIDIA Titan Black       &     xxx   &xxx&  6.14 GB        & 3.5 GHz              \\
+\hline
+\hline
+\hline
+\multirow{2}{*}{Platform}  &  \multicolumn{2}{r|}{Physical }     & Processor  & Maximum \\
+                                        & \multicolumn{2}{r|}{Processors}  & Frequency  & Threads \\
+\hline
+Hp X270 Workstation      &  \multicolumn{2}{r|}{1x Xeon xxx}  &  3.2 GHz     &  8           \\
+\hline
+PSSC xxx                      &   \multicolumn{2}{r|}{4x AMD xxx }  &  2.1 GHz     &  48           \\
+\hline
+NVIDIA 270m                &     \multicolumn{2}{r|}{xxx}   &       &  $2^{32}-1$           \\
+\hline
+NVIDIA Tesla k20         &       \multicolumn{2}{r|}{13}   &  705.5 MHz     &  $2^{32}-1$           \\
+\hline
+NVIDIA Titan Black       &      \multicolumn{2}{r|}{ 15 }  &  1071.5 MHz     & $2^{32}-1$           \\
+\hline
+
 \end{tabular}
 \end{table}
 
@@ -255,46 +272,20 @@ FOR EACH:  ,
 
 \subsection{Test 1 - ``Jezebel'' Bare Pu Sphere}
 
-criticality
+The ``Jezebel'' test is a bare plutonium sphere, and is a standard criticality test.   The fission neutron rate from $^{239}$Pu is balanced by the leakage rate from the 5.1 cm radius to give a $k_\mathrm{eff}$ of approximately 1.  Since this system is so leaky, producing results consistent with MCNP and Serpent ensures that the boundary conditions are correctly being enforced.  The Jezebel test is a standard test used to validate neutron transport codes.  It is described in the International Handbook of Evaluated Criticality Safety Test Experiments under the name ``Pu-MET-FAST-001'' \cite{bench_handbook}.  
 
 \begin{table}[h]
 \centering
-\caption{Geometry and materials used in the six test cases.}
-\label{test_setup}
-\begin{tabular}{| l | c | c | c | c |}
+\caption{Geometry and materials used in the Jezebel benchmark.}
+\label{jezebel_geom}
+\begin{tabular}{| l | c | c | c |}
 \hline
-Test & Number \& Type of Cells & Materials & Isotopes & Densities \\
+Cells & Isotopes (Atm\%)& Densities \\
 \hline
-\hline
-Jezebel & 1 sphere, r=5.1cm & Fuel & (1.00) $^{239}$Pu & 19.816 g/cm$^3$\\
-\hline
-\multirow{3}{*}{Homogenized} & \multirow{4}{*}{1 cube, r=10cm } & \multirow{4}{*}{Hom. Fuel.} & (0.90) $^{238}$U & \multirow{4}{*}{10 g/cm$^3$} \\
-\multirow{3}{*}{Block} & & & (0.10) $^{235}$U & \\
-& & & (3.00) $^{16}$O & \\
-& & & (2.00) $^{1}$H & \\
-\hline
-\multirow{5}{*}{Pin Cell} & \multirow{4}{*}{1 cuboid, 10x10x50cm} & \multirow{3}{*}{Fuel} & (0.90) $^{238}$U & \multirow{3}{*}{15 g/cm$^3$} \\
-& \multirow{4}{*}{1 cylinder, r=1cm z=40cm} & & (0.10) $^{235}$U & \\
-& & & (2.00) $^{16}$O & \\
-\cline{3-5}
-& & \multirow{2}{*}{Water} & (1.00) $^{16}$O & \multirow{2}{*}{3 g/cm$^3$} \\
-& & & (2.00) $^{1}$H & \\
-\hline
-\multirow{5}{*}{Hex Assembly} & \multirow{4}{*}{1 cube, 84cm$^3$} & \multirow{3}{*}{Fuel} & (0.90) $^{238}$U & \multirow{3}{*}{15 g/cm$^3$} \\
-& \multirow{4}{*}{{\small 631 cylinders, r=1cm z=40cm}} & & (0.10) $^{235}$U & \\
-& & & (2.00) $^{16}$O & \\
-\cline{3-5}
-& & \multirow{2}{*}{Water} & (1.00) $^{16}$O & \multirow{2}{*}{3 g/cm$^3$} \\
-& & & (2.00) $^{1}$H & \\
-\hline
-\multirow{6}{*}{Fixed-source} & \multirow{2}{*}{1 cube, 2x2x2m} & \multirow{2}{*}{Water} & (1.00) $^{16}$O & \multirow{2}{*}{1 g/cm$^3$} \\
-\multirow{6}{*}{Block}& & & (2.00) $^{1}$H & \\
-\cline{2-5}
-& \multirow{5}{*}{1 cube, 2x2x2m} & \multirow{4}{*}{Hom. Fuel} & (0.90) $^{238}$U & \multirow{5}{*}{10 g/cm$^3$} \\
-& & \multirow{4}{*}{w/ $^{10}$B} & (0.10) $^{235}$U & \\
-& & & (0.10) $^{10}$B & \\
-& & & (3.00) $^{16}$O & \\
-& & & (2.00) $^{1}$H & \\
+\multirow{4}{*}{1 sphere, r=5.1cm }  &   $^{239}$Pu   (0.90) &    \multirow{4}{*}{10 g/cm$^3$} \\
+&  $^{240}$Pu (0.10)& \\
+&  $^{69}$Ga  (0.10)& \\
+&  $^{71}$Ga (0.10) & \\ 
 \hline
 \end{tabular}
 \end{table}
@@ -302,23 +293,116 @@ Jezebel & 1 sphere, r=5.1cm & Fuel & (1.00) $^{239}$Pu & 19.816 g/cm$^3$\\
 
 \subsection{Test 2 - UO$_2$ Pin Cell in Light Water}
 
-criticality
-table of isotopes, densities, dimensions
+This test consists of a UO$_2$ cylinder clad in zirconium surrounded by a block of water.  This test now has two materials, each with multiple isotopes, and two cells.  The water block dimensions are not very large, so leakage should play a part.  This test serves to highlight that all the processing routines work simultaneously, and the effect of introducing more than one cell.
+
+\begin{table}[h]
+\centering
+\caption{Geometry and materials used in the single pin cell benchmark.}
+\label{jezebel_geom}
+\begin{tabular}{| l | c | c | c |}
+\hline
+Cells & Isotopes (Atm \%)& Densities \\
+\hline
+\multirow{3}{*}{1 cylinder, r=1.0cm }  &   $^{238}$U   (0.90) &    \multirow{3}{*}{10 g/cm$^3$} \\
+&  $^{235}$U (0.10)& \\
+&  $^{16}$O  (2.00)& \\
+\hline
+\multirow{5}{*}{1 cylinder, r=1.2cm }  &   $^{90}$Zr   (0.5145) &    \multirow{5}{*}{6.52 g/cm$^3$} \\
+&  $^{91}$Zr  (0.1122)& \\
+&  $^{92}$Zr  (0.1715)& \\
+&  $^{94}$Zr  (0.1738)& \\
+&  $^{96}$Zr  (0.0280)& \\
+\hline
+\multirow{2}{*}{1 box, r=1.0cm }  &   $^{1}$H   (0.666) &    \multirow{2}{*}{1 g/cm$^3$} \\
+&  $^{16}$O  (0.333)& \\
+\hline
+\end{tabular}
+\end{table}
+
 
 \subsection{Test 3 - Homogenized Fuel Pebble in FLiBe?}
 
 criticality
-table of isotopes, densities, dimensions
+
+\begin{table}[h]
+\centering
+\caption{Geometry and materials used in the single pin cell benchmark.}
+\label{jezebel_geom}
+\begin{tabular}{| l | c | c | c |}
+\hline
+Cells & Isotopes (Atm \%)& Densities \\
+\hline
+\multirow{3}{*}{1 cylinder, r=1.0cm }  &   $^{238}$U   (0.90) &    \multirow{3}{*}{10 g/cm$^3$} \\
+&  $^{235}$U (0.10)& \\
+&  $^{16}$O  (2.00)& \\
+\hline
+\multirow{5}{*}{1 cylinder, r=1.2cm }  &   $^{90}$Zr   (0.5145) &    \multirow{5}{*}{6.52 g/cm$^3$} \\
+&  $^{91}$Zr  (0.1122)& \\
+&  $^{92}$Zr  (0.1715)& \\
+&  $^{94}$Zr  (0.1738)& \\
+&  $^{96}$Zr  (0.0280)& \\
+\hline
+\multirow{2}{*}{1 box, r=1.0cm }  &   $^{1}$H   (0.666) &    \multirow{2}{*}{1 g/cm$^3$} \\
+&  $^{16}$O  (0.333)& \\
+\hline
+\end{tabular}
+\end{table}
 
 \subsection{Test 4 - Stainless Steel-clad Metallic U Pin Cell in Liquid Sodium?}
 
-criticality
-table of isotopes, densities, dimensions
+criticality, reflective BC?
+
+\begin{table}[h]
+\centering
+\caption{Geometry and materials used in the single pin cell benchmark.}
+\label{jezebel_geom}
+\begin{tabular}{| l | c | c | c |}
+\hline
+Cells & Isotopes (Atm \%)& Densities \\
+\hline
+\multirow{3}{*}{1 cylinder, r=1.0cm }  &   $^{238}$U   (0.90) &    \multirow{3}{*}{10 g/cm$^3$} \\
+&  $^{235}$U (0.10)& \\
+&  $^{16}$O  (2.00)& \\
+\hline
+\multirow{5}{*}{1 cylinder, r=1.2cm }  &   $^{90}$Zr   (0.5145) &    \multirow{5}{*}{6.52 g/cm$^3$} \\
+&  $^{91}$Zr  (0.1122)& \\
+&  $^{92}$Zr  (0.1715)& \\
+&  $^{94}$Zr  (0.1738)& \\
+&  $^{96}$Zr  (0.0280)& \\
+\hline
+\multirow{2}{*}{1 box, r=1.0cm }  &   $^{1}$H   (0.666) &    \multirow{2}{*}{1 g/cm$^3$} \\
+&  $^{16}$O  (0.333)& \\
+\hline
+\end{tabular}
+\end{table}
 
 \subsection{Test 5 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
 
-criticality
-table of isotopes, densities, dimensions
+The ``Hex assembly'' test consists of 631 Zr-clad UO$_2$ cylinders laid out in a hexagonal lattice surrounded by light water.  The material compositions, densities, and the cylinder dimensions are identical to the pin cell test case, but since this test has two orders of magnitude more objects, it serves to highlight the effect of introducing many geometric objects into the problem and will further validate that the geometry processing routines work correctly if consistent results are obtained.
+
+\begin{table}[h]
+\centering
+\caption{Geometry and materials used in the hex assembly benchmark.}
+\label{hex_geom}
+\begin{tabular}{| l | c | c | c |}
+\hline
+Cells & Isotopes (Atm \%)& Densities \\
+\hline
+\multirow{3}{*}{631 cylinder, r=1.0cm }  &   $^{238}$U   (0.90) &    \multirow{3}{*}{10 g/cm$^3$} \\
+&  $^{235}$U (0.10)& \\
+&  $^{16}$O  (2.00)& \\
+\hline
+\multirow{5}{*}{631 cylinder, r=1.2cm }  &   $^{90}$Zr   (0.5145) &    \multirow{5}{*}{6.52 g/cm$^3$} \\
+&  $^{91}$Zr  (0.1122)& \\
+&  $^{92}$Zr  (0.1715)& \\
+&  $^{94}$Zr  (0.1738)& \\
+&  $^{96}$Zr  (0.0280)& \\
+\hline
+\multirow{2}{*}{1 box, r=1.0cm }  &   $^{1}$H   (0.666) &    \multirow{2}{*}{1 g/cm$^3$} \\
+&  $^{16}$O  (0.333)& \\
+\hline
+\end{tabular}
+\end{table}
 
 \subsection{Test 6 - D-T Fusion Neutrons in Shells of Lithium, SiC, and Steel}
 
