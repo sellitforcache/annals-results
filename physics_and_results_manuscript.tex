@@ -209,6 +209,7 @@ The geometry representation in WARP is handled by the NVIDIA OptiX library.  It 
 \item Implicit nesting determines what material exists inside of a cell.  In other words, since cells are defined directly, the material of cell A is only that space where cell A is the lowest nested cell.  If cell B is within cell A, the entire space within cell B is excluded from cell A simply because cell B resides within cell A and does not need to be excluded explicitly.
 \item The only cell types available are spheres, cylinders, right rectangular prisms, and right hexagonal prisms.
 \item Only translational transforms have been implemented, although this restriction could be lifted by some additional development.
+\item Vacuum (i.e. infinitely absorbing) and specular reflection  (i.e. mirror) boundary conditions are available.  Periodic boundary conditions have not yet been implemented.
 \end{enumerate}
 
 
