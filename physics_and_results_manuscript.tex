@@ -228,7 +228,9 @@ WARP only has collision estimators implemented for both flux and multiplication 
 \section{Tests}
 \label{sec:tests}
 
-Various CPU and GPU hardware were chose to test WARP on to give a comprehensive view of the platforms that Monte Carlo neutron transport is typically performed on.  For the CPU platforms, a cluster node and a workstation are used.  For the GPU platforms, a mobile graphics card, a consumer-level graphics card, and compute-specific card are used. The benchmark cases are run at maximum number of histories per criticality batch as possible for the specific GPUs (this is where they perform the best, but is limited by on-card memory), and the CPU cases are run with identical batch parameters.  The CPU cases are run with the maximum number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole.
+Various CPU and GPU hardware were chose to test WARP on to give a comprehensive view of the platforms that Monte Carlo neutron transport is typically performed on.  For the CPU platforms, a cluster node and a workstation are used.  For the GPU platforms, a mobile graphics card, a consumer-level graphics card, and compute-specific card are used. The benchmark cases are run at maximum number of histories per criticality batch as possible for the specific GPUs (this is where they perform the best, but is limited by on-card memory), and the CPU cases are run with identical batch parameters.  The CPU cases are run with the maximum number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole. For the k20 and Titan GPUs, the costs include the retail price of a minimal host computer with at least as much memory as the card (~\$200?).  For the 650m, the price is that of a a Lenovo Ideapad Y400, an affordable platform it is available in. 
+
+power specs http://www.techpowerup.com/gpudb/547/geforce-gt-650m.html
 
 \begin{table}[h]
 \centering
@@ -242,13 +244,13 @@ Various CPU and GPU hardware were chose to test WARP on to give a comprehensive 
 \hline
 Hp X270 Workstation     &    xxx    & xxx &  xxx         &  xxx                      \\
 \hline
-PSSC xxx                      &    xxx   &xxx&  xxx        &  xxx                    \\
+PSSC xxx                      &    xxx   & xxx &  xxx        &  xxx                    \\
 \hline
-NVIDIA 270m                &    xxx   &xxx&  xxx        &  xxx                 \\
+NVIDIA 650m                &    800   & 45 &  1 GB        &  2.5 GHz                 \\
 \hline
-NVIDIA Tesla k20         &    xxx     &xxx&  4.8  GB      &  2.6 GHz                  \\
+NVIDIA Tesla k20         &    2925     & 225 &  4.8  GB      &  2.6 GHz                  \\
 \hline
-NVIDIA Titan Black       &     xxx   &xxx&  6.14 GB        & 3.5 GHz              \\
+NVIDIA Titan Black       &     1121   & 250 &  6.14 GB        & 3.5 GHz              \\
 \hline
 \hline
 \hline
@@ -259,7 +261,7 @@ Hp X270 Workstation      &  \multicolumn{2}{r|}{1x Xeon xxx}  &  3.2 GHz     &  
 \hline
 PSSC xxx                      &   \multicolumn{2}{r|}{4x AMD xxx }  &  2.1 GHz     &  48           \\
 \hline
-NVIDIA 270m                &     \multicolumn{2}{r|}{xxx}   &       &  $2^{32}-1$           \\
+NVIDIA 650m                &     \multicolumn{2}{r|}{2}   &   900 MHz    &  $2^{32}-1$           \\
 \hline
 NVIDIA Tesla k20         &       \multicolumn{2}{r|}{13}   &  705.5 MHz     &  $2^{32}-1$           \\
 \hline
@@ -520,6 +522,8 @@ Runtime & 252.77 m & 267.7 m & 8.0 m & 31.7x & 33.6x \\
 \end{tabular}
 \end{table}
 
+
+ALSO HAVE PLOT OF TITAN GOING FROM 1e4 to MAX N/BATCH - SHOWS ***SUB-LINEAR WEAK SCALING***
 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
