@@ -13,7 +13,7 @@ cell 99  0  outside  1  % Outside world
 
 % --- Fuel materials:
 	
-mat fuel1    4.055292e-2 % at/bncm
+mat fuel1    -15.730
  94239.80c   0.029934
  94240.80c   0.0078754
  94241.80c   0.0012146
@@ -23,6 +23,7 @@ mat fuel1    4.055292e-2 % at/bncm
 
 % --- Cross section data library file path:
 
+%set acelib "/xs/sss_endfb7u.xsdata"
 set acelib "/xs/xsdir_serpent"
 
 % --- black boundary condition:
