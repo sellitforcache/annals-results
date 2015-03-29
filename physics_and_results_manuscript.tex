@@ -272,7 +272,7 @@ NVIDIA Titan Black       &      \multicolumn{2}{r|}{ 15 }  &  1071.5 MHz     & $
 \end{table}
 
 
-
+%%%%%%%%%%%%%%%%%%%
 \subsection{Test 1 - ``Jezebel'' Bare Pu Sphere}
 
 The ``Jezebel'' test is a bare plutonium sphere, and is a standard criticality test.   The fission neutron rate from $^{239}$Pu is balanced by the leakage rate from the 5.1 cm radius to give a $k_\mathrm{eff}$ of approximately 1.  Since this system is so leaky, producing results consistent with MCNP and Serpent ensures that the boundary conditions are correctly being enforced.  The Jezebel test is a standard test used to validate neutron transport codes.  It is described in the International Handbook of Evaluated Criticality Safety Test Experiments under the name ``Pu-MET-FAST-001'' \cite{bench_handbook}.  
@@ -293,7 +293,7 @@ Cells & Isotopes (Atm\%)& Densities \\
 \end{tabular}
 \end{table}
 
-
+%%%%%%%%%%%%%%%%%%%
 \subsection{Test 2 - UO$_2$ Pin Cell in Light Water}
 
 This test consists of a UO$_2$ cylinder clad in zirconium surrounded by a block of water.  This test now has two materials, each with multiple isotopes, and two cells.  The water block dimensions are not very large, so leakage should play a part.  This test serves to highlight that all the processing routines work simultaneously, and the effect of introducing more than one cell.
@@ -301,7 +301,7 @@ This test consists of a UO$_2$ cylinder clad in zirconium surrounded by a block 
 \begin{table}[h]
 \centering
 \caption{Geometry and materials used in the single pin cell benchmark.}
-\label{jezebel_geom}
+\label{uo2_pincell_geom}
 \begin{tabular}{| l | c | c | c |}
 \hline
 Cells & Isotopes (Atm \%)& Densities \\
@@ -322,35 +322,34 @@ Cells & Isotopes (Atm \%)& Densities \\
 \end{tabular}
 \end{table}
 
-
+%%%%%%%%%%%%%%%%%%%
 \subsection{Test 3 - Homogenized Fuel Pebble in FLiBe?}
 
-criticality
+criticality, reflective
 
 \begin{table}[h]
 \centering
 \caption{Geometry and materials used in the single pin cell benchmark.}
-\label{jezebel_geom}
+\label{pebble_geom}
 \begin{tabular}{| l | c | c | c |}
 \hline
 Cells & Isotopes (Atm \%)& Densities \\
 \hline
-\multirow{3}{*}{1 cylinder, r=1.0cm }  &   $^{238}$U   (0.90) &    \multirow{3}{*}{10.97 g/cm$^3$} \\
+\multirow{5}{*}{1 sphere, r=5.0cm }  &   $^{238}$U   (0.90) &    \multirow{3}{*}{10.97 g/cm$^3$} \\
 &  $^{235}$U (0.10)& \\
 &  $^{16}$O  (2.00)& \\
+&  $^{12}$C  (2.00)& \\
+&  $^{13}$C  (2.00)& \\
 \hline
-\multirow{5}{*}{1 cylinder, r=1.2cm }  &   $^{90}$Zr   (0.5145) &    \multirow{5}{*}{6.52 g/cm$^3$} \\
-&  $^{91}$Zr  (0.1122)& \\
-&  $^{92}$Zr  (0.1715)& \\
-&  $^{94}$Zr  (0.1738)& \\
-&  $^{96}$Zr  (0.0280)& \\
-\hline
-\multirow{2}{*}{1 box, r=1.0cm }  &   $^{1}$H   (0.666) &    \multirow{2}{*}{1 g/cm$^3$} \\
-&  $^{16}$O  (0.333)& \\
+\multirow{4}{*}{1 right hex prism, r=5.1cm }  &   $^{6}$Li  (0.075) &    \multirow{2}{*}{1 g/cm$^3$} \\
+&  $^{7}$Li  (0.925)& \\
+& $^{9}$Be   (1) & \\
+&  $^{18}$F   (1) & \\
 \hline
 \end{tabular}
 \end{table}
 
+%%%%%%%%%%%%%%%%%%%
 \subsection{Test 4 - Stainless Steel-clad Metallic U Pin Cell in Liquid Sodium?}
 
 criticality, reflective BC?
@@ -358,15 +357,15 @@ criticality, reflective BC?
 \begin{table}[h]
 \centering
 \caption{Geometry and materials used in the single pin cell benchmark.}
-\label{jezebel_geom}
+\label{sodium_geom}
 \begin{tabular}{| l | c | c | c |}
 \hline
 Cells & Isotopes (Atm \%)& Densities \\
 \hline
-\multirow{3}{*}{1 cylinder, r=1.0cm }  &   $^{238}$U   (0.9927) &    \multirow{3}{*}{19.1 g/cm$^3$} \\
+\multirow{2}{*}{1 cylinder, r=1.0cm }  &   $^{238}$U   (0.9927) &    \multirow{3}{*}{19.1 g/cm$^3$} \\
 &  $^{235}$U (0.0073)& \\
 \hline
-\multirow{5}{*}{1 cylinder, r=1.2cm }  &   $^{54}$Fe   (0.0580) &    \multirow{5}{*}{7.99 g/cm$^3$} \\
+\multirow{12}{*}{1 cylinder, r=1.2cm }  &   $^{54}$Fe   (0.0580) &    \multirow{5}{*}{7.99 g/cm$^3$} \\
 &  $^{56}$Fe  (0.9172)& \\
 &  $^{57}$Fe  (0.0220)& \\
 &  $^{58}$Fe  (0.0028)& \\
@@ -379,11 +378,12 @@ Cells & Isotopes (Atm \%)& Densities \\
 &  $^{62}$Ni  (0.0363)& \\
 &  $^{64}$Ni  (0.0093)& \\
 \hline
-\multirow{2}{*}{1 box, r=1.0cm }  &   $^{23}$Na   (1.00) &    \multirow{2}{*}{0.927 g/cm$^3$} \\
+1 right hex prism, r=1.8cm   &   $^{23}$Na   (1.00) &    0.927 g/cm$^3$ \\
 \hline
 \end{tabular}
 \end{table}
 
+%%%%%%%%%%%%%%%%%%%
 \subsection{Test 5 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
 
 The ``Hex assembly'' test consists of 631 Zr-clad UO$_2$ cylinders laid out in a hexagonal lattice surrounded by light water.  The material compositions, densities, and the cylinder dimensions are identical to the pin cell test case, but since this test has two orders of magnitude more objects, it serves to highlight the effect of introducing many geometric objects into the problem and will further validate that the geometry processing routines work correctly if consistent results are obtained.
@@ -412,16 +412,68 @@ Cells & Isotopes (Atm \%)& Densities \\
 \end{tabular}
 \end{table}
 
+%%%%%%%%%%%%%%%%%%%
 \subsection{Test 6 - D-T Fusion Neutrons in Shells of Lithium, SiC, and Steel}
 
 fixed source
-table of isotopes, densities, dimensions
+
+\begin{table}[h]
+\centering
+\caption{Geometry and materials used in the single pin cell benchmark.}
+\label{fusion_geom}
+\begin{tabular}{| l | c | c | c |}
+\hline
+Cells & Isotopes (Atm \%)& Densities \\
+\hline
+\multirow{2}{*}{1 sphere, r=1.0cm }  &   $^{6}$Li   (0.075) &    \multirow{3}{*}{19.1 g/cm$^3$} \\
+&  $^{7}$Li (0.925)& \\
+\hline
+\multirow{5}{*}{1 sphere, r=1.0cm }  &   $^{12}$C   (.989) &    \multirow{3}{*}{19.1 g/cm$^3$} \\
+&  $^{13}$C (0.011)& \\
+&  $^{28}$Si (0.9223)& \\
+&  $^{29}$Si (0.0467)& \\
+&  $^{30}$Si (0.0310)& \\
+\hline
+\multirow{12}{*}{1 sphere, r=1.2cm }  &   $^{54}$Fe   (0.0580) &    \multirow{5}{*}{7.99 g/cm$^3$} \\
+&  $^{56}$Fe  (0.9172)& \\
+&  $^{57}$Fe  (0.0220)& \\
+&  $^{58}$Fe  (0.0028)& \\
+&  $^{50}$Cr  (0.0435)& \\
+&  $^{52}$Cr  (0.8379)& \\
+&  $^{53}$Cr  (0.0950)& \\
+&  $^{54}$Cr  (0.0235)& \\
+&  $^{58}$Ni  (0.6808)& \\
+&  $^{60}$Ni  (0.2622)& \\
+&  $^{62}$Ni  (0.0363)& \\
+&  $^{64}$Ni  (0.0093)& \\
+\hline
+\end{tabular}
+\end{table}
+
 flux in sic first wall
 
-\subsection{Test 7 - Plane Source in Steel Tube, Metallic U Fission Multiplier}
+%%%%%%%%%%%%%%%%%%%
+\subsection{Test 7 - Plane Source in Copper Tube, Metallic U Fission Multiplier}
 
 fixed source
-table of isotopes, densities, dimensions
+
+\begin{table}[h]
+\centering
+\caption{Geometry and materials used in the single pin cell benchmark.}
+\label{guide_geom}
+\begin{tabular}{| l | c | c | c |}
+\hline
+Cells & Isotopes (Atm \%)& Densities \\
+\hline
+\multirow{2}{*}{1 cylinder, r=1.0cm }  &   $^{238}$U   (0.97) &    \multirow{3}{*}{19.1 g/cm$^3$} \\
+&  $^{235}$U (0.03)& \\
+\hline
+\multirow{12}{*}{1 cylinder, r=1.2cm }  &   $^{63}$Cu   (0.6915) &    \multirow{5}{*}{7.99 g/cm$^3$} \\
+&  $^{64}$Cu  (0.3085)& \\
+\hline
+\end{tabular}
+\end{table}
+
 flux in volume after u
 
 
