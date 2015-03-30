@@ -224,11 +224,10 @@ WARP only has collision estimators implemented for both flux and multiplication 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
-\newpage
 \section{Tests}
 \label{sec:tests}
 
-Various CPU and GPU hardware were chose to test WARP on to give a comprehensive view of the platforms that Monte Carlo neutron transport is typically performed on.  For the CPU platforms, a cluster node and a workstation are used.  For the GPU platforms, a mobile graphics card, a consumer-level graphics card, and compute-specific card are used. The benchmark cases are run at maximum number of histories per criticality batch as possible for the specific GPUs (this is where they perform the best, but is limited by on-card memory), and the CPU cases are run with identical batch parameters.  The CPU cases are run with the maximum number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole. For the k20 and Titan GPUs, the costs include the retail price of a minimal host computer with at least as much memory as the card (~\$200?).  For the 650m, the price is that of a a Lenovo Ideapad Y400, an affordable platform it is available in. 
+Various CPU and GPU hardware were chose to test WARP on to give a comprehensive view of the platforms that Monte Carlo neutron transport is typically performed on.  For the CPU platforms, a cluster node and a workstation are used.  For the GPU platforms, a mobile graphics card, a consumer-level graphics card, and compute-specific card are used. The benchmark cases are run at maximum number of histories per criticality batch as possible for the specific GPUs (this is where they perform the best, but is limited by on-card memory), and the CPU cases are run with identical batch parameters.  The CPU cases are run with the maximum number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole. For the k20 and Titan GPUs, the costs include the retail price of a minimal host computer with at least as much memory as the card (~\$200?).  For the 650m, the price is that of a a Lenovo Ideapad Y400, an affordable platform it is available in.   All the tests use ENDFB/VII.1 cross sections.
 
 power specs http://www.techpowerup.com/gpudb/547/geforce-gt-650m.html
 
@@ -275,7 +274,7 @@ NVIDIA Titan Black       &      \multicolumn{2}{r|}{ 15 }  &  1071.5 MHz     & $
 %%%%%%%%%%%%%%%%%%%
 \subsection{Test 1 - ``Jezebel'' Bare Pu Sphere}
 
-The ``Jezebel'' criticality test is a bare plutonium sphere with vacuum boundary conditions.   The fission neutron rate from $^{239}$Pu is balanced by the leakage rate from the 5.1 cm radius to give a $k_\mathrm{eff}$ of approximately 1.  Since this system is so leaky, producing results consistent with MCNP and Serpent ensures that the boundary conditions are correctly being enforced.  The Jezebel test is a standard test used to validate neutron transport codes.  It is described in the International Handbook of Evaluated Criticality Safety Test Experiments under the name ``Pu-MET-FAST-001'' \cite{bench_handbook}.  
+The ``Jezebel'' criticality test is a bare plutonium sphere with vacuum boundary conditions.   The fission neutron rate from $^{239}$Pu is balanced by the leakage rate from the 5.1 cm radius to give a $k_\mathrm{eff}$ of approximately 1.  Since this system is so leaky, producing results consistent with MCNP and Serpent ensures that the boundary conditions are correctly being enforced.  The Jezebel test is a standard test used to validate neutron transport codes.  It is described in the International Handbook of Evaluated Criticality Safety Test Experiments under the name ``Pu-MET-FAST-001'' \cite{bench_handbook}.  The geometry and materials are outlined in Table \ref{jezebel_geom}.  All cross sections used were processed at 273.5 K.
 
 \begin{table}[h]
 \centering
@@ -285,10 +284,12 @@ The ``Jezebel'' criticality test is a bare plutonium sphere with vacuum boundary
 \hline
 Cells & Isotopes (Atm\%)& Densities \\
 \hline
-\multirow{4}{*}{1 sphere, r=5.1cm }  &   $^{239}$Pu   (0.90) &    \multirow{4}{*}{15.73 g/cm$^3$} \\
-&  $^{240}$Pu (0.10)& \\
-&  $^{69}$Ga  (0.10)& \\
-&  $^{71}$Ga (0.10) & \\ 
+\multirow{6}{*}{1 sphere, r=6.6595 cm }  &  $^{239}$Pu (0.7381) &    \multirow{6}{*}{15.73 g/cm$^3$} \\
+                                         &  $^{240}$Pu (0.1942)    & \\
+                                         &  $^{241}$Pu (0.0299)    & \\
+                                         &  $^{242}$Pu (0.0038)    & \\
+                                         &  $^{69}$Ga  (0.0203)    & \\
+                                         &  $^{71}$Ga  (0.0135)     & \\ 
 \hline
 \end{tabular}
 \end{table}
@@ -296,7 +297,7 @@ Cells & Isotopes (Atm\%)& Densities \\
 %%%%%%%%%%%%%%%%%%%
 \subsection{Test 2 - Zr-Clad UO$_2$ Pin in Light Water}
 
-This criticality test consists of a UO$_2$ cylinder clad in zirconium surrounded by a block of water.  This test increases complexity by having two materials, each with multiple isotopes, and two cells.  The water block has vacuum boundary conditions.  Its dimensions are not very large, so leakage should still play a part.  This test serves to highlight that all the processing routines work simultaneously, and the effect of introducing more than one cell.
+This criticality test consists of a UO$_2$ cylinder clad in zirconium surrounded by a block of water.  This test increases complexity by having two materials, each with multiple isotopes, and two cells.  The water block has vacuum boundary conditions.  Its dimensions are not very large, so leakage should still play a part.  This test serves to highlight that all the processing routines work simultaneously, and the effect of introducing more than one cell.  The geometry and materials are outlined in Table \ref{uo2_pincell_geom}.  All cross sections used were processed at 273.5 K.
 
 \begin{table}[h]
 \centering
@@ -325,7 +326,7 @@ Cells & Isotopes (Atm \%)& Densities \\
 %%%%%%%%%%%%%%%%%%%
 \subsection{Test 3 - Homogenized Fuel Pebble in FLiBe}
 
-This criticality test consists of a single sphere of homogenized UO$_2$ and C surrounded by molten FLiBe salt at 600 K.  The outer cell is right hexagonal prism with specular reflective boundary conditions.  Reflective boundary conditions approximates an infinite lattice of fuel spheres or a very large volumes of spheres like that in a molten salt reactor. This test introduces more isotopes, uses temperatures other than 275.3 K, and tests the reflective boundary condition setting.  
+This criticality test consists of a single sphere of homogenized UO$_2$ and C surrounded by molten FLiBe salt at 600 K.  The outer cell is right hexagonal prism with specular reflective boundary conditions.  Reflective boundary conditions approximates an infinite lattice of fuel spheres or a very large volumes of spheres like that in a molten salt reactor. This test introduces more isotopes, uses two temperatures simultaneously, and tests the reflective boundary condition setting.  The geometry and materials are outlined in Table \ref{pebble_geom}. The FLiBe cross sections used were processed at 900 K and the pebble cross sections at 1200 K.
 
 \begin{table}[h]
 \centering
@@ -352,7 +353,7 @@ Cells & Isotopes (Atm \%)& Densities \\
 %%%%%%%%%%%%%%%%%%%
 \subsection{Test 4 - Stainless Steel-Clad Metallic Uranium Pin in Liquid Sodium}
 
-This criticality test consists of a single cylinder of metallic uranium surrounded by molten sodium.  The outer cell is right hexagonal prism with specular reflective boundary conditions.  Reflective boundary conditions approximates an infinite lattice of fuel spheres or a very large volumes of  pin cells like that in a sodium reactor.  This test serves to benchmark a fast system with a coolant as well as introduce more isotopes.
+This criticality test consists of a single cylinder of metallic uranium surrounded by molten sodium.  The outer cell is right hexagonal prism with specular reflective boundary conditions.  Reflective boundary conditions approximates an infinite lattice of fuel spheres or a very large volumes of  pin cells like that in a sodium reactor.  This test serves to benchmark a fast system with a coolant as well as introduce more isotopes.  The geometry and materials are outlined in Table \ref{sodium_geom}.   The fuel and clad  cross sections used were processed at 900 K, and the sodium coolant cross sections were processed at 600 K.
 
 more
 
@@ -402,7 +403,7 @@ Cells & Isotopes (Atm \%)& Densities \\
 %%%%%%%%%%%%%%%%%%%
 \subsection{Test 5 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
 
-This criticality test consists of 631 Zr-clad UO$_2$ cylinders laid out in a hexagonal lattice surrounded by light water.  The material compositions, densities, and the cylinder dimensions are identical to the pin cell test case, but since this test has two orders of magnitude more objects, it serves to highlight the effect of introducing many geometric objects into the problem and will further validate that the geometry processing routines work correctly if consistent results are obtained.
+This criticality test consists of 631 Zr-clad UO$_2$ cylinders laid out in a hexagonal lattice surrounded by light water.  The material compositions, densities, and the cylinder dimensions are identical to the pin cell test case, but since this test has two orders of magnitude more objects, it serves to highlight the effect of introducing many geometric objects into the problem and will further validate that the geometry processing routines work correctly if consistent results are obtained.  The geometry and materials are outlined in table \ref{hex_geom}.  All cross sections used were processed at 273.5 K.
 
 \begin{table}[h]
 \centering
@@ -429,10 +430,9 @@ Cells & Isotopes (Atm \%)& Densities \\
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%
-\newpage
 \subsection{Test 6 - D-T Fusion Neutrons in Shells of Lithium, SiC, and Steel}
 
-This test approximates a deuterium-tritium fusion reactor by simulating a 14.1 MeV neutron point source inside three concentric spheres of lithium, silicon carbide, and stainless steel.  This is a fixed source problem without multiplying materials and serves to illustrate the predefined, fixed source capabilities of WARP.  
+This test approximates a deuterium-tritium fusion reactor by simulating a 14.1 MeV neutron point source inside three concentric spherical shells of lithium, silicon carbide, and stainless steel.  This is a fixed source problem without multiplying materials and serves to illustrate the predefined, fixed source capabilities of WARP.   The geometry and materials are outlined in table \ref{fusion_geom}.  All cross sections used were processed at 600 K.
 
 \begin{table}[h!]
 \centering
@@ -462,7 +462,7 @@ Cells & Isotopes (Atm \%)& Densities \\
 %%%%%%%%%%%%%%%%%%%
 \subsection{Test 7 - Plane Source in Copper Tube, Metallic U Fission Multiplier}
 
-This test approximates a neutron guide.  It consists of a neutron plane source with a thermal spectrum emitting neutrons into a rectangular copper tube. This tube has a section of UO$_2$ followed by light water inside of it to act as a ``fission multiplier''  to produce epithermal neutrons at the exit of the guide.  This is a fixed source problem with multiplying materials and serves to illustrate the ability of WARP to calculate spectra in subcritical systems with external neutron sources.
+This test approximates a neutron guide.  It consists of a neutron plane source with a thermal spectrum emitting neutrons into a rectangular copper tube. This tube has a section of UO$_2$ followed by light water inside of it to act as a ``fission multiplier''  to produce epithermal neutrons at the exit of the guide.  This is a fixed source problem with multiplying materials and serves to illustrate the ability of WARP to calculate spectra in subcritical systems with external neutron sources.  The geometry and materials are outlined in table \ref{guide_geom}.  All cross sections used were processed at 273.5 K.
 
 \begin{table}[h]
 \centering
