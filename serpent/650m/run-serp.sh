@@ -1,7 +1,6 @@
 #! /bin/bash
 
-sss2.omp.gcc godiva
-sss2.omp.gcc homfuel
-sss2.omp.gcc pincell
-sss2.omp.gcc assembly
-
+sss2 -omp 8 jezebel
+sss2 -omp 8 homfuel
+sss2 -omp 8 pincell
+sss2 -omp 8 assembly

@@ -1,0 +1,72 @@
+% --- fusion -------------------
+
+set title "DT fusion with shells"
+
+% --- pebble
+
+surf 1 sph   0 0 0 150.0
+surf 2 sph   0 0 0 151.0
+surf 3 sph   0 0 0 156.0
+surf 4 sph   0 0 0 160.0
+
+% --- Cell definitions:
+
+cell 1   0      void      -1  				
+cell 2   0      lishell    1 -2
+cell 3   0      sicshell   2 -3	
+cell 4   0      ss316shell 3 -4	
+cell 99  0      outside    4 				
+
+% --- Fuel materials:
+
+mat sicshell    -3.21
+ 6000.80c        1.0
+ 14028.80c       0.9223
+ 14029.80c       0.0467
+ 14030.80c       0.0310
+
+mat lishell     -0.534
+ 3006.80c        0.075
+ 3007.80c        0.925
+
+mat ss316shell  -7.99
+ 26054.80c      0.0435
+ 26056.80c      0.6879
+ 26057.80c      0.0165
+ 26058.80c      0.0021
+ 24050.80c      0.0065
+ 24052.80c      0.1257
+ 24053.80c      0.0143
+ 24054.80c      0.0035
+ 28058.80c      0.0681
+ 28060.80c      0.0262
+ 28062.80c      0.0036
+ 28064.80c      0.0009
+
+% --- Cross section data library file path:
+
+%set acelib "/xs/sss_endfb7u.xsdata"
+set acelib "/xs/xsdir_serpent"
+
+% --- reflective boundary condition:
+
+set bc 1 1 1 
+
+% detectors
+
+ene leth 3 1024 1e-11 20
+ene lin  2 1024 1e-11 20
+det fluxlog dc 1  de leth dt -3
+det fluxlin dc 1  de lin  dt -3
+
+% --- Geometry and mesh plots:
+
+plot 3 1500 1500
+plot 2 1500 1500
+mesh 3 1500 1500
+
+% --- criticality parameters
+
+% 2MeV point source at origin
+set nps 4000000 40
+src mono2 sp 0.0 0.0 0.0 se 14.1

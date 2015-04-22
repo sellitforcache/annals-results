@@ -1,0 +1,55 @@
+% --- guide -------------------
+
+set title "guide with fission multiplier"
+
+% --- surfaces
+
+surf 3 cuboid  -5 5 -5 5 -25 25
+surf 3 cuboid  -5 5 -5 5 -25 25
+
+% --- Cell definitions:
+
+
+cell 99  0      outside    4 				
+
+% --- Fuel materials:
+
+mat copper     -8.96
+ 29063.80c      0.6915
+ 29064.80c      0.3085
+
+mat uranium   -19.1
+ 92238.80c      0.90
+ 92235.80c      0.10
+
+mat water      -1.00
+ 8016.80c       2.00
+ 1001.80c       1.00
+
+% --- Cross section data library file path:
+
+%set acelib "/xs/sss_endfb7u.xsdata"
+set acelib "/xs/xsdir_serpent"
+
+% --- reflective boundary condition:
+
+set bc 1 1 1 
+
+% detectors
+
+ene leth 3 1024 1e-11 20
+ene lin  2 1024 1e-11 20
+det fluxlog dc 1  de leth dt -3
+det fluxlin dc 1  de lin  dt -3
+
+% --- Geometry and mesh plots:
+
+plot 3 1500 1500
+plot 2 1500 1500
+mesh 3 1500 1500
+
+% --- criticality parameters
+
+% thermal source at entry
+set nps 4000000 40
+src thermsrc sp 0.0 0.0 0.0 se THERMAL SPEC in +x dir on a surface maybe?

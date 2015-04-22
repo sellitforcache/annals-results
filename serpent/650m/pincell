@@ -58,6 +58,3 @@ mesh 3 1500 1500
 % --- criticality parameters
 
 set pop 100000 40 20 % 1.00
-% 2MeV point source at origin
-%set nps 4000000 40
-%src mono2 sp 0.0 0.0 0.0 se 0.001
