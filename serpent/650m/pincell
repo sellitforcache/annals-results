@@ -17,7 +17,7 @@ cell 99  0      outside    3
 
 % --- Fuel materials:
 
-mat fuel1   -15.00
+mat fuel1   -10.97
  92235.80c    0.10 
  92238.80c    0.90
   8016.80c    2
