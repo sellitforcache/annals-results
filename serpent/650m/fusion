@@ -48,7 +48,7 @@ mat ss316shell  -7.99
 %set acelib "/xs/sss_endfb7u.xsdata"
 set acelib "/xs/xsdir_serpent"
 
-% --- reflective boundary condition:
+% --- black boundary condition:
 
 set bc 1 1 1 
 
