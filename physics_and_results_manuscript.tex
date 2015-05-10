@@ -205,7 +205,8 @@ WARP currently also only has a handful of the most common ENDF sampling laws imp
 The geometry representation in WARP is handled by the NVIDIA OptiX library.  It provides high performance on the GPU, but imposes some limitations on the how geometries must be input.  These limitations restrict the kinds of benchmarks that can be done.
 
 \begin{enumerate}
-\item Cells are the basic building blocks, not surfaces, and all cells must be finite and closed.
+\item Cells are the basic building blocks, not surfaces.
+\item All cells must be finite, closed, and non-overlapping.
 \item Implicit nesting determines what material exists inside of a cell.  In other words, since cells are defined directly, the material of cell A is only that space where cell A is the lowest nested cell.  If cell B is within cell A, the entire space within cell B is excluded from cell A simply because cell B resides within cell A and does not need to be excluded explicitly.
 \item The only cell types available are spheres, cylinders, right rectangular prisms, and right hexagonal prisms.
 \item Only translational transforms have been implemented, although this restriction could be lifted by some additional development.
