@@ -198,7 +198,7 @@ Only neutrons are transported by WARP.  Any other particles are not considered i
 
 In its current state, WARP does not use the thermal scattering (S($\alpha,$$\beta$)) tables or unresolved resonance parameters and only uses the free-gas approximation for target nuclei.  This treats the target as part of a gas at a certain temperature and does not consider anything other than purely elastic scattering. Thermal scattering and unresolved resonance data tables improve the physical fidelity of the simulation, but these features can be turned off in production codes and direct comparisons can be made without them.  Their incorporation may lead to more divergent program flow and is left as an area of future work.
 
-WARP currently also only has a handful of the most common ENDF sampling laws implemented.   These are laws 3 (level scattering), 4 (continuous tabular distribution), and 44 (Kalbach-87 Formalism) \cite{MCNP}.  Some nuclei have interactions that require the remaining laws (1, 2, 5, 7, 9, 11, 22, 24, 61, 66, 67) and therefore problems containing any such nuclides cannot be solved.
+WARP currently also only has a handful of the most common ENDF sampling laws implemented.   These are laws 3 (level scattering), 4 (continuous tabular distribution), and 44 (Kalbach-87 Formalism),, \cite{MCNP}.  Some nuclei have interactions that require the remaining laws (1, 2, 5, 7, 9, 11, 22, 24, 66, 67) and therefore problems containing any such nuclides cannot be simulated according to the data specifications.
 
 \subsection{Geometry}
 
@@ -241,15 +241,15 @@ power specs http://www.techpowerup.com/gpudb/547/geforce-gt-650m.html
 \multirow{2}{*}{Platform} &  Cost   &Total Processor  & Local       & Memory     \\
                                        & (USD)  & Power (Watts) & Memory  & Frequency \\
 \hline
-HP Z230 Workstation     &    2044    & 95 &  8 GB         &  1.333 GHz                      \\
+HP Z230 Workstation     &    2,044    & 95 &  8 GB         &  1.333 GHz                      \\
 \hline
-PSSC xxx                      &    xxx   & 460 &  96 GB        &  1.6 GHz                    \\
+PSSC PowerWulf Blade       &    9,310   & 460 &  96 GB        &  1.6 GHz                    \\
 \hline
 NVIDIA 650m                &    800   & 45 &  1 GB        &  2.5 GHz                 \\
 \hline
-NVIDIA Tesla k20         &    3125     & 225 &  4.8  GB      &  2.6 GHz                  \\
+NVIDIA Tesla k20         &    3,125     & 225 &  4.8  GB      &  2.6 GHz                  \\
 \hline
-NVIDIA Titan Black       &     1321   & 250 &  6.14 GB        & 3.5 GHz              \\
+NVIDIA Titan Black       &     1,321   & 250 &  6.14 GB        & 3.5 GHz              \\
 \hline
 \hline
 \hline
@@ -258,7 +258,7 @@ NVIDIA Titan Black       &     1321   & 250 &  6.14 GB        & 3.5 GHz         
 \hline
 Hp X270 Workstation      &  \multicolumn{2}{r|}{1x Xeon E3-1245}  &  3.4 GHz     &  8           \\
 \hline
-PSSC xxx                      &   \multicolumn{2}{r|}{4x AMD Opteron 6172 }  &  2.1 GHz     &  48           \\
+PSSC PowerWulf Blade       &   \multicolumn{2}{r|}{4x AMD Opteron 6172 }  &  2.1 GHz     &  48           \\
 \hline
 NVIDIA 650m                &     \multicolumn{2}{r|}{2}   &   900 MHz    &  $2^{32}-1$           \\
 \hline
@@ -295,9 +295,9 @@ Cells & Isotopes (Atm. Frac.)& Densities \\
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%
-\subsection{Test 2 - Zr-Clad UO$_2$ Pin in Heavy Water}
+\subsection{Test 2 - Zr-Clad UO$_2$ Pin in Light Water}
 
-This criticality test consists of a UO$_2$ cylinder clad in zirconium surrounded by a block of water.  This test increases complexity by having two materials, each with multiple isotopes, and two cells.  The heavy water block has vacuum boundary conditions.  Its dimensions are realtively large and the absoprbtion is low, so the mean neutron lifetime should be large.  This test serves to highlight that all the processing routines work simultaneously, the effect of introducing more than one cell, and the effect of long-lived neutrons.  The geometry and materials are outlined in Table \ref{uo2_pincell_geom}.  All cross sections used were processed at 273.5 K.
+This criticality test consists of a UO$_2$ cylinder clad in zirconium surrounded by a block of light water.  This test increases complexity by having two materials, each with multiple isotopes, and two cells.  The water block has vacuum boundary conditions.  Its dimensions are relatively large and the absorption is low, so the mean neutron lifetime should be large.  This test serves to highlight that all the processing routines work simultaneously, the effect of introducing more than one cell, and the effect of long-lived neutrons.  The geometry and materials are outlined in Table \ref{uo2_pincell_geom}.  All cross sections used were processed at 273.5 K.
 
 \begin{table}[h]
 \centering
@@ -478,6 +478,8 @@ Cells & & Isotopes (Atm \%)& Densities \\
 %%%%%%%%%%%%%%%%%%%
 \section{Results}
 \label{sec:results}
+
+should mention how warp accumulates yields into a long integer value on the host side, then divides it by the total histories to get the final keff.  should be most accurate way, preserves entire resolution of simulation unlike accumulating float values.  tallies are handled in a similar way, but are floats.  they are accumulated after each batch and reset on the device.
 
 \subsection{Test 1}
 
