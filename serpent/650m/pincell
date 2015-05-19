@@ -6,7 +6,7 @@ set title "black BC, pin, u235-fuel, heavy water"
 
 surf 1 cyl      0 0 2    -20     20
 surf 2 cyl      0 0 2.20 -20.2   20.2
-surf 3 cuboid  -50 50 -50 50 -50 50
+surf 3 cuboid  -10 10 -10 10 -25 25
 
 % --- Cell definitions:
 
@@ -57,4 +57,4 @@ mesh 3 1500 1500
 
 % --- criticality parameters
 
-set pop 100000 40 20 % 1.00
+set pop 1000000 40 20 % 1.00
