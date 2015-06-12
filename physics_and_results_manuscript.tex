@@ -91,7 +91,7 @@
 \renewcommand{\eqref}{Eq.~\originaleqref}
 
 \hypersetup{colorlinks=true,
-  pdftitle={Performance and Accuracy of WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs},
+  pdftitle={Criticality Performance and Accuracy of WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs},
   pdfauthor={Ryan M. Bergmann, Kelly Rowland, Nikola Radnovi\'c, Rachel Slaybaugh?, Jasmina L. Vuji\'c}}
 
 \journal{Annals of Nuclear Energy}
@@ -214,7 +214,7 @@ The geometry representation in WARP is handled by the NVIDIA OptiX library.  It 
 \end{enumerate}
 
 
-\subsection{Features}
+\subsection{Other Features}
 
 WARP is mainly written in C/C++ and is compiled to a shared library.   and  with Python.  Pythonic wrapping is done via SWIG \cite{swig}, which automatically wraps compiled languages like C/C++ in high-level scripting languages.  With the C++ classes exposed in Python, the main() function can be replaced with a Python script, eliminating the need recompiled a main function and link it to the WARP library when different geometries or different run parameters are desired.  Of course, there is flexibility as well, and one could write a main function that could handle all conceivable cases. 
 
@@ -414,63 +414,7 @@ Cells & Isotopes (Atm \%)& Densities \\
 \end{tabular}
 \end{table}
 
-%%%%%%%%%%%%%%%%%%%
-\subsection{Test 6 - D-T Fusion Neutrons in Shells of Lithium, SiC, and Steel}
 
-This test approximates a deuterium-tritium fusion reactor by simulating a 14.1 MeV neutron point source inside three concentric spherical shells of lithium, silicon carbide, and stainless steel.  This is a fixed source problem without multiplying materials and serves to illustrate the predefined, fixed source capabilities of WARP.   The geometry and materials are outlined in table \ref{fusion_geom}.  All cross sections used were processed at 600 K.
-
-\begin{table}[h!]
-\centering
-\caption{Geometry and materials used in the D-T fusion benchmark.}
-\label{fusion_geom}
-\begin{tabular}{| l | c | c | c |}
-\hline
-Cells & Isotopes (Atm \%)& Densities \\
-\hline
-1 sphere,                 r=1.50 m    &   void               & 0 g/cm$^3$ \\
-\hline
-\multirow{2}{*}{1 sphere, r=1.51 m }  &   $^{6}$Li   (0.075) &    \multirow{3}{*}{0.534 g/cm$^3$} \\
-                                      &   $^{7}$Li   (0.925)& \\
-\hline
-\multirow{5}{*}{1 sphere, r=1.56 m }  &   $^{12}$C   (0.9890) &    \multirow{3}{*}{3.21 g/cm$^3$} \\
-                                      &   $^{13}$C   (0.0110)& \\
-                                      &   $^{28}$Si  (0.9223)& \\
-                                      &   $^{29}$Si  (0.0467)& \\
-                                      &   $^{30}$Si  (0.0310)& \\
-\hline
-\multirow{1}{*}{1 sphere, r=1.60 m }  &   Identical to steel in test 4  &    \multirow{1}{*}{7.99 g/cm$^3$} \\
-\hline
-\end{tabular}
-\end{table}
-
-
-%%%%%%%%%%%%%%%%%%%
-\subsection{Test 7 - Plane Source, Neutron Guide, Metallic U Fission Multiplier, H$_2$O Moderator}
-
-This test consists of a neutron plane source with a thermal spectrum emitting neutrons into a rectangular copper tube. This tube has a section of UO$_2$ followed by light water inside of it to act as a ``fission multiplier''  to produce epithermal neutrons at the exit of the guide.  This is a fixed source problem with multiplying materials and serves to illustrate the ability of WARP to calculate spectra in subcritical systems with external neutron sources.  The geometry and materials are outlined in table \ref{guide_geom}.  All cross sections used were processed at 273.5 K.
-
-\begin{table}[h]
-\centering
-\caption{Geometry and materials used in the neutron guide benchmark.}
-\label{guide_geom}
-\begin{tabular}{| l l | c | c | c |}
-\hline
-Cells & & Isotopes (Atm \%)& Densities \\
-\hline
-                1 box & x=(-4,4) y=(-4,4) cm &    \multirow{2}{*}{ void } &    \multirow{2}{*}{0 g/cm$^3$}   \\
-                      & z=(-4,4) cm          &                            & \\
-\hline
-                1 box & x=(-3,3) y=(-3,3) cm  &   $^{63}$Cu   (0.6915) &    \multirow{2}{*}{8.96 g/cm$^3$} \\
-                      & z=(-3,3) cm           &   $^{65}$Cu   (0.3085)& \\
-\hline
-                1 box & x=(-3,-2.8) y=(-2,2) cm   &   $^{238}$U   (0.90) &    \multirow{2}{*}{19.1 g/cm$^3$} \\
-                      & z=(-2,2) cm             &   $^{235}$U   (0.10)& \\
-\hline
-                1 box & x=(-2.8,3) y=(-2,2) cm  &    $^{1}$H   (0.6915) &    \multirow{2}{*}{1 g/cm$^3$} \\
-                      & z=(-2,2) cm            &   $^{16}$O  (0.3085)& \\
-\hline
-\end{tabular}
-\end{table}
 
 
 
@@ -517,15 +461,6 @@ keff
 flux
 runtime
 
-\subsection{Test 6}
-
-flux in sic wall
-runtime
-
-\subsection{Test 7}
-
-flux exiting guide
-runtime
 
 \subsection{Summary}
 
