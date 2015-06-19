@@ -1,0 +1,2046 @@
+
+  _                   .-=-.           .-=-.          .-==-.       
+ { }      __        .' O o '.       .' O o '.       /  -<' )--<   
+ { }    .' O'.     / o .-. O \     / o .-. O \     /  .---`       
+ { }   / .-. o\   /O  /   \  o\   /O  /   \  o\   /O /            
+  \ `-` /   \ O`-'o  /     \  O`-'o  /     \  O`-`o /             
+   `-.-`     '.____.'       `._____.'       `.____.'              
+
+Serpent 2 beta
+
+A Continuous-energy Monte Carlo Reactor Physics Burnup Calculation Code
+
+ - Version 2.1.15 (July 31, 2013) -- Contact: Jaakko.Leppanen@vtt.fi
+
+ - MPI Parallel calculation mode not available
+
+ - OpenMP Parallel calculation mode available
+
+ - Geometry and mesh plotting available
+
+ - Default data path set to: "/usr/local/SERPENT/xsdata/endfb7"
+
+Begin calculation on Fri Jun 19 00:07:48 2015
+
+Reading input file "assembly-lw"...
+
+Checking duplicate input definitions...
+OK.
+
+Creating geometry...
+OK.
+
+The geometry consists of 3 levels:
+
+Level 0 size: max 3 zones
+Level 1 size: max 961 zones
+Level 2 size: max 3 zones
+
+Linking materials to geometry...
+OK.
+
+Processing data for group constant generation:
+
+ - 69 energy groups in micro-group structure
+ - 2 energy groups in macro-group structure
+ - B1 fundamental mode calculation is not run
+ - Group constants generated in 1 universes
+ - Discontinuity factors are not calculated
+ - Poison cross sections are not calculated
+
+Plotting geometry:
+
+   0% complete
+  50% complete
+ 100% complete
+
+Reading ACE directory files...
+OK.
+
+Adding nuclides in material fuel1...
+
+Nuclide  92235.03c -- uranium 235 at 300K (U-235)
+Nuclide  92238.03c -- uranium 238 at 300K (U-238)
+Nuclide   8016.03c -- oxygen 16 at 300K (O-16)
+
+Adding nuclides in material clad...
+
+Nuclide  40090.03c -- zirconium 90 at 300K (Zr-90)
+Nuclide  40091.03c -- zirconium 91 at 300K (Zr-91)
+Nuclide  40092.03c -- zirconium 92 at 300K (Zr-92)
+Nuclide  40094.03c -- zirconium 94 at 300K (Zr-94)
+Nuclide  40096.03c -- zirconium 96 at 300K (Zr-96)
+
+Adding nuclides in material water1...
+
+Nuclide   1001.03c -- hydrogen at 300K (H-1)
+
+Checking data and printing output...
+OK.
+
+Generating unionize energy grids...
+
+Adding points:
+
+  1001.03c -- Points added in neutron grid: 252
+  8016.03c -- Points added in neutron grid: 2353
+ 40090.03c -- Points added in neutron grid: 1620
+ 40091.03c -- Points added in neutron grid: 5701
+ 40092.03c -- Points added in neutron grid: 4797
+ 40094.03c -- Points added in neutron grid: 4135
+ 40096.03c -- Points added in neutron grid: 2298
+ 92235.03c -- Points added in neutron grid: 30651
+ 92238.03c -- Points added in neutron grid: 64722
+
+Generating unionized energy grid:
+
+ - Unionization performed without grid thinning
+   between 1.00E-11 and 20.0 MeV.
+
+ - Final neutron grid size: 116356 points.
+
+ - 10.92 Mb of memory allocated for grid data
+
+OK.
+
+Processing cross sections and ENDF reaction laws...
+
+Nuclide   1001.03c -- hydrogen at 300K (H-1)
+Nuclide   8016.03c -- oxygen 16 at 300K (O-16)
+Nuclide  40090.03c -- zirconium 90 at 300K (Zr-90)
+Nuclide  40091.03c -- zirconium 91 at 300K (Zr-91)
+Nuclide  40092.03c -- zirconium 92 at 300K (Zr-92)
+Nuclide  40094.03c -- zirconium 94 at 300K (Zr-94)
+Nuclide  40096.03c -- zirconium 96 at 300K (Zr-96)
+Nuclide  92235.03c -- uranium 235 at 300K (U-235)
+Nuclide  92238.03c -- uranium 238 at 300K (U-238)
+
+SUMMARY -- 9 nuclides included in calculation:
+
+ - 9 transport nuclides
+ - Neutron energy cut-offs at 1.00E-11 and 20.0 MeV
+ - 234 transport reactions
+ - 104 special reactions
+ - 50.33 Mb of memory allocated for data
+
+Processing mesh plots...
+OK.
+
+Normalizing compositions and processing mixtures...
+OK.
+
+Allocating memory for macroscopic cross section data...
+OK.
+
+Allocating memory for particle structures...
+OK.
+
+Calculating maximum densities...
+OK.
+
+Performing density cut-off...
+OK.
+
+Sorting material-wise reaction lists:
+
+   0% complete
+ 100% complete
+
+Calculating macroscopic cross sections:
+
+   0% complete
+  33% complete
+  67% complete
+ 100% complete
+
+Calculating DT neutron majorant cross section:
+
+   0% complete
+ 100% complete
+
+Clearing results and statistics...
+OK.
+
+Sampling initial source...
+OK.
+
+Inactive cycle   1 /  20: k-eff = 1.00000
+Inactive cycle   2 /  20: k-eff = 1.07566
+Inactive cycle   3 /  20: k-eff = 1.06544
+Inactive cycle   4 /  20: k-eff = 1.06608
+Inactive cycle   5 /  20: k-eff = 1.06776
+Inactive cycle   6 /  20: k-eff = 1.07062
+Inactive cycle   7 /  20: k-eff = 1.07239
+Inactive cycle   8 /  20: k-eff = 1.07295
+Inactive cycle   9 /  20: k-eff = 1.07383
+Inactive cycle  10 /  20: k-eff = 1.07437
+Inactive cycle  11 /  20: k-eff = 1.07576
+Inactive cycle  12 /  20: k-eff = 1.07517
+Inactive cycle  13 /  20: k-eff = 1.07600
+Inactive cycle  14 /  20: k-eff = 1.07509
+Inactive cycle  15 /  20: k-eff = 1.07506
+Inactive cycle  16 /  20: k-eff = 1.07506
+Inactive cycle  17 /  20: k-eff = 1.07681
+Inactive cycle  18 /  20: k-eff = 1.07683
+Inactive cycle  19 /  20: k-eff = 1.07609
+Inactive cycle  20 /  20: k-eff = 1.07675
+
+----- Begin active cycles -----
+
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle    1 / 40  Source neutrons : 5993933
+
+Running time :                  0:32:50
+Estimated running time :        2:03:19
+Estimated running time left :   1:30:29
+
+Estimated relative CPU usage :  3004.4%
+
+k-eff (analog)    = 1.07567 +/- 0.00000  [1.07567  1.07567]
+k-eff (implicit)  = 1.07572 +/- 0.00000  [1.07572  1.07572]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle    2 / 40  Source neutrons : 6000345
+
+Running time :                  0:35:09
+Estimated running time :        2:03:22
+Estimated running time left :   1:28:13
+
+Estimated relative CPU usage :  3002.1%
+
+k-eff (analog)    = 1.07570 +/- 0.00003  [1.07564  1.07576]
+k-eff (implicit)  = 1.07567 +/- 0.00005  [1.07557  1.07577]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle    3 / 40  Source neutrons : 5998624
+
+Running time :                  0:37:29
+Estimated running time :        2:03:25
+Estimated running time left :   1:25:56
+
+Estimated relative CPU usage :  3002.7%
+
+k-eff (analog)    = 1.07562 +/- 0.00007  [1.07548  1.07577]
+k-eff (implicit)  = 1.07550 +/- 0.00017  [1.07516  1.07584]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle    4 / 40  Source neutrons : 5999291
+
+Running time :                  0:39:48
+Estimated running time :        2:03:27
+Estimated running time left :   1:23:38
+
+Estimated relative CPU usage :  3000.6%
+
+k-eff (analog)    = 1.07556 +/- 0.00009  [1.07539  1.07572]
+k-eff (implicit)  = 1.07542 +/- 0.00015  [1.07513  1.07571]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle    5 / 40  Source neutrons : 5998724
+
+Running time :                  0:42:08
+Estimated running time :        2:03:27
+Estimated running time left :   1:21:19
+
+Estimated relative CPU usage :  2998.8%
+
+k-eff (analog)    = 1.07547 +/- 0.00011  [1.07526  1.07568]
+k-eff (implicit)  = 1.07558 +/- 0.00020  [1.07519  1.07597]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle    6 / 40  Source neutrons : 6006341
+
+Running time :                  0:44:27
+Estimated running time :        2:03:30
+Estimated running time left :   1:19:02
+
+Estimated relative CPU usage :  2998.8%
+
+k-eff (analog)    = 1.07560 +/- 0.00016  [1.07529  1.07591]
+k-eff (implicit)  = 1.07559 +/- 0.00016  [1.07527  1.07591]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle    7 / 40  Source neutrons : 5994785
+
+Running time :                  0:46:47
+Estimated running time :        2:03:30
+Estimated running time left :   1:16:43
+
+Estimated relative CPU usage :  2996.2%
+
+k-eff (analog)    = 1.07556 +/- 0.00014  [1.07529  1.07584]
+k-eff (implicit)  = 1.07560 +/- 0.00014  [1.07533  1.07587]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle    8 / 40  Source neutrons : 5996374
+
+Running time :                  0:49:07
+Estimated running time :        2:03:31
+Estimated running time left :   1:14:24
+
+Estimated relative CPU usage :  2997.0%
+
+k-eff (analog)    = 1.07545 +/- 0.00016  [1.07513  1.07577]
+k-eff (implicit)  = 1.07557 +/- 0.00013  [1.07532  1.07581]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle    9 / 40  Source neutrons : 6008022
+
+Running time :                  0:51:26
+Estimated running time :        2:03:33
+Estimated running time left :   1:12:06
+
+Estimated relative CPU usage :  2994.7%
+
+k-eff (analog)    = 1.07553 +/- 0.00016  [1.07521  1.07584]
+k-eff (implicit)  = 1.07557 +/- 0.00011  [1.07536  1.07579]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   10 / 40  Source neutrons : 5996394
+
+Running time :                  0:53:46
+Estimated running time :        2:03:33
+Estimated running time left :   1:09:47
+
+Estimated relative CPU usage :  2994.9%
+
+k-eff (analog)    = 1.07552 +/- 0.00015  [1.07523  1.07580]
+k-eff (implicit)  = 1.07563 +/- 0.00011  [1.07541  1.07585]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   11 / 40  Source neutrons : 6000897
+
+Running time :                  0:56:06
+Estimated running time :        2:03:34
+Estimated running time left :   1:07:28
+
+Estimated relative CPU usage :  2994.5%
+
+k-eff (analog)    = 1.07553 +/- 0.00013  [1.07527  1.07579]
+k-eff (implicit)  = 1.07563 +/- 0.00010  [1.07543  1.07583]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   12 / 40  Source neutrons : 6000542
+
+Running time :                  0:58:26
+Estimated running time :        2:03:35
+Estimated running time left :   1:05:08
+
+Estimated relative CPU usage :  2992.3%
+
+k-eff (analog)    = 1.07555 +/- 0.00012  [1.07531  1.07578]
+k-eff (implicit)  = 1.07569 +/- 0.00011  [1.07548  1.07591]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   13 / 40  Source neutrons : 6006587
+
+Running time :                  1:00:46
+Estimated running time :        2:03:36
+Estimated running time left :   1:02:50
+
+Estimated relative CPU usage :  2993.1%
+
+k-eff (analog)    = 1.07565 +/- 0.00015  [1.07535  1.07595]
+k-eff (implicit)  = 1.07565 +/- 0.00011  [1.07543  1.07587]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   14 / 40  Source neutrons : 5992758
+
+Running time :                  1:03:06
+Estimated running time :        2:03:37
+Estimated running time left :   1:00:30
+
+Estimated relative CPU usage :  2993.2%
+
+k-eff (analog)    = 1.07565 +/- 0.00014  [1.07537  1.07592]
+k-eff (implicit)  = 1.07568 +/- 0.00011  [1.07547  1.07589]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   15 / 40  Source neutrons : 6008632
+
+Running time :                  1:05:26
+Estimated running time :        2:03:38
+Estimated running time left :   0:58:12
+
+Estimated relative CPU usage :  2992.1%
+
+k-eff (analog)    = 1.07575 +/- 0.00017  [1.07542  1.07607]
+k-eff (implicit)  = 1.07572 +/- 0.00011  [1.07551  1.07594]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   16 / 40  Source neutrons : 5995562
+
+Running time :                  1:07:46
+Estimated running time :        2:03:39
+Estimated running time left :   0:55:53
+
+Estimated relative CPU usage :  2991.7%
+
+k-eff (analog)    = 1.07578 +/- 0.00016  [1.07547  1.07610]
+k-eff (implicit)  = 1.07569 +/- 0.00011  [1.07549  1.07590]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   17 / 40  Source neutrons : 5991362
+
+Running time :                  1:10:06
+Estimated running time :        2:03:39
+Estimated running time left :   0:53:33
+
+Estimated relative CPU usage :  2989.3%
+
+k-eff (analog)    = 1.07573 +/- 0.00016  [1.07541  1.07604]
+k-eff (implicit)  = 1.07571 +/- 0.00010  [1.07551  1.07591]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   18 / 40  Source neutrons : 6006743
+
+Running time :                  1:12:26
+Estimated running time :        2:03:40
+Estimated running time left :   0:51:14
+
+Estimated relative CPU usage :  2990.7%
+
+k-eff (analog)    = 1.07574 +/- 0.00015  [1.07544  1.07604]
+k-eff (implicit)  = 1.07573 +/- 0.00010  [1.07554  1.07592]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   19 / 40  Source neutrons : 5996901
+
+Running time :                  1:14:46
+Estimated running time :        2:03:40
+Estimated running time left :   0:48:54
+
+Estimated relative CPU usage :  2990.8%
+
+k-eff (analog)    = 1.07573 +/- 0.00014  [1.07544  1.07601]
+k-eff (implicit)  = 1.07573 +/- 0.00009  [1.07555  1.07591]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   20 / 40  Source neutrons : 6002762
+
+Running time :                  1:17:06
+Estimated running time :        2:03:41
+Estimated running time left :   0:46:35
+
+Estimated relative CPU usage :  2990.2%
+
+k-eff (analog)    = 1.07574 +/- 0.00014  [1.07547  1.07601]
+k-eff (implicit)  = 1.07571 +/- 0.00009  [1.07553  1.07589]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   21 / 40  Source neutrons : 6002190
+
+Running time :                  1:19:26
+Estimated running time :        2:03:42
+Estimated running time left :   0:44:16
+
+Estimated relative CPU usage :  2989.4%
+
+k-eff (analog)    = 1.07577 +/- 0.00013  [1.07551  1.07603]
+k-eff (implicit)  = 1.07569 +/- 0.00009  [1.07552  1.07586]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   22 / 40  Source neutrons : 5993802
+
+Running time :                  1:21:46
+Estimated running time :        2:03:43
+Estimated running time left :   0:41:56
+
+Estimated relative CPU usage :  2987.9%
+
+k-eff (analog)    = 1.07574 +/- 0.00013  [1.07549  1.07600]
+k-eff (implicit)  = 1.07568 +/- 0.00008  [1.07552  1.07584]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   23 / 40  Source neutrons : 6002971
+
+Running time :                  1:24:06
+Estimated running time :        2:03:43
+Estimated running time left :   0:39:36
+
+Estimated relative CPU usage :  2987.3%
+
+k-eff (analog)    = 1.07575 +/- 0.00012  [1.07550  1.07599]
+k-eff (implicit)  = 1.07569 +/- 0.00008  [1.07553  1.07584]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   24 / 40  Source neutrons : 5999062
+
+Running time :                  1:26:27
+Estimated running time :        2:03:44
+Estimated running time left :   0:37:17
+
+Estimated relative CPU usage :  2987.6%
+
+k-eff (analog)    = 1.07574 +/- 0.00012  [1.07550  1.07597]
+k-eff (implicit)  = 1.07570 +/- 0.00008  [1.07555  1.07585]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   25 / 40  Source neutrons : 6001401
+
+Running time :                  1:28:47
+Estimated running time :        2:03:44
+Estimated running time left :   0:34:57
+
+Estimated relative CPU usage :  2987.3%
+
+k-eff (analog)    = 1.07574 +/- 0.00011  [1.07552  1.07597]
+k-eff (implicit)  = 1.07571 +/- 0.00008  [1.07556  1.07585]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   26 / 40  Source neutrons : 5998617
+
+Running time :                  1:31:07
+Estimated running time :        2:03:45
+Estimated running time left :   0:32:38
+
+Estimated relative CPU usage :  2986.3%
+
+k-eff (analog)    = 1.07574 +/- 0.00011  [1.07552  1.07595]
+k-eff (implicit)  = 1.07571 +/- 0.00007  [1.07557  1.07586]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   27 / 40  Source neutrons : 6000810
+
+Running time :                  1:33:27
+Estimated running time :        2:03:46
+Estimated running time left :   0:30:18
+
+Estimated relative CPU usage :  2988.1%
+
+k-eff (analog)    = 1.07574 +/- 0.00011  [1.07553  1.07595]
+k-eff (implicit)  = 1.07571 +/- 0.00007  [1.07557  1.07585]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   28 / 40  Source neutrons : 5998273
+
+Running time :                  1:35:47
+Estimated running time :        2:03:46
+Estimated running time left :   0:27:58
+
+Estimated relative CPU usage :  2986.5%
+
+k-eff (analog)    = 1.07573 +/- 0.00010  [1.07553  1.07593]
+k-eff (implicit)  = 1.07571 +/- 0.00007  [1.07557  1.07584]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   29 / 40  Source neutrons : 6002466
+
+Running time :                  1:38:08
+Estimated running time :        2:03:47
+Estimated running time left :   0:25:38
+
+Estimated relative CPU usage :  2986.0%
+
+k-eff (analog)    = 1.07573 +/- 0.00010  [1.07554  1.07593]
+k-eff (implicit)  = 1.07568 +/- 0.00007  [1.07555  1.07582]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   30 / 40  Source neutrons : 5995388
+
+Running time :                  1:40:28
+Estimated running time :        2:03:47
+Estimated running time left :   0:23:19
+
+Estimated relative CPU usage :  2986.6%
+
+k-eff (analog)    = 1.07571 +/- 0.00010  [1.07552  1.07590]
+k-eff (implicit)  = 1.07568 +/- 0.00007  [1.07555  1.07581]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   31 / 40  Source neutrons : 5999640
+
+Running time :                  1:42:49
+Estimated running time :        2:03:49
+Estimated running time left :   0:20:59
+
+Estimated relative CPU usage :  2971.9%
+
+k-eff (analog)    = 1.07569 +/- 0.00010  [1.07549  1.07588]
+k-eff (implicit)  = 1.07566 +/- 0.00007  [1.07553  1.07579]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   32 / 40  Source neutrons : 6001378
+
+Running time :                  1:45:09
+Estimated running time :        2:03:49
+Estimated running time left :   0:18:39
+
+Estimated relative CPU usage :  2985.2%
+
+k-eff (analog)    = 1.07567 +/- 0.00010  [1.07548  1.07586]
+k-eff (implicit)  = 1.07569 +/- 0.00007  [1.07555  1.07582]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   33 / 40  Source neutrons : 6001936
+
+Running time :                  1:47:30
+Estimated running time :        2:03:50
+Estimated running time left :   0:16:19
+
+Estimated relative CPU usage :  2984.4%
+
+k-eff (analog)    = 1.07567 +/- 0.00009  [1.07549  1.07585]
+k-eff (implicit)  = 1.07569 +/- 0.00007  [1.07556  1.07582]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   34 / 40  Source neutrons : 6000663
+
+Running time :                  1:49:50
+Estimated running time :        2:03:50
+Estimated running time left :   0:13:59
+
+Estimated relative CPU usage :  2982.9%
+
+k-eff (analog)    = 1.07567 +/- 0.00009  [1.07549  1.07585]
+k-eff (implicit)  = 1.07568 +/- 0.00007  [1.07555  1.07581]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   35 / 40  Source neutrons : 6000127
+
+Running time :                  1:52:11
+Estimated running time :        2:03:51
+Estimated running time left :   0:11:40
+
+Estimated relative CPU usage :  2985.4%
+
+k-eff (analog)    = 1.07567 +/- 0.00009  [1.07550  1.07584]
+k-eff (implicit)  = 1.07568 +/- 0.00006  [1.07555  1.07580]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   36 / 40  Source neutrons : 5997143
+
+Running time :                  1:54:31
+Estimated running time :        2:03:51
+Estimated running time left :   0:09:20
+
+Estimated relative CPU usage :  2984.5%
+
+k-eff (analog)    = 1.07566 +/- 0.00009  [1.07549  1.07583]
+k-eff (implicit)  = 1.07568 +/- 0.00006  [1.07556  1.07580]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   37 / 40  Source neutrons : 6003472
+
+Running time :                  1:56:51
+Estimated running time :        2:03:51
+Estimated running time left :   0:07:00
+
+Estimated relative CPU usage :  2984.4%
+
+k-eff (analog)    = 1.07566 +/- 0.00008  [1.07550  1.07583]
+k-eff (implicit)  = 1.07569 +/- 0.00006  [1.07557  1.07581]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   38 / 40  Source neutrons : 6000654
+
+Running time :                  1:59:12
+Estimated running time :        2:03:52
+Estimated running time left :   0:04:40
+
+Estimated relative CPU usage :  2983.9%
+
+k-eff (analog)    = 1.07567 +/- 0.00008  [1.07551  1.07583]
+k-eff (implicit)  = 1.07569 +/- 0.00006  [1.07557  1.07580]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   39 / 40  Source neutrons : 5996956
+
+Running time :                  2:01:32
+Estimated running time :        2:03:52
+Estimated running time left :   0:02:20
+
+Estimated relative CPU usage :  2983.7%
+
+k-eff (analog)    = 1.07566 +/- 0.00008  [1.07551  1.07582]
+k-eff (implicit)  = 1.07569 +/- 0.00006  [1.07557  1.07580]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, assembly, u235-fuel, u238-water"
+
+Active cycle   40 / 40  Source neutrons : 6001653
+
+Running time :                  2:03:53
+Estimated running time :        2:03:53
+Estimated running time left :   0:00:00
+
+Estimated relative CPU usage :  2984.5%
+
+k-eff (analog)    = 1.07567 +/- 0.00008  [1.07551  1.07582]
+k-eff (implicit)  = 1.07569 +/- 0.00006  [1.07558  1.07580]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+
+Transport cycle completed in 2.03 hours.
+
+
+  _                   .-=-.           .-=-.          .-==-.       
+ { }      __        .' O o '.       .' O o '.       /  -<' )--<   
+ { }    .' O'.     / o .-. O \     / o .-. O \     /  .---`       
+ { }   / .-. o\   /O  /   \  o\   /O  /   \  o\   /O /            
+  \ `-` /   \ O`-'o  /     \  O`-'o  /     \  O`-`o /             
+   `-.-`     '.____.'       `._____.'       `.____.'              
+
+Serpent 2 beta
+
+A Continuous-energy Monte Carlo Reactor Physics Burnup Calculation Code
+
+ - Version 2.1.15 (July 31, 2013) -- Contact: Jaakko.Leppanen@vtt.fi
+
+ - MPI Parallel calculation mode not available
+
+ - OpenMP Parallel calculation mode available
+
+ - Geometry and mesh plotting available
+
+ - Default data path set to: "/usr/local/SERPENT/xsdata/endfb7"
+
+Begin calculation on Fri Jun 19 02:11:44 2015
+
+Reading input file "pincell"...
+
+Checking duplicate input definitions...
+OK.
+
+Creating geometry...
+OK.
+
+Linking materials to geometry...
+OK.
+
+Processing data for group constant generation:
+
+ - 69 energy groups in micro-group structure
+ - 2 energy groups in macro-group structure
+ - B1 fundamental mode calculation is not run
+ - Group constants generated in 1 universes
+ - Discontinuity factors are not calculated
+ - Poison cross sections are not calculated
+
+Plotting geometry:
+
+   0% complete
+  50% complete
+ 100% complete
+
+Reading ACE directory files...
+OK.
+
+Adding nuclides in material fuel1...
+
+Nuclide  92235.03c -- uranium 235 at 300K (U-235)
+Nuclide  92238.03c -- uranium 238 at 300K (U-238)
+Nuclide   8016.03c -- oxygen 16 at 300K (O-16)
+
+Adding nuclides in material clad...
+
+Nuclide  40090.03c -- zirconium 90 at 300K (Zr-90)
+Nuclide  40091.03c -- zirconium 91 at 300K (Zr-91)
+Nuclide  40092.03c -- zirconium 92 at 300K (Zr-92)
+Nuclide  40094.03c -- zirconium 94 at 300K (Zr-94)
+Nuclide  40096.03c -- zirconium 96 at 300K (Zr-96)
+
+Adding nuclides in material hwater1...
+
+Nuclide   1002.03c -- deuterium at 300K (H-2)
+
+Checking data and printing output...
+OK.
+
+Generating unionize energy grids...
+
+Adding points:
+
+  1002.03c -- Points added in neutron grid: 329
+  8016.03c -- Points added in neutron grid: 2271
+ 40090.03c -- Points added in neutron grid: 1635
+ 40091.03c -- Points added in neutron grid: 5698
+ 40092.03c -- Points added in neutron grid: 4797
+ 40094.03c -- Points added in neutron grid: 4135
+ 40096.03c -- Points added in neutron grid: 2298
+ 92235.03c -- Points added in neutron grid: 30650
+ 92238.03c -- Points added in neutron grid: 64722
+
+Generating unionized energy grid:
+
+ - Unionization performed without grid thinning
+   between 1.00E-11 and 20.0 MeV.
+
+ - Final neutron grid size: 116360 points.
+
+ - 10.92 Mb of memory allocated for grid data
+
+OK.
+
+Processing cross sections and ENDF reaction laws...
+
+Nuclide   1002.03c -- deuterium at 300K (H-2)
+Nuclide   8016.03c -- oxygen 16 at 300K (O-16)
+Nuclide  40090.03c -- zirconium 90 at 300K (Zr-90)
+Nuclide  40091.03c -- zirconium 91 at 300K (Zr-91)
+Nuclide  40092.03c -- zirconium 92 at 300K (Zr-92)
+Nuclide  40094.03c -- zirconium 94 at 300K (Zr-94)
+Nuclide  40096.03c -- zirconium 96 at 300K (Zr-96)
+Nuclide  92235.03c -- uranium 235 at 300K (U-235)
+Nuclide  92238.03c -- uranium 238 at 300K (U-238)
+
+SUMMARY -- 9 nuclides included in calculation:
+
+ - 9 transport nuclides
+ - Neutron energy cut-offs at 1.00E-11 and 20.0 MeV
+ - 235 transport reactions
+ - 105 special reactions
+ - 50.41 Mb of memory allocated for data
+
+Processing mesh plots...
+OK.
+
+Normalizing compositions and processing mixtures...
+OK.
+
+Allocating memory for macroscopic cross section data...
+OK.
+
+Allocating memory for particle structures...
+OK.
+
+Calculating maximum densities...
+OK.
+
+Performing density cut-off...
+OK.
+
+Sorting material-wise reaction lists:
+
+   0% complete
+ 100% complete
+
+Calculating macroscopic cross sections:
+
+   0% complete
+  33% complete
+  67% complete
+ 100% complete
+
+Calculating DT neutron majorant cross section:
+
+   0% complete
+ 100% complete
+
+Clearing results and statistics...
+OK.
+
+Sampling initial source...
+OK.
+
+Inactive cycle   1 /  20: k-eff = 1.00000
+Inactive cycle   2 /  20: k-eff = 0.26795
+Inactive cycle   3 /  20: k-eff = 0.27288
+Inactive cycle   4 /  20: k-eff = 0.27404
+Inactive cycle   5 /  20: k-eff = 0.27511
+Inactive cycle   6 /  20: k-eff = 0.27497
+Inactive cycle   7 /  20: k-eff = 0.27532
+Inactive cycle   8 /  20: k-eff = 0.27465
+Inactive cycle   9 /  20: k-eff = 0.27561
+Inactive cycle  10 /  20: k-eff = 0.27526
+Inactive cycle  11 /  20: k-eff = 0.27479
+Inactive cycle  12 /  20: k-eff = 0.27538
+Inactive cycle  13 /  20: k-eff = 0.27503
+Inactive cycle  14 /  20: k-eff = 0.27563
+Inactive cycle  15 /  20: k-eff = 0.27580
+Inactive cycle  16 /  20: k-eff = 0.27478
+Inactive cycle  17 /  20: k-eff = 0.27549
+Inactive cycle  18 /  20: k-eff = 0.27498
+Inactive cycle  19 /  20: k-eff = 0.27531
+Inactive cycle  20 /  20: k-eff = 0.27532
+
+----- Begin active cycles -----
+
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle    1 / 40  Source neutrons : 5992973
+
+Running time :                  0:39:21
+Estimated running time :        2:45:17
+Estimated running time left :   2:05:55
+
+Estimated relative CPU usage :  3823.6%
+
+k-eff (analog)    = 0.27499 +/- 0.00000  [0.27499  0.27499]
+k-eff (implicit)  = 0.27485 +/- 0.00000  [0.27485  0.27485]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle    2 / 40  Source neutrons : 6005135
+
+Running time :                  0:42:36
+Estimated running time :        2:45:26
+Estimated running time left :   2:02:50
+
+Estimated relative CPU usage :  3821.2%
+
+k-eff (analog)    = 0.27511 +/- 0.00012  [0.27488  0.27534]
+k-eff (implicit)  = 0.27499 +/- 0.00014  [0.27472  0.27526]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle    3 / 40  Source neutrons : 5996243
+
+Running time :                  0:45:50
+Estimated running time :        2:45:28
+Estimated running time left :   1:59:38
+
+Estimated relative CPU usage :  3817.5%
+
+k-eff (analog)    = 0.27509 +/- 0.00007  [0.27496  0.27523]
+k-eff (implicit)  = 0.27510 +/- 0.00013  [0.27484  0.27536]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle    4 / 40  Source neutrons : 6007050
+
+Running time :                  0:49:04
+Estimated running time :        2:45:33
+Estimated running time left :   1:56:28
+
+Estimated relative CPU usage :  3817.3%
+
+k-eff (analog)    = 0.27517 +/- 0.00009  [0.27499  0.27534]
+k-eff (implicit)  = 0.27523 +/- 0.00017  [0.27491  0.27556]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle    5 / 40  Source neutrons : 5999525
+
+Running time :                  0:52:19
+Estimated running time :        2:45:36
+Estimated running time left :   1:53:17
+
+Estimated relative CPU usage :  3815.6%
+
+k-eff (analog)    = 0.27520 +/- 0.00008  [0.27505  0.27536]
+k-eff (implicit)  = 0.27523 +/- 0.00013  [0.27498  0.27548]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle    6 / 40  Source neutrons : 5995499
+
+Running time :                  0:55:33
+Estimated running time :        2:45:37
+Estimated running time left :   1:50:04
+
+Estimated relative CPU usage :  3815.2%
+
+k-eff (analog)    = 0.27520 +/- 0.00006  [0.27507  0.27532]
+k-eff (implicit)  = 0.27521 +/- 0.00011  [0.27500  0.27542]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle    7 / 40  Source neutrons : 5992181
+
+Running time :                  0:58:47
+Estimated running time :        2:45:38
+Estimated running time left :   1:46:50
+
+Estimated relative CPU usage :  3812.1%
+
+k-eff (analog)    = 0.27514 +/- 0.00008  [0.27498  0.27529]
+k-eff (implicit)  = 0.27517 +/- 0.00010  [0.27498  0.27536]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle    8 / 40  Source neutrons : 6003620
+
+Running time :                  1:02:02
+Estimated running time :        2:45:40
+Estimated running time left :   1:43:38
+
+Estimated relative CPU usage :  3812.7%
+
+k-eff (analog)    = 0.27512 +/- 0.00007  [0.27497  0.27526]
+k-eff (implicit)  = 0.27515 +/- 0.00009  [0.27497  0.27532]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle    9 / 40  Source neutrons : 6000884
+
+Running time :                  1:05:17
+Estimated running time :        2:45:42
+Estimated running time left :   1:40:25
+
+Estimated relative CPU usage :  3809.7%
+
+k-eff (analog)    = 0.27510 +/- 0.00006  [0.27498  0.27523]
+k-eff (implicit)  = 0.27509 +/- 0.00010  [0.27489  0.27528]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   10 / 40  Source neutrons : 5992615
+
+Running time :                  1:08:32
+Estimated running time :        2:45:43
+Estimated running time left :   1:37:11
+
+Estimated relative CPU usage :  3809.5%
+
+k-eff (analog)    = 0.27506 +/- 0.00007  [0.27492  0.27520]
+k-eff (implicit)  = 0.27506 +/- 0.00009  [0.27488  0.27524]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   11 / 40  Source neutrons : 5999534
+
+Running time :                  1:11:46
+Estimated running time :        2:45:45
+Estimated running time left :   1:33:58
+
+Estimated relative CPU usage :  3807.1%
+
+k-eff (analog)    = 0.27502 +/- 0.00008  [0.27487  0.27517]
+k-eff (implicit)  = 0.27501 +/- 0.00010  [0.27482  0.27520]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   12 / 40  Source neutrons : 5999120
+
+Running time :                  1:15:01
+Estimated running time :        2:45:46
+Estimated running time left :   1:30:44
+
+Estimated relative CPU usage :  3807.6%
+
+k-eff (analog)    = 0.27499 +/- 0.00008  [0.27483  0.27514]
+k-eff (implicit)  = 0.27503 +/- 0.00009  [0.27485  0.27521]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   13 / 40  Source neutrons : 6015738
+
+Running time :                  1:18:17
+Estimated running time :        2:45:49
+Estimated running time left :   1:27:32
+
+Estimated relative CPU usage :  3805.6%
+
+k-eff (analog)    = 0.27501 +/- 0.00008  [0.27486  0.27516]
+k-eff (implicit)  = 0.27502 +/- 0.00008  [0.27486  0.27518]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   14 / 40  Source neutrons : 5990115
+
+Running time :                  1:21:31
+Estimated running time :        2:45:49
+Estimated running time left :   1:24:17
+
+Estimated relative CPU usage :  3806.3%
+
+k-eff (analog)    = 0.27500 +/- 0.00007  [0.27486  0.27514]
+k-eff (implicit)  = 0.27502 +/- 0.00008  [0.27487  0.27517]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   15 / 40  Source neutrons : 6011262
+
+Running time :                  1:24:47
+Estimated running time :        2:45:52
+Estimated running time left :   1:21:05
+
+Estimated relative CPU usage :  3804.6%
+
+k-eff (analog)    = 0.27503 +/- 0.00007  [0.27489  0.27517]
+k-eff (implicit)  = 0.27501 +/- 0.00007  [0.27487  0.27515]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   16 / 40  Source neutrons : 5985974
+
+Running time :                  1:28:01
+Estimated running time :        2:45:52
+Estimated running time left :   1:17:50
+
+Estimated relative CPU usage :  3803.4%
+
+k-eff (analog)    = 0.27501 +/- 0.00007  [0.27487  0.27514]
+k-eff (implicit)  = 0.27500 +/- 0.00007  [0.27487  0.27514]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   17 / 40  Source neutrons : 6009035
+
+Running time :                  1:31:17
+Estimated running time :        2:45:53
+Estimated running time left :   1:14:36
+
+Estimated relative CPU usage :  3801.3%
+
+k-eff (analog)    = 0.27502 +/- 0.00007  [0.27489  0.27514]
+k-eff (implicit)  = 0.27498 +/- 0.00007  [0.27485  0.27512]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   18 / 40  Source neutrons : 5994925
+
+Running time :                  1:34:32
+Estimated running time :        2:45:54
+Estimated running time left :   1:11:22
+
+Estimated relative CPU usage :  3801.6%
+
+k-eff (analog)    = 0.27501 +/- 0.00006  [0.27489  0.27513]
+k-eff (implicit)  = 0.27500 +/- 0.00006  [0.27487  0.27512]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   19 / 40  Source neutrons : 6000104
+
+Running time :                  1:37:47
+Estimated running time :        2:45:55
+Estimated running time left :   1:08:08
+
+Estimated relative CPU usage :  3800.7%
+
+k-eff (analog)    = 0.27501 +/- 0.00006  [0.27489  0.27512]
+k-eff (implicit)  = 0.27499 +/- 0.00006  [0.27488  0.27511]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   20 / 40  Source neutrons : 6002593
+
+Running time :                  1:41:02
+Estimated running time :        2:45:56
+Estimated running time left :   1:04:54
+
+Estimated relative CPU usage :  3799.8%
+
+k-eff (analog)    = 0.27501 +/- 0.00006  [0.27490  0.27512]
+k-eff (implicit)  = 0.27499 +/- 0.00006  [0.27488  0.27511]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   21 / 40  Source neutrons : 5993484
+
+Running time :                  1:44:17
+Estimated running time :        2:45:57
+Estimated running time left :   1:01:40
+
+Estimated relative CPU usage :  3798.9%
+
+k-eff (analog)    = 0.27500 +/- 0.00005  [0.27489  0.27510]
+k-eff (implicit)  = 0.27501 +/- 0.00006  [0.27490  0.27512]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   22 / 40  Source neutrons : 6009750
+
+Running time :                  1:47:33
+Estimated running time :        2:45:59
+Estimated running time left :   0:58:26
+
+Estimated relative CPU usage :  3798.8%
+
+k-eff (analog)    = 0.27500 +/- 0.00005  [0.27490  0.27511]
+k-eff (implicit)  = 0.27501 +/- 0.00005  [0.27490  0.27512]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   23 / 40  Source neutrons : 5990180
+
+Running time :                  1:50:48
+Estimated running time :        2:45:59
+Estimated running time left :   0:55:11
+
+Estimated relative CPU usage :  3797.9%
+
+k-eff (analog)    = 0.27499 +/- 0.00005  [0.27489  0.27509]
+k-eff (implicit)  = 0.27499 +/- 0.00005  [0.27489  0.27510]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   24 / 40  Source neutrons : 6009180
+
+Running time :                  1:54:03
+Estimated running time :        2:46:01
+Estimated running time left :   0:51:57
+
+Estimated relative CPU usage :  3796.7%
+
+k-eff (analog)    = 0.27500 +/- 0.00005  [0.27490  0.27510]
+k-eff (implicit)  = 0.27501 +/- 0.00005  [0.27490  0.27511]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   25 / 40  Source neutrons : 5992360
+
+Running time :                  1:57:19
+Estimated running time :        2:46:01
+Estimated running time left :   0:48:42
+
+Estimated relative CPU usage :  3795.9%
+
+k-eff (analog)    = 0.27499 +/- 0.00005  [0.27490  0.27509]
+k-eff (implicit)  = 0.27502 +/- 0.00005  [0.27492  0.27513]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   26 / 40  Source neutrons : 6015760
+
+Running time :                  2:00:35
+Estimated running time :        2:46:03
+Estimated running time left :   0:45:28
+
+Estimated relative CPU usage :  3798.2%
+
+k-eff (analog)    = 0.27501 +/- 0.00005  [0.27491  0.27511]
+k-eff (implicit)  = 0.27505 +/- 0.00006  [0.27493  0.27516]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   27 / 40  Source neutrons : 5993627
+
+Running time :                  2:03:50
+Estimated running time :        2:46:04
+Estimated running time left :   0:42:13
+
+Estimated relative CPU usage :  3795.8%
+
+k-eff (analog)    = 0.27502 +/- 0.00005  [0.27492  0.27512]
+k-eff (implicit)  = 0.27504 +/- 0.00006  [0.27492  0.27515]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   28 / 40  Source neutrons : 5994542
+
+Running time :                  2:07:06
+Estimated running time :        2:46:05
+Estimated running time left :   0:38:59
+
+Estimated relative CPU usage :  3795.4%
+
+k-eff (analog)    = 0.27502 +/- 0.00005  [0.27493  0.27511]
+k-eff (implicit)  = 0.27504 +/- 0.00005  [0.27493  0.27515]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   29 / 40  Source neutrons : 6004591
+
+Running time :                  2:10:21
+Estimated running time :        2:46:06
+Estimated running time left :   0:35:44
+
+Estimated relative CPU usage :  3793.6%
+
+k-eff (analog)    = 0.27503 +/- 0.00005  [0.27494  0.27512]
+k-eff (implicit)  = 0.27504 +/- 0.00005  [0.27494  0.27515]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   30 / 40  Source neutrons : 6006236
+
+Running time :                  2:13:37
+Estimated running time :        2:46:07
+Estimated running time left :   0:32:29
+
+Estimated relative CPU usage :  3793.8%
+
+k-eff (analog)    = 0.27504 +/- 0.00005  [0.27495  0.27514]
+k-eff (implicit)  = 0.27505 +/- 0.00005  [0.27495  0.27516]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   31 / 40  Source neutrons : 5994104
+
+Running time :                  2:16:53
+Estimated running time :        2:46:09
+Estimated running time left :   0:29:15
+
+Estimated relative CPU usage :  3777.2%
+
+k-eff (analog)    = 0.27505 +/- 0.00005  [0.27496  0.27514]
+k-eff (implicit)  = 0.27504 +/- 0.00005  [0.27494  0.27514]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   32 / 40  Source neutrons : 5986623
+
+Running time :                  2:20:09
+Estimated running time :        2:46:09
+Estimated running time left :   0:26:00
+
+Estimated relative CPU usage :  3788.0%
+
+k-eff (analog)    = 0.27503 +/- 0.00005  [0.27494  0.27513]
+k-eff (implicit)  = 0.27504 +/- 0.00005  [0.27494  0.27514]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   33 / 40  Source neutrons : 6003410
+
+Running time :                  2:23:25
+Estimated running time :        2:46:10
+Estimated running time left :   0:22:45
+
+Estimated relative CPU usage :  3788.9%
+
+k-eff (analog)    = 0.27503 +/- 0.00005  [0.27493  0.27512]
+k-eff (implicit)  = 0.27504 +/- 0.00005  [0.27495  0.27514]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   34 / 40  Source neutrons : 5999164
+
+Running time :                  2:26:41
+Estimated running time :        2:46:11
+Estimated running time left :   0:19:30
+
+Estimated relative CPU usage :  3788.7%
+
+k-eff (analog)    = 0.27502 +/- 0.00005  [0.27493  0.27511]
+k-eff (implicit)  = 0.27504 +/- 0.00005  [0.27495  0.27514]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   35 / 40  Source neutrons : 6007121
+
+Running time :                  2:29:57
+Estimated running time :        2:46:13
+Estimated running time left :   0:16:15
+
+Estimated relative CPU usage :  3788.1%
+
+k-eff (analog)    = 0.27502 +/- 0.00004  [0.27493  0.27510]
+k-eff (implicit)  = 0.27504 +/- 0.00005  [0.27494  0.27513]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   36 / 40  Source neutrons : 5993063
+
+Running time :                  2:33:13
+Estimated running time :        2:46:13
+Estimated running time left :   0:13:00
+
+Estimated relative CPU usage :  3788.2%
+
+k-eff (analog)    = 0.27501 +/- 0.00004  [0.27492  0.27510]
+k-eff (implicit)  = 0.27504 +/- 0.00005  [0.27495  0.27513]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   37 / 40  Source neutrons : 6011839
+
+Running time :                  2:36:29
+Estimated running time :        2:46:15
+Estimated running time left :   0:09:45
+
+Estimated relative CPU usage :  3785.6%
+
+k-eff (analog)    = 0.27502 +/- 0.00004  [0.27493  0.27510]
+k-eff (implicit)  = 0.27503 +/- 0.00004  [0.27495  0.27512]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   38 / 40  Source neutrons : 5997242
+
+Running time :                  2:39:45
+Estimated running time :        2:46:15
+Estimated running time left :   0:06:30
+
+Estimated relative CPU usage :  3786.7%
+
+k-eff (analog)    = 0.27502 +/- 0.00004  [0.27494  0.27510]
+k-eff (implicit)  = 0.27504 +/- 0.00004  [0.27495  0.27512]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   39 / 40  Source neutrons : 6010413
+
+Running time :                  2:43:01
+Estimated running time :        2:46:17
+Estimated running time left :   0:03:15
+
+Estimated relative CPU usage :  3785.0%
+
+k-eff (analog)    = 0.27503 +/- 0.00004  [0.27495  0.27512]
+k-eff (implicit)  = 0.27505 +/- 0.00004  [0.27497  0.27514]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+------------------------------------------------------------
+
+Serpent 2.1.15 -- Static criticality source simulation
+
+Title: "black BC, pin, u235-fuel, heavy water"
+
+Active cycle   40 / 40  Source neutrons : 6002533
+
+Running time :                  2:46:18
+Estimated running time :        2:46:18
+Estimated running time left :   0:00:00
+
+Estimated relative CPU usage :  3786.2%
+
+k-eff (analog)    = 0.27505 +/- 0.00005  [0.27496  0.27514]
+k-eff (implicit)  = 0.27505 +/- 0.00004  [0.27496  0.27513]
+
+Options : (O4) (DT) (OMP=48) 
+------------------------------------------------------------
+
+Transport cycle completed in 2.75 hours.
+
+
+  _                   .-=-.           .-=-.          .-==-.       
+ { }      __        .' O o '.       .' O o '.       /  -<' )--<   
+ { }    .' O'.     / o .-. O \     / o .-. O \     /  .---`       
+ { }   / .-. o\   /O  /   \  o\   /O  /   \  o\   /O /            
+  \ `-` /   \ O`-'o  /     \  O`-'o  /     \  O`-`o /             
+   `-.-`     '.____.'       `._____.'       `.____.'              
+
+Serpent 2 beta
+
+A Continuous-energy Monte Carlo Reactor Physics Burnup Calculation Code
+
+ - Version 2.1.15 (July 31, 2013) -- Contact: Jaakko.Leppanen@vtt.fi
+
+ - MPI Parallel calculation mode not available
+
+ - OpenMP Parallel calculation mode available
+
+ - Geometry and mesh plotting available
+
+ - Default data path set to: "/usr/local/SERPENT/xsdata/endfb7"
+
+Begin calculation on Fri Jun 19 04:58:05 2015
+
+Reading input file "jezebel"...
+
+Checking duplicate input definitions...
+OK.
+
+Creating geometry...
+OK.
+
+Linking materials to geometry...
+OK.
+
+Processing data for group constant generation:
+
+ - 69 energy groups in micro-group structure
+ - 2 energy groups in macro-group structure
+ - B1 fundamental mode calculation is not run
+ - Group constants generated in 1 universes
+ - Discontinuity factors are not calculated
+ - Poison cross sections are not calculated
+
+Plotting geometry:
+
+   0% complete
+ 100% complete
+
+Reading ACE directory files...
+OK.
+
+Adding nuclides in material fuel1...
+
+Nuclide  94239.03c -- plutonium 239 at 300K (Pu-239)
+Nuclide  94240.03c -- plutonium 240 at 300K (Pu-240)
+Nuclide  94241.03c -- plutonium 241 at 300K (Pu-241)
+Nuclide  94242.03c -- plutonium 242 at 300K (Pu-242)
+Nuclide  31069.03c -- gallium 69 at 300K (Ga-69)
+Nuclide  31071.03c -- gallium 71 at 300K (Ga-71)
+
+Checking data and printing output...
+OK.
+
+Generating unionize energy grids...
+
+Adding points:
+
+ 31069.03c -- Points added in neutron grid: 2733
+ 31071.03c -- Points added in neutron grid: 2397
+ 94239.03c -- Points added in neutron grid: 27444
+ 94240.03c -- Points added in neutron grid: 17863
+ 94241.03c -- Points added in neutron grid: 5854
+ 94242.03c -- Points added in neutron grid: 5961
+
+Generating unionized energy grid:
+
+ - Unionization performed without grid thinning
+   between 1.00E-11 and 20.0 MeV.
+
+ - Final neutron grid size: 62306 points.
+
+ - 5.85 Mb of memory allocated for grid data
+
+OK.
+
+Processing cross sections and ENDF reaction laws...
+
+Nuclide  31069.03c -- gallium 69 at 300K (Ga-69)
+Nuclide  31071.03c -- gallium 71 at 300K (Ga-71)
+Nuclide  94239.03c -- plutonium 239 at 300K (Pu-239)
+Nuclide  94240.03c -- plutonium 240 at 300K (Pu-240)
+Nuclide  94241.03c -- plutonium 241 at 300K (Pu-241)
+Nuclide  94242.03c -- plutonium 242 at 300K (Pu-242)
+
+SUMMARY -- 6 nuclides included in calculation:
+
+ - 6 transport nuclides
+ - Neutron energy cut-offs at 1.00E-11 and 20.0 MeV
+ - 181 transport reactions
+ - 12 special reactions
+ - 16.87 Mb of memory allocated for data
+
+Processing mesh plots...
+OK.
+
+Normalizing compositions and processing mixtures...
+OK.
+
+Allocating memory for macroscopic cross section data...
+OK.
+
+Allocating memory for particle structures...
+OK.
+
+Calculating maximum densities...
+OK.
+
+Performing density cut-off...
+OK.
+
+Sorting material-wise reaction lists:
+
+   0% complete
+ 100% complete
+
+Calculating macroscopic cross sections:
+
+   0% complete
+ 100% complete
+
+Calculating DT neutron majorant cross section:
+
+   0% complete
+ 100% complete
+
+Clearing results and statistics...
+OK.
+
+Sampling initial source...
+
+***** Fri Jun 19 04:59:52 2015
+
+Input error:
+
+Insufficient neutron buffer size, increase value of
+parameter "nbuf" (currently set to 4.0)
+
