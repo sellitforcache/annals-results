@@ -300,7 +300,31 @@ Cells & Isotopes (Atm. Frac.)& Densities \\
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%
-\subsection{Test 2 - Zr-Clad UO$_2$ Pin in Light Water}
+\subsection{Test 2 - Homogenized Fuel Block}
+
+The ``Jezebel'' criticality test is a bare plutonium sphere with vacuum boundary conditions.   The fission neutron rate from $^{239}$Pu is balanced by the leakage rate from the 5.1 cm radius to give a $k_\mathrm{eff}$ of approximately 1.  Since this system is so leaky, producing results consistent with MCNP and Serpent ensures that the boundary conditions are correctly being enforced.  The Jezebel test is a standard test used to validate neutron transport codes.  It is described in the International Handbook of Evaluated Criticality Safety Test Experiments under the name ``Pu-MET-FAST-001'' \cite{bench_handbook}.  The geometry and materials are outlined in Table \ref{jezebel_geom}.  All cross sections used were processed at 273.5 K.
+
+\begin{table}[h]
+\centering
+\caption{Geometry and materials used in the ``Jezebel'' benchmark.}
+\label{jezebel_geom}
+\begin{tabular}{| l | c | c | c |}
+\hline
+Cells & Isotopes (Atm. Frac.)& Densities \\
+\hline
+\multirow{6}{*}{1 sphere, r=6.6595 cm }  &  $^{239}$Pu (0.7381) &    \multirow{6}{*}{15.73 g/cm$^3$} \\
+                                         &  $^{240}$Pu (0.1942)    & \\
+                                         &  $^{241}$Pu (0.0299)    & \\
+                                         &  $^{242}$Pu (0.0038)    & \\
+                                         &  $^{69}$Ga  (0.0203)    & \\
+                                         &  $^{71}$Ga  (0.0135)     & \\ 
+\hline
+\end{tabular}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%
+\subsection{Test 3 - Zr-Clad UO$_2$ Pin in Light Water}
 
 This criticality test consists of a UO$_2$ cylinder clad in zirconium surrounded by a block of light water.  This test increases complexity by having two materials, each with multiple isotopes, and two cells.  The water block has vacuum boundary conditions.  Its dimensions are relatively large and the absorption is low, so the mean neutron lifetime should be large.  This test serves to highlight that all the processing routines work simultaneously, the effect of introducing more than one cell, and the effect of long-lived neutrons.  The geometry and materials are outlined in Table \ref{uo2_pincell_geom}.  All cross sections used were processed at 273.5 K.
 
@@ -329,7 +353,7 @@ Cells & Isotopes (Atm. Frac.)& Densities \\
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%
-\subsection{Test 3 - Homogenized Fuel Pebble in FLiBe}
+\subsection{Test 4 - Homogenized Fuel Pebble in FLiBe}
 
 This criticality test consists of a single sphere of homogenized UO$_2$ and C surrounded by molten FLiBe (Li$_2$BeF$_4$) salt at 600 K.  The outer cell is right hexagonal prism with specular reflective boundary conditions.  Reflective boundary conditions approximates an infinite lattice of fuel spheres or a very large volumes of spheres like that in a molten salt reactor. This test introduces more isotopes, uses two temperatures simultaneously, and tests the reflective boundary condition setting.  The geometry and materials are outlined in Table \ref{pebble_geom}. The FLiBe cross sections used were processed at 900 K and the pebble cross sections at 1200 K.
 
@@ -356,7 +380,7 @@ Cells & Isotopes (Atm. Frac.)& Densities \\
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%
-\subsection{Test 4 - Stainless Steel-Clad Metallic Uranium Pin in Liquid Sodium}
+\subsection{Test 5 - Stainless Steel-Clad Metallic Uranium Pin in Liquid Sodium}
 
 This criticality test consists of a single cylinder of metallic uranium surrounded by molten sodium.  The outer cell is right hexagonal prism with specular reflective boundary conditions.  Reflective boundary conditions approximates an infinite lattice of fuel spheres or a very large volumes of  pin cells like that in a sodium reactor.  This test serves to benchmark a fast system with a coolant as well as introduce more isotopes.  The geometry and materials are outlined in Table \ref{sodium_geom}.  The fuel and clad cross sections used were processed at 900 K, and the sodium coolant cross sections were processed at 600 K.  In order to keep the specification tenable, only the major components of 316 stainless steel were included in the clad material. 
 
@@ -504,6 +528,20 @@ Runtime & 578.62 m & 404.2 m & 7.1 m & 81.9x & 57.2x \\
 \hline
 \hline
 \multicolumn{6}{|l|}{Hex Assembly}\\
+\hline
+$k_\mathrm{eff}$ & 1.437326$\pm$0.0002 & 1.44722$\pm$0.00014 & 1.4454 & -807.4 pcm (n) & 182 pcm (n) \\
+\hline
+Runtime & 252.77 m & 267.7 m & 8.0 m & 31.7x & 33.6x \\
+\hline
+\hline
+\multicolumn{6}{|l|}{FLiBe Cell}\\
+\hline
+$k_\mathrm{eff}$ & 1.437326$\pm$0.0002 & 1.44722$\pm$0.00014 & 1.4454 & -807.4 pcm (n) & 182 pcm (n) \\
+\hline
+Runtime & 252.77 m & 267.7 m & 8.0 m & 31.7x & 33.6x \\
+\hline
+\hline
+\multicolumn{6}{|l|}{Sodium Pin Cell}\\
 \hline
 $k_\mathrm{eff}$ & 1.437326$\pm$0.0002 & 1.44722$\pm$0.00014 & 1.4454 & -807.4 pcm (n) & 182 pcm (n) \\
 \hline
