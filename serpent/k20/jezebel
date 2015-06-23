@@ -45,4 +45,4 @@ mesh 3 500 500
 % --- criticality parameters
 
 set pop 6000000 40 20 % 1.00
-set nbuf 4
+set nbuf 6

@@ -63,16 +63,18 @@ serpdata   = get_serpent_det('serpent/'+casename+'_det0.m')
 #mcnpdata.append(numpy.zeros(len(serpdata['DETfluxlog'][:,10])))
 #mcnpdata.append(numpy.zeros(len(serpdata['DETfluxlog'][:,10])))
 
-if casename=='homfuel':
-	mcnp_vol = 60*60*60
-elif casename[-7:]=='pincell' or casename[-11:]=='assembly-lw':
+if casename[-7:]=='homfuel':
+	mcnp_vol = 100. * 100. * 50.
+	err_range = 0.025
+elif casename[-7:]=='pincell':
 	mcnp_vol = 1.0*1.0*numpy.pi*40.0
-elif casename=='godiva':
-	mcnp_vol = 555.647209455
-elif casename=='jezebel':
+        err_range = 0.05
+elif casename[-11:]=='assembly-lw':
+	mcnp_vol = 1.0*1.0*numpy.pi*40.0
+	err_range = 0.15
+elif casename[-7:]=='jezebel':
 	mcnp_vol = 1
-elif casename=='test':
-	mcnp_vol = 1
+	err_range = 0.1
 
 #title = 'WARP 6e6 histories (2e6 discarded)\n Flux in homogenized block of UO2 and water'	
 
@@ -115,13 +117,13 @@ ax0.legend(handles,labels,loc=2)
 ax0.set_xlim([1e-11,20])
 ax0.grid(True)
 ax1.semilogx(serpE,numpy.divide(newflux-serpF,serpF),'b',linestyle='steps-mid',label='Flux Relative Error vs. Serpent')
+ax1.set_xlim([1e-11,20])
+ax1.set_ylim([-err_range,err_range])
 ax1.fill_between(serpE,-2.0*serpErr,2.0*serpErr,color='black',facecolor='green', alpha=0.5)
 ax1.set_xscale('log')
 ax1.yaxis.set_major_locator(MaxNLocator(4))
 ax1.set_xlabel('Energy (MeV)')
 ax1.set_ylabel('Relative Error \n vs. Serpent')
-ax1.set_xlim([1e-11,20])
-ax1.set_ylim([-1e-1,1e-1])
 ax1.grid(True)
 
 if plot:
