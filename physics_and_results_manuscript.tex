@@ -414,7 +414,7 @@ Cells & Isotopes (Atm \%)& Densities \\
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%
-\subsection{Test 5 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
+\subsection{Test 6 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
 
 This criticality test consists of 631 Zr-clad UO$_2$ cylinders laid out in a hexagonal lattice surrounded by light water.  The material compositions, densities, and the cylinder dimensions are similar to the pin cell test case, but since this test has two orders of magnitude more objects, it serves to highlight the effect of introducing many geometric objects into the problem and will further validate that the geometry processing routines work correctly if consistent results are obtained.  The lattice is in the x-y plane, has a pitch to diameter ratio of 1.164, and has 15 elements on a side.  The geometry and materials are outlined in table \ref{hex_geom}.  All cross sections used were processed at 273.5 K.
 
@@ -490,6 +490,14 @@ flux
 runtime
 
 
+\subsection{Test 6}
+
+fission source
+keff
+flux
+runtime
+
+
 \subsection{Summary}
 
 table of keff, 1-norm of rel err, 1-norm of some sort of fission distribution, runtimes
@@ -527,13 +535,6 @@ $k_\mathrm{eff}$ & 0.381564$\pm$0.0003 & 0.380624$\pm$0.00037 & 0.38043 & 113.4 
 Runtime & 578.62 m & 404.2 m & 7.1 m & 81.9x & 57.2x \\
 \hline
 \hline
-\multicolumn{6}{|l|}{Hex Assembly}\\
-\hline
-$k_\mathrm{eff}$ & 1.437326$\pm$0.0002 & 1.44722$\pm$0.00014 & 1.4454 & -807.4 pcm (n) & 182 pcm (n) \\
-\hline
-Runtime & 252.77 m & 267.7 m & 8.0 m & 31.7x & 33.6x \\
-\hline
-\hline
 \multicolumn{6}{|l|}{FLiBe Cell}\\
 \hline
 $k_\mathrm{eff}$ & 1.437326$\pm$0.0002 & 1.44722$\pm$0.00014 & 1.4454 & -807.4 pcm (n) & 182 pcm (n) \\
@@ -542,6 +543,13 @@ Runtime & 252.77 m & 267.7 m & 8.0 m & 31.7x & 33.6x \\
 \hline
 \hline
 \multicolumn{6}{|l|}{Sodium Pin Cell}\\
+\hline
+$k_\mathrm{eff}$ & 1.437326$\pm$0.0002 & 1.44722$\pm$0.00014 & 1.4454 & -807.4 pcm (n) & 182 pcm (n) \\
+\hline
+Runtime & 252.77 m & 267.7 m & 8.0 m & 31.7x & 33.6x \\
+\hline
+\hline
+\multicolumn{6}{|l|}{Hex Assembly}\\
 \hline
 $k_\mathrm{eff}$ & 1.437326$\pm$0.0002 & 1.44722$\pm$0.00014 & 1.4454 & -807.4 pcm (n) & 182 pcm (n) \\
 \hline
