@@ -1,4 +1,4 @@
-#! /usr/local/bin/python
+#! /home/l_bergmann/anaconda.tmp/bin/python
 import sys
 import os
 import re
@@ -8,7 +8,6 @@ import matplotlib.colorbar as cbar
 import matplotlib.pyplot as plt 
 from matplotlib.ticker import MaxNLocator
 
-from termcolor import colored
 from pyne import ace
 import numpy as np
 import numpy
@@ -56,22 +55,18 @@ plot=1
 
 casename=sys.argv[1]
 
-tally      = numpy.loadtxt('./'+casename+'.tally')
-tallybins  = numpy.loadtxt('./'+casename+'.tallybins')
-if casename == 'jezebel' or casename == 'test':
-	serpdata   = get_serpent_det('/Users/rmb/Google Drive/Papers/Annals of Nuclear Engineering/physics_and_results/serpent/650m/'+casename+'_det0.m')
-	mcnpdata   =[]
-	mcnpdata.append(numpy.linspace(0,20,len(serpdata['DETfluxlog'][:,10])-1) )
-	mcnpdata.append(numpy.zeros(len(serpdata['DETfluxlog'][:,10])))
-	mcnpdata.append(numpy.zeros(len(serpdata['DETfluxlog'][:,10])))
-else:
-	serpdata   = get_serpent_det('/Users/rmb/disseration/graphics/finalresults/serpent-benchmark-6'+case+'/'+casename+'_det0.m')
-	mcnpdata   = get_mcnp_mctal( '/Users/rmb/disseration/graphics/finalresults/mcnp-benchmark-6'+case+'/'+casename+'.tally')
+tally      = numpy.loadtxt('warp/'+casename+'.tally')
+tallybins  = numpy.loadtxt('warp/'+casename+'.tallybins')
+serpdata   = get_serpent_det('serpent/'+casename+'_det0.m')
+#mcnpdata   =[]
+#mcnpdata.append(numpy.linspace(0,20,len(serpdata['DETfluxlog'][:,10])-1) )
+#mcnpdata.append(numpy.zeros(len(serpdata['DETfluxlog'][:,10])))
+#mcnpdata.append(numpy.zeros(len(serpdata['DETfluxlog'][:,10])))
 
 if casename=='homfuel':
 	mcnp_vol = 60*60*60
-elif casename=='pincell' or casename=='assembly' or casename=='pincell-noO':
-	mcnp_vol = 125.663706144
+elif casename[-7:]=='pincell' or casename[-11:]=='assembly-lw':
+	mcnp_vol = 1.0*1.0*numpy.pi*40.0
 elif casename=='godiva':
 	mcnp_vol = 555.647209455
 elif casename=='jezebel':
@@ -88,14 +83,14 @@ warp_err = numpy.array(tally[:,1])
 newflux=numpy.divide(newflux,widths*mcnp_vol)
 newflux=numpy.multiply(newflux,avg)
 
-mcnp_bins = mcnpdata[0]
-mcnp_widths=numpy.diff(mcnp_bins);
-mcnp_avg=(mcnp_bins[:-1]+mcnp_bins[1:])/2;
-#first is under, last value is TOTAL, clip
-mcnp_newflux= mcnpdata[1][1:-1]
-mcnp_err = mcnpdata[2][1:-1]
-mcnp_newflux=numpy.divide(mcnp_newflux,mcnp_widths)
-mcnp_newflux=numpy.multiply(mcnp_newflux,mcnp_avg)
+#mcnp_bins = mcnpdata[0]
+#mcnp_widths=numpy.diff(mcnp_bins);
+#mcnp_avg=(mcnp_bins[:-1]+mcnp_bins[1:])/2;
+##first is under, last value is TOTAL, clip
+#mcnp_newflux= mcnpdata[1][1:-1]
+#mcnp_err = mcnpdata[2][1:-1]
+#mcnp_newflux=numpy.divide(mcnp_newflux,mcnp_widths)
+#mcnp_newflux=numpy.multiply(mcnp_newflux,mcnp_avg)
 #mcnp_newflux = mcnp_newflux #* mcnp_vol  # mcnp divides by volume
 
 serpE=numpy.array(serpdata['DETfluxlogE'][:,2])
@@ -110,7 +105,7 @@ gs = gridspec.GridSpec(2, 1, height_ratios=[6, 1])
 ax0 = plt.subplot(gs[0])
 ax1 = plt.subplot(gs[1])
 ax0.semilogx(serpE,serpF,'b',linestyle='steps-mid',label='Serpent 2.1.18')
-ax0.semilogx(mcnp_avg,mcnp_newflux,'k',linestyle='steps-mid',label='MCNP 6.1')
+#ax0.semilogx(mcnp_avg,mcnp_newflux,'k',linestyle='steps-mid',label='MCNP 6.1')
 ax0.semilogx(avg,newflux,'r',linestyle='steps-mid',label='WARP')
 #ax0.set_xlabel('Energy (MeV)')
 ax0.set_ylabel(r'Flux/Lethargy per Fission Neutron')
