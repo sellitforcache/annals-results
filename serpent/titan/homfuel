@@ -4,34 +4,25 @@ set title "black BC, pin, u235-fuel, heavy water"
 
 % --- pincell
 
-surf 1 cyl      0 0 2    -20     20
-surf 2 cyl      0 0 2.20 -20.2   20.2
 surf 3 cuboid  -50 50 -50 50 -25 25
 
 % --- Cell definitions:
 
-cell 1   0      fuel1     -1  				
-cell 2   0      clad       1 -2  	
-cell 3   0      hwater1    2 -3             
-cell 99  0      outside    3  				
+cell 1   0      fuel1     -3  				
+cell 99  0      outside    3
 
 % --- Fuel materials:
 
-mat fuel1   -10.97
+mat fuel1   -5.5
  92235.03c    0.10 
  92238.03c    0.90
-  8016.03c    2
-
-mat clad    -6.52
+  8016.03c    3
+  1002.03c    2
  40090.03c   0.5145
  40091.03c   0.1122
  40092.03c   0.1715
  40094.03c   0.1738
  40096.03c   0.0280
-
-mat hwater1  -1.11
- 8016.03c     1
- 1002.03c     2
 
 % --- Cross section data library file path:
 

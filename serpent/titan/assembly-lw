@@ -64,25 +64,25 @@ cell 99  0      outside   4  				% Outside world
 % --- Fuel materials:
 
 mat fuel1   -15.00
- 92235.80c   0.1
- 92238.80c   0.9
-  8016.80c   2 
+ 92235.03c   0.1
+ 92238.03c   0.9
+  8016.03c   2 
 
 mat clad    -6.52
- 40090.80c   0.5145
- 40091.80c   0.1122
- 40092.80c   0.1715
- 40094.80c   0.1738
- 40096.80c   0.0280
+ 40090.03c   0.5145
+ 40091.03c   0.1122
+ 40092.03c   0.1715
+ 40094.03c   0.1738
+ 40096.03c   0.0280
 
 mat water1  -1.00
- 8016.80c   1
- 1001.80c   2
+ 8016.03c   1
+ 1001.03c   2
 
 % --- Cross section data library file path:
 
-%set acelib "/xs/sss_endfb7u.xsdata"
-set acelib "/xs/xsdir_serpent"
+set acelib "/xs/sss_endfb7u.xsdata"
+%set acelib "/xs/xsdir_serpent"
 
 % --- black boundary condition:
 
@@ -103,7 +103,5 @@ mesh 3 1500 1500
 
 % --- criticality parameters
 
-set pop 100000 40 20 % 1.00
-% 2MeV point source at origin
-%set nps 4000000 40
-%src mono2 sp 0.0 0.0 0.0 se 0.001
+set pop 9500000 40 20 % 1.00
+set nbuf 10

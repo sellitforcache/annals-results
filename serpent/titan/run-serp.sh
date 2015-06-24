@@ -1,7 +1,6 @@
 #! /bin/bash
 
-sss2.omp.gcc godiva
-sss2.omp.gcc homfuel
-sss2.omp.gcc pincell
-sss2.omp.gcc assembly
-
+/home/rmb/serpent/build2/serpent2/sss2 -omp 48 assembly-lw
+/home/rmb/serpent/build2/serpent2/sss2 -omp 48 pincell
+/home/rmb/serpent/build2/serpent2/sss2 -omp 48 jezebel
+/home/rmb/serpent/build2/serpent2/sss2 -omp 48 homfuel
