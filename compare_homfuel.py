@@ -75,6 +75,9 @@ elif casename[-11:]=='assembly-lw':
 elif casename[-7:]=='jezebel':
 	mcnp_vol = 1
 	err_range = 0.1
+elif casename[-5:]=='flibe':
+	mcnp_vol = 1
+	err_range = 0.05
 
 #title = 'WARP 6e6 histories (2e6 discarded)\n Flux in homogenized block of UO2 and water'	
 
