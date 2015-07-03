@@ -1,4 +1,4 @@
-#! /home/l_bergmann/anaconda.tmp/bin/python
+#! /usr/bin/env python
 import sys
 import os
 import re
@@ -65,10 +65,10 @@ serpdata   = get_serpent_det('serpent/'+casename+'_det0.m')
 
 if casename[-7:]=='homfuel':
 	mcnp_vol = 100. * 100. * 50.
-	err_range = 0.025
+	err_range = 0.01
 elif casename[-7:]=='pincell':
 	mcnp_vol = 1.0*1.0*numpy.pi*40.0
-        err_range = 0.05
+        err_range = 0.025
 elif casename[-11:]=='assembly-lw':
 	mcnp_vol = 1.0*1.0*numpy.pi*40.0
 	err_range = 0.15
