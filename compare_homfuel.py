@@ -8,7 +8,7 @@ import matplotlib.colorbar as cbar
 import matplotlib.pyplot as plt 
 from matplotlib.ticker import MaxNLocator
 
-from pyne import ace
+#from pyne import ace
 import numpy as np
 import numpy
 import pylab as pl
@@ -76,6 +76,9 @@ elif casename[-7:]=='jezebel':
 	mcnp_vol = 1
 	err_range = 0.1
 elif casename[-5:]=='flibe':
+	mcnp_vol = 1
+	err_range = 0.05
+elif casename[-9:]=='sodiumpin':
 	mcnp_vol = 1
 	err_range = 0.05
 
