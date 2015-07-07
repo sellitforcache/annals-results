@@ -16,21 +16,21 @@ cell 99  0      outside    2
 % --- Fuel materials:
 
 mat fuel1   -8.75
- 92235.80c   0.10 
- 92238.80c   0.90
-  8016.80c   2
-  6000.80c   2
+ 92235.12c   0.10 
+ 92238.12c   0.90
+  8016.12c   2
+  6000.12c   2
 
 mat flibe  -1.94
- 3006.80c   0.15
- 3007.80c   1.85
- 4009.80c   1
- 9019.80c   4
+ 3006.09c   0.15
+ 3007.09c   1.85
+ 4009.09c   1
+ 9019.09c   4
 
 % --- Cross section data library file path:
 
-%set acelib "/xs/sss_endfb7u.xsdata"
-set acelib "/xs/xsdir_serpent"
+set acelib "/xs/sss_endfb7u.xsdata"
+%set acelib "/xs/xsdir_serpent"
 
 % --- reflective boundary condition:
 
@@ -51,4 +51,5 @@ mesh 3 1500 1500
 
 % --- criticality parameters
 
-set pop 100000 40 20 % 1.00
+set pop 6000000 40 20 % 1.00
+set nbuf 6
