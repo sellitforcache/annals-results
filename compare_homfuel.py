@@ -71,13 +71,13 @@ elif casename[-7:]=='pincell':
         err_range = 0.025
 elif casename[-11:]=='assembly-lw':
 	mcnp_vol = 1.0*1.0*numpy.pi*40.0
-	err_range = 0.15
+	err_range = 0.05
 elif casename[-7:]=='jezebel':
 	mcnp_vol = 1
-	err_range = 0.1
+	err_range = 0.02
 elif casename[-5:]=='flibe':
 	mcnp_vol = 1
-	err_range = 0.05
+	err_range = 0.02
 elif casename[-9:]=='sodiumpin':
 	mcnp_vol = 1
 	err_range = 0.05
@@ -112,7 +112,7 @@ fig = pl.figure(figsize=(10,6))
 gs = gridspec.GridSpec(2, 1, height_ratios=[6, 1]) 
 ax0 = plt.subplot(gs[0])
 ax1 = plt.subplot(gs[1])
-ax0.semilogx(serpE,serpF,'b',linestyle='steps-mid',label='Serpent 2.1.18')
+ax0.semilogx(serpE,serpF,'b',linestyle='steps-mid',label='Serpent 2.1.21')
 #ax0.semilogx(mcnp_avg,mcnp_newflux,'k',linestyle='steps-mid',label='MCNP 6.1')
 ax0.semilogx(avg,newflux,'r',linestyle='steps-mid',label='WARP')
 #ax0.set_xlabel('Energy (MeV)')
