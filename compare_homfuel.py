@@ -64,22 +64,22 @@ serpdata   = get_serpent_det('serpent/'+casename+'_det0.m')
 #mcnpdata.append(numpy.zeros(len(serpdata['DETfluxlog'][:,10])))
 
 if casename[-7:]=='homfuel':
-	mcnp_vol = 100. * 100. * 50.
+	mcnp_vol = 50.0*50.0*25.0 #100. * 100. * 50.
 	err_range = 0.01
 elif casename[-7:]=='pincell':
-	mcnp_vol = 1.0*1.0*numpy.pi*40.0
+	mcnp_vol =  2.0*2.0*numpy.pi*40.0  #1.0*1.0*numpy.pi*40.0
         err_range = 0.025
 elif casename[-11:]=='assembly-lw':
 	mcnp_vol = 1.0*1.0*numpy.pi*40.0
 	err_range = 0.05
 elif casename[-7:]=='jezebel':
-	mcnp_vol = 1
+	mcnp_vol = 4.0/3.0*numpy.pi*6.6595*6.6595*6.6595
 	err_range = 0.02
 elif casename[-5:]=='flibe':
-	mcnp_vol = 1
+	mcnp_vol = 4.0/3.0*numpy.pi*5.0*5.0*5.0
 	err_range = 0.02
 elif casename[-9:]=='sodiumpin':
-	mcnp_vol = 1
+	mcnp_vol = 1.0*1.0*numpy.pi*40.0
 	err_range = 0.05
 
 #title = 'WARP 6e6 histories (2e6 discarded)\n Flux in homogenized block of UO2 and water'	

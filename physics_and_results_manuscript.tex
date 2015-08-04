@@ -198,7 +198,10 @@ Only neutrons are transported by WARP.  Any other particles are not considered i
 
 In its current state, WARP does not use the thermal scattering (S($\alpha,$$\beta$)) tables or unresolved resonance parameters and only uses the free-gas approximation for target nuclei.  This treats the target as part of a gas at a certain temperature and does not consider anything other than purely elastic scattering. Thermal scattering and unresolved resonance data tables improve the physical fidelity of the simulation, but these features can be turned off in production codes and direct comparisons can be made without them.  Their incorporation may lead to more divergent program flow and is left as an area of future work.
 
-WARP currently also only has a handful of the most common ENDF sampling laws implemented.   These are laws 3 (level scattering), 4 (continuous tabular distribution), and 44 (Kalbach-87 Formalism),, \cite{MCNP}.  Some nuclei have interactions that require the remaining laws (1, 2, 5, 7, 9, 11, 22, 24, 66, 67) and therefore problems containing any such nuclides cannot be simulated according to the data specifications.
+WARP currently also has an incomplete set of the ENDF sampling laws implemented.   These are laws 3 (level scattering), 4 (continuous tabular distribution), 7 (Simple Maxwell Fission Spectrum), 9 (Evaporation Spectrum), 44 (Kalbach-87 Formalism), 61 (LAW 44 but tabular angular distribution), and 66 (N-body phase space distribution) \cite{MCNP}.  These laws cover all the reactions present in the test problems presented here, but some nuclei may have interactions that require the remaining laws (1, 2, 5, 11, 22, 24, 67). Problems containing any such nuclides cannot be simulated according to the data specifications with the current version of WARP.
+
+Also mention that there are weights now, multiplicity reactions are treated as doubling the weight \cite{openmc}.  
+
 
 \subsection{Geometry}
 
@@ -213,7 +216,7 @@ The geometry representation in WARP is handled by the NVIDIA OptiX library.  It 
 \item Vacuum (i.e. infinitely absorbing) and specular reflection  (i.e. mirror) boundary conditions are available.  Periodic boundary conditions have not yet been implemented.
 \end{enumerate}
 
-An improved tracking routine has been implemented in WARP since the last publication.  WARP now uses ``cell sense'' to reduce the memory impact of determining in which cell/material a neutron is in.  ``Cell sense'' is like surface sense in that it is positive if a neutron is outside a cell and is negative if a neutron is inside the cell, and is simply the product of the surface senses of the cells consituent planes.  Previously a list of cell numbers was stored for each intersetction and the doubles removed to give a nesting list for the neutron.  Now, cell sense (which is either 1 or -1) is calculated and summed as the query ray traverses the geometry.  When the cumulative sense becomes negative, the containing cell has been interescted and tracing can stop.  This can be done becasue all bodies must be closed.  This scheme takes advantager of the acceleration structure in OptiX while still using the simplicity of combinatorial solid geometry.  It essentially is the same scheme as MCNP/Serpent, except that the acceleration structres allow surfaces which are part cell definitions far away to be skipped.  Also, compared to the past scheme of storing a list, this method requires a single integer to be stored and operated on intead of a (potentially large and slow) list.
+An improved tracking routine has been implemented in WARP since the last publication \cite{dissertation}.  WARP now uses ``cell sense'' to reduce the memory impact of determining in which cell/material a neutron is in.  ``Cell sense'' is like surface sense in that it is positive if a neutron is outside a cell and is negative if a neutron is inside the cell, and is simply the product of the surface senses of the cells consituent planes.  Previously a list of cell numbers was stored for each intersetction and the doubles removed to give a nesting list for the neutron.  Now, cell sense (which is either 1 or -1) is calculated and summed as the query ray traverses the geometry.  When the cumulative sense becomes negative, the containing cell has been interescted and tracing can stop.  This can be done becasue all bodies must be closed.  This scheme takes advantager of the acceleration structure in OptiX while still using the simplicity of combinatorial solid geometry.  It essentially is the same scheme as MCNP/Serpent, except that the acceleration structres allow surfaces which are part cell definitions far away to be skipped.  Also, compared to the past scheme of storing a list, this method requires a single integer to be stored and operated on intead of a (potentially large and slow) list.
 
 picture?
 
@@ -452,50 +455,236 @@ Cells & Isotopes (Atm \%)& Densities \\
 \section{Results}
 \label{sec:results}
 
-should mention how warp accumulates yields into a long integer value on the host side, then divides it by the total histories to get the final keff.  should be most accurate way, preserves entire resolution of simulation unlike accumulating float values.  tallies are handled in a similar way, but are floats.  they are accumulated after each batch and reset on the device.
 
-\subsection{Test 1}
-
-fission source
-keff
-flux
-runtime
-
-\subsection{Test 2}
+\subsection{Test 1 - ``Jezebel'' Bare Pu Sphere}
 
 fission source
-keff
-flux
-runtime
 
-\subsection{Test 3}
+\begin{table}[h]
+\centering
+\caption{Summary of $k_\mathrm{eff}$ single-run results of the WARP criticality tests with 20/40 discarded/active criticality cycles.}
+\label{jezebel_table}
+\small
+\begin{tabular}{| l | r | r | r |}
+\hline
+\multicolumn{4}{|c|}{$9.5\times10^6$ neutrons per cycle} \\
+\hline
+                  & Serpent 2.1.21 & WARP Titan & $\Delta$ \\
+\hline
+$k_\mathrm{eff}$  & 1.027942$\pm$0.0002 & 1.02837$\pm$0.00017 & 16 pcm \\
+\hline
+Runtime & 22.75 m & 95.8 m & 11.3 x\\
+\hline
+\hline
+\multicolumn{4}{|c|}{$6.5\times10^6$ neutrons per cycle} \\
+\hline
+                  & Serpent 2.1.21 & WARP k20 & $\Delta$ \\
+\hline
+$k_\mathrm{eff}$  & 1.027942$\pm$0.0002 & 1.02837$\pm$0.00017 & 16 pcm \\
+\hline
+Runtime & 22.75 m & 95.8 m & 11.3 x\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/jezebel_spec.pdf}
+\caption{Volume-average flux spectra of a fixed-source simulation with a 2 MeV point source in a block of water. \label{jezebel_spec} }
+\end{figure}
+
+
+
+\subsection{Test 2 - Homogenized Fuel Block}
 
 fission source
-keff
-flux
-runtime
 
-\subsection{Test 4}
+\begin{table}[h]
+\centering
+\caption{Summary of $k_\mathrm{eff}$ single-run results of the WARP criticality tests with 20/40 discarded/active criticality cycles.}
+\label{homfuel_table}
+\small
+\begin{tabular}{| l | r | r | r |}
+\hline
+\multicolumn{4}{|c|}{$9.5\times10^6$ neutrons per cycle} \\
+\hline
+                  & Serpent 2.1.21 & WARP Titan & $\Delta$ \\
+\hline
+$k_\mathrm{eff}$  & 1.027942$\pm$0.0002 & 1.02837$\pm$0.00017 & 16 pcm \\
+\hline
+Runtime & 22.75 m & 95.8 m & 11.3 x\\
+\hline
+\hline
+\multicolumn{4}{|c|}{$6.5\times10^6$ neutrons per cycle} \\
+\hline
+                  & Serpent 2.1.21 & WARP k20 & $\Delta$ \\
+\hline
+$k_\mathrm{eff}$  & 1.027942$\pm$0.0002 & 1.02837$\pm$0.00017 & 16 pcm \\
+\hline
+Runtime & 22.75 m & 95.8 m & 11.3 x\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/homfuel_spec.pdf}
+\caption{Volume-average flux spectra of a fixed-source simulation with a 2 MeV point source in a block of water. \label{homfuel_spec} }
+\end{figure}
+
+
+\subsection{Test 3 - Zr-Clad UO$_2$ Pin in Light Water}
 
 fission source
-keff
-flux
-runtime
 
-\subsection{Test 5}
+\begin{table}[h]
+\centering
+\caption{Summary of $k_\mathrm{eff}$ single-run results of the WARP criticality tests with 20/40 discarded/active criticality cycles.}
+\label{pincell_table}
+\small
+\begin{tabular}{| l | r | r | r |}
+\hline
+\multicolumn{4}{|c|}{$9.5\times10^6$ neutrons per cycle} \\
+\hline
+                  & Serpent 2.1.21 & WARP Titan & $\Delta$ \\
+\hline
+$k_\mathrm{eff}$  & 1.027942$\pm$0.0002 & 1.02837$\pm$0.00017 & 16 pcm \\
+\hline
+Runtime & 22.75 m & 95.8 m & 11.3 x\\
+\hline
+\hline
+\multicolumn{4}{|c|}{$6.5\times10^6$ neutrons per cycle} \\
+\hline
+                  & Serpent 2.1.21 & WARP k20 & $\Delta$ \\
+\hline
+$k_\mathrm{eff}$  & 1.027942$\pm$0.0002 & 1.02837$\pm$0.00017 & 16 pcm \\
+\hline
+Runtime & 22.75 m & 95.8 m & 11.3 x\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/pincell_spec.pdf}
+\caption{Volume-average flux spectra of a fixed-source simulation with a 2 MeV point source in a block of water. \label{pincell_spec} }
+\end{figure}
+
+
+\subsection{Test 4 - Homogenized Fuel Pebble in FLiBe}
 
 fission source
-keff
-flux
-runtime
+
+\begin{table}[h]
+\centering
+\caption{Summary of $k_\mathrm{eff}$ single-run results of the WARP criticality tests with 20/40 discarded/active criticality cycles.}
+\label{flibe_table}
+\small
+\begin{tabular}{| l | r | r | r |}
+\hline
+\multicolumn{4}{|c|}{$9.5\times10^6$ neutrons per cycle} \\
+\hline
+                  & Serpent 2.1.21 & WARP Titan & $\Delta$ \\
+\hline
+$k_\mathrm{eff}$  & 1.027942$\pm$0.0002 & 1.02837$\pm$0.00017 & 16 pcm \\
+\hline
+Runtime & 22.75 m & 95.8 m & 11.3 x\\
+\hline
+\hline
+\multicolumn{4}{|c|}{$6.5\times10^6$ neutrons per cycle} \\
+\hline
+                  & Serpent 2.1.21 & WARP k20 & $\Delta$ \\
+\hline
+$k_\mathrm{eff}$  & 1.027942$\pm$0.0002 & 1.02837$\pm$0.00017 & 16 pcm \\
+\hline
+Runtime & 22.75 m & 95.8 m & 11.3 x\\
+\hline
+\end{tabular}
+\end{table}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/flibe_spec.pdf}
+\caption{Volume-average flux spectra of a fixed-source simulation with a 2 MeV point source in a block of water. \label{flibe_spec} }
+\end{figure}
 
 
-\subsection{Test 6}
+\subsection{Test 5 - Stainless Steel-Clad Metallic Uranium Pin in Liquid Sodium}
 
 fission source
-keff
-flux
-runtime
+
+\begin{table}[h]
+\centering
+\caption{Summary of $k_\mathrm{eff}$ single-run results of the WARP criticality tests with 20/40 discarded/active criticality cycles.}
+\label{sodiumpin_table}
+\small
+\begin{tabular}{| l | r | r | r |}
+\hline
+\multicolumn{4}{|c|}{$9.5\times10^6$ neutrons per cycle} \\
+\hline
+                  & Serpent 2.1.21 & WARP Titan & $\Delta$ \\
+\hline
+$k_\mathrm{eff}$  & 1.027942$\pm$0.0002 & 1.02837$\pm$0.00017 & 16 pcm \\
+\hline
+Runtime & 22.75 m & 95.8 m & 11.3 x\\
+\hline
+\hline
+\multicolumn{4}{|c|}{$6.5\times10^6$ neutrons per cycle} \\
+\hline
+                  & Serpent 2.1.21 & WARP k20 & $\Delta$ \\
+\hline
+$k_\mathrm{eff}$  & 1.027942$\pm$0.0002 & 1.02837$\pm$0.00017 & 16 pcm \\
+\hline
+Runtime & 22.75 m & 95.8 m & 11.3 x\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/sodiumpin_spec.pdf}
+\caption{Volume-average flux spectra of a fixed-source simulation with a 2 MeV point source in a block of water. \label{sodiumpin_spec} }
+\end{figure}
+
+
+
+\subsection{Test 6 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
+
+fission source
+
+\begin{table}[h]
+\centering
+\caption{Summary of $k_\mathrm{eff}$ single-run results of the WARP criticality tests with 20/40 discarded/active criticality cycles.}
+\label{assembly-lw_table}
+\small
+\begin{tabular}{| l | r | r | r |}
+\hline
+\multicolumn{4}{|c|}{$9.5\times10^6$ neutrons per cycle} \\
+\hline
+                  & Serpent 2.1.21 & WARP Titan & $\Delta$ \\
+\hline
+$k_\mathrm{eff}$  & 1.027942$\pm$0.0002 & 1.02837$\pm$0.00017 & 16 pcm \\
+\hline
+Runtime & 22.75 m & 95.8 m & 11.3 x\\
+\hline
+\hline
+\multicolumn{4}{|c|}{$6.5\times10^6$ neutrons per cycle} \\
+\hline
+                  & Serpent 2.1.21 & WARP k20 & $\Delta$ \\
+\hline
+$k_\mathrm{eff}$  & 1.027942$\pm$0.0002 & 1.02837$\pm$0.00017 & 16 pcm \\
+\hline
+Runtime & 22.75 m & 95.8 m & 11.3 x\\
+\hline
+\end{tabular}
+\end{table}
+
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/assembly-lw_spec.pdf}
+\caption{Volume-average flux spectra of a fixed-source simulation with a 2 MeV point source in a block of water. \label{assembly-lw_spec} }
+\end{figure}
+
 
 
 \subsection{Summary}
@@ -511,7 +700,7 @@ table of history powers, historys/s per purchase cost for each unit (whether tha
 \small
 \begin{tabular}{| l | r | r | r | r | r |}
 \hline
-Test & MCNP 6.1 & Serpent 2.1.18 & WARP & $\Delta$ M & $\Delta$ S \\
+Test & MCNP 6.1 & Serpent 2.1.21 & WARP & $\Delta$ M & $\Delta$ S \\
 \hline
 \hline
 \multicolumn{6}{|l|}{Jezebel} \\
