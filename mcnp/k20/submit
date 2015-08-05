@@ -1,7 +1,7 @@
 #!/bin/sh
 #SBATCH --mem_bind=verbose,local
 #SBATCH --cpu_bind=verbose
-#SBATCH --job-name=titan-mcnp
+#SBATCH --job-name=k20-mcnp
 #SBATCH --output=slurm.out
 #SBATCH --error=slurm.err
 #SBATCH --partition=x
