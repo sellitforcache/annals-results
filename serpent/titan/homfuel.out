@@ -836,7 +836,7 @@ Material "fuel1":
  - Mass 0.0000E+00 g
  - 9 nuclides in composition
  - No nuclides associated with S(a,b) data
- - 5.38 Mb of memory allocated for data
+ - 5.35 Mb of memory allocated for data
 
 Isotopic composition (non-zero densities):
 

@@ -4,7 +4,7 @@
 #SBATCH --job-name=titan-serp
 #SBATCH --output=slurm.out
 #SBATCH --error=slurm.err
-#SBATCH --partition=serial
+#SBATCH --partition=x
 #SBATCH --time=2-00:00:00
 #SBATCH --cpus-per-task=6
 #SBATCH --ntasks=8
