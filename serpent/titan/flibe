@@ -51,5 +51,6 @@ mesh 3 1500 1500
 
 % --- criticality parameters
 
-set pop 9500000 40 20 % 1.00
+set pop 1187500 320 160 % to make memory fit
+%set pop 9500000 40 20 % 1.00
 set nbuf 10

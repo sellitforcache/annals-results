@@ -4,7 +4,7 @@
 #SBATCH --job-name=k20-mcnp
 #SBATCH --output=slurm.out
 #SBATCH --error=slurm.err
-#SBATCH --partition=x
+#SBATCH --partition=serial
 #SBATCH --time=2-00:00:00
 #SBATCH --cpus-per-task=6
 #SBATCH --ntasks=8
@@ -14,14 +14,14 @@
 export SERPENT_DATA=/usr/local/SERPENT/xsdata/endfb7
 export DATAPATH=/usr/local/SERPENT/xsdata/endfb7
 export name=jezebel
-srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal xsdir=xsdir
+srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
 export name=homfuel
-srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal xsdir=xsdir
+srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
 export name=pincell
-srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal xsdir=xsdir
+srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
 export name=flibe
-srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal xsdir=xsdir
+srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
 export name=sodiumpin
-srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal xsdir=xsdir
+srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
 export name=assembly-lw
-srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal xsdir=xsdir
+srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
