@@ -7,6 +7,7 @@ import matplotlib.gridspec as gridspec
 import matplotlib.colorbar as cbar
 import matplotlib.pyplot as plt 
 from matplotlib.ticker import MaxNLocator
+import MCNPtools
 
 #from pyne import ace
 import numpy as np
@@ -58,6 +59,7 @@ casename=sys.argv[1]
 tally      = numpy.loadtxt('warp/'+casename+'.tally')
 tallybins  = numpy.loadtxt('warp/'+casename+'.tallybins')
 serpdata   = get_serpent_det('serpent/'+casename+'_det0.m')
+mcnp_tal   = MCNPtools.mctal('mcnp/'+casename+'.mctal')
 #mcnpdata   =[]
 #mcnpdata.append(numpy.linspace(0,20,len(serpdata['DETfluxlog'][:,10])-1) )
 #mcnpdata.append(numpy.zeros(len(serpdata['DETfluxlog'][:,10])))
@@ -91,15 +93,18 @@ warp_err = numpy.array(tally[:,1])
 newflux=numpy.divide(newflux,widths*mcnp_vol)
 newflux=numpy.multiply(newflux,avg)
 
-#mcnp_bins = mcnpdata[0]
-#mcnp_widths=numpy.diff(mcnp_bins);
-#mcnp_avg=(mcnp_bins[:-1]+mcnp_bins[1:])/2;
+for i in mcnp_tal.tallies:
+	tdex=i
+print "MCNP tally number",tdex
+mcnp_bins = np.array(mcnp_tal.tallies[tdex].energies[:-1])
+mcnp_widths=numpy.diff(mcnp_bins);
+mcnp_avg=(mcnp_bins[:-1]+mcnp_bins[1:])/2;
 ##first is under, last value is TOTAL, clip
-#mcnp_newflux= mcnpdata[1][1:-1]
+mcnp_newflux= np.array(mcnp_tal.tallies[tdex].vals[0]['data'][:-1])
 #mcnp_err = mcnpdata[2][1:-1]
-#mcnp_newflux=numpy.divide(mcnp_newflux,mcnp_widths)
-#mcnp_newflux=numpy.multiply(mcnp_newflux,mcnp_avg)
-#mcnp_newflux = mcnp_newflux #* mcnp_vol  # mcnp divides by volume
+mcnp_newflux=numpy.divide(mcnp_newflux,mcnp_widths)
+mcnp_newflux=numpy.multiply(mcnp_newflux,mcnp_avg)
+mcnp_newflux = mcnp_newflux #* mcnp_vol  # mcnp divides by volume
 
 serpE=numpy.array(serpdata['DETfluxlogE'][:,2])
 serpErr=numpy.array(serpdata['DETfluxlog'][:,11])
@@ -113,7 +118,7 @@ gs = gridspec.GridSpec(2, 1, height_ratios=[6, 1])
 ax0 = plt.subplot(gs[0])
 ax1 = plt.subplot(gs[1])
 ax0.semilogx(serpE,serpF,'b',linestyle='steps-mid',label='Serpent 2.1.21')
-#ax0.semilogx(mcnp_avg,mcnp_newflux,'k',linestyle='steps-mid',label='MCNP 6.1')
+ax0.semilogx(mcnp_avg,mcnp_newflux,'k',linestyle='steps-mid',label='MCNP 6.1')
 ax0.semilogx(avg,newflux,'r',linestyle='steps-mid',label='WARP')
 #ax0.set_xlabel('Energy (MeV)')
 ax0.set_ylabel(r'Flux/Lethargy per Fission Neutron')
