@@ -7,6 +7,7 @@ import matplotlib.gridspec as gridspec
 import matplotlib.colorbar as cbar
 import matplotlib.pyplot as plt 
 from matplotlib.ticker import MaxNLocator
+import MCNPtools
 
 #from pyne import ace
 import numpy as np
@@ -58,13 +59,14 @@ casename=sys.argv[1]
 tally      = numpy.loadtxt('warp/'+casename+'.tally')
 tallybins  = numpy.loadtxt('warp/'+casename+'.tallybins')
 serpdata   = get_serpent_det('serpent/'+casename+'_det0.m')
+mcnp_tal   = MCNPtools.mctal('mcnp/'+casename+'.mctal')
 #mcnpdata   =[]
 #mcnpdata.append(numpy.linspace(0,20,len(serpdata['DETfluxlog'][:,10])-1) )
 #mcnpdata.append(numpy.zeros(len(serpdata['DETfluxlog'][:,10])))
 #mcnpdata.append(numpy.zeros(len(serpdata['DETfluxlog'][:,10])))
 
 if casename[-7:]=='homfuel':
-	mcnp_vol = 50.0*50.0*25.0 #100. * 100. * 50.
+	mcnp_vol = 100. * 100. * 50.
 	err_range = 0.01
 elif casename[-7:]=='pincell':
 	mcnp_vol =  2.0*2.0*numpy.pi*40.0  #1.0*1.0*numpy.pi*40.0
@@ -91,15 +93,18 @@ warp_err = numpy.array(tally[:,1])
 newflux=numpy.divide(newflux,widths*mcnp_vol)
 newflux=numpy.multiply(newflux,avg)
 
-#mcnp_bins = mcnpdata[0]
-#mcnp_widths=numpy.diff(mcnp_bins);
-#mcnp_avg=(mcnp_bins[:-1]+mcnp_bins[1:])/2;
+for i in mcnp_tal.tallies:
+	tdex=i
+print "MCNP tally number",tdex
+mcnp_bins = np.array(mcnp_tal.tallies[tdex].energies[:-1])
+mcnp_widths=numpy.diff(mcnp_bins);
+mcnp_avg=(mcnp_bins[:-1]+mcnp_bins[1:])/2;
 ##first is under, last value is TOTAL, clip
-#mcnp_newflux= mcnpdata[1][1:-1]
-#mcnp_err = mcnpdata[2][1:-1]
-#mcnp_newflux=numpy.divide(mcnp_newflux,mcnp_widths)
-#mcnp_newflux=numpy.multiply(mcnp_newflux,mcnp_avg)
-#mcnp_newflux = mcnp_newflux #* mcnp_vol  # mcnp divides by volume
+mcnp_newflux= np.array(mcnp_tal.tallies[tdex].vals[0]['data'][:-1])
+mcnp_err = np.array(mcnp_tal.tallies[tdex].vals[0]['err'][:-1])
+mcnp_newflux=numpy.divide(mcnp_newflux,mcnp_widths)
+mcnp_newflux=numpy.multiply(mcnp_newflux,mcnp_avg)
+mcnp_newflux = mcnp_newflux #* mcnp_vol  # mcnp divides by volume
 
 serpE=numpy.array(serpdata['DETfluxlogE'][:,2])
 serpErr=numpy.array(serpdata['DETfluxlog'][:,11])
@@ -109,11 +114,12 @@ serpErr = numpy.squeeze(numpy.asarray(serpErr))
 serpF = numpy.squeeze(numpy.asarray(serpF))
 
 fig = pl.figure(figsize=(10,6))
-gs = gridspec.GridSpec(2, 1, height_ratios=[6, 1]) 
+gs = gridspec.GridSpec(3, 1, height_ratios=[6, 1, 1]) 
 ax0 = plt.subplot(gs[0])
 ax1 = plt.subplot(gs[1])
+ax2 = plt.subplot(gs[2])
 ax0.semilogx(serpE,serpF,'b',linestyle='steps-mid',label='Serpent 2.1.21')
-#ax0.semilogx(mcnp_avg,mcnp_newflux,'k',linestyle='steps-mid',label='MCNP 6.1')
+ax0.semilogx(mcnp_avg,mcnp_newflux,'k',linestyle='steps-mid',label='MCNP 6.1')
 ax0.semilogx(avg,newflux,'r',linestyle='steps-mid',label='WARP')
 #ax0.set_xlabel('Energy (MeV)')
 ax0.set_ylabel(r'Flux/Lethargy per Fission Neutron')
@@ -122,15 +128,26 @@ handles, labels = ax0.get_legend_handles_labels()
 ax0.legend(handles,labels,loc=2)
 ax0.set_xlim([1e-11,20])
 ax0.grid(True)
-ax1.semilogx(serpE,numpy.divide(newflux-serpF,serpF),'b',linestyle='steps-mid',label='Flux Relative Error vs. Serpent')
+
+ax1.semilogx(mcnp_avg[1:],numpy.divide(newflux-mcnp_newflux[1:],mcnp_newflux[1:]),'b',linestyle='steps-mid',label='Flux Relative Error vs. MCNP')
 ax1.set_xlim([1e-11,20])
 ax1.set_ylim([-err_range,err_range])
-ax1.fill_between(serpE,-2.0*serpErr,2.0*serpErr,color='black',facecolor='green', alpha=0.5)
+ax1.fill_between(mcnp_avg,-2.0*mcnp_err,2.0*mcnp_err,color='black',facecolor='green', alpha=0.5)
 ax1.set_xscale('log')
 ax1.yaxis.set_major_locator(MaxNLocator(4))
-ax1.set_xlabel('Energy (MeV)')
-ax1.set_ylabel('Relative Error \n vs. Serpent')
+#ax1.set_xlabel('Energy (MeV)')
+ax1.set_ylabel('Relative Error \n vs. MCNP')
 ax1.grid(True)
+
+ax2.semilogx(serpE,numpy.divide(newflux-serpF,serpF),'b',linestyle='steps-mid',label='Flux Relative Error vs. Serpent')
+ax2.set_xlim([1e-11,20])
+ax2.set_ylim([-err_range,err_range])
+ax2.fill_between(serpE,-2.0*serpErr,2.0*serpErr,color='black',facecolor='green', alpha=0.5)
+ax2.set_xscale('log')
+ax2.yaxis.set_major_locator(MaxNLocator(4))
+ax2.set_xlabel('Energy (MeV)')
+ax2.set_ylabel('Relative Error \n vs. Serpent')
+ax2.grid(True)
 
 if plot:
 	pl.show()
