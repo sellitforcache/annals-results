@@ -745,7 +745,7 @@ Material "fuel1":
  - Mass 4.5815E+03 g
  - 4 nuclides in composition
  - No nuclides associated with S(a,b) data
- - 3.72 Mb of memory allocated for data
+ - 3.70 Mb of memory allocated for data
 
 Isotopic composition (non-zero densities):
 
@@ -767,7 +767,7 @@ Material "flibe":
  - Mass 0.0000E+00 g
  - 4 nuclides in composition
  - No nuclides associated with S(a,b) data
- - 2.49 Mb of memory allocated for data
+ - 2.47 Mb of memory allocated for data
 
 Isotopic composition (non-zero densities):
 

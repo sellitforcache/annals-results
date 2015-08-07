@@ -834,7 +834,7 @@ Material "fuel1":
  - Mass 0.0000E+00 g
  - 3 nuclides in composition
  - No nuclides associated with S(a,b) data
- - 5.36 Mb of memory allocated for data
+ - 5.34 Mb of memory allocated for data
 
 Isotopic composition (non-zero densities):
 
@@ -855,7 +855,7 @@ Material "clad":
  - Mass 0.0000E+00 g
  - 5 nuclides in composition
  - No nuclides associated with S(a,b) data
- - 3.59 Mb of memory allocated for data
+ - 3.56 Mb of memory allocated for data
 
 Isotopic composition (non-zero densities):
 
@@ -878,7 +878,7 @@ Material "water1":
  - Mass 3.3000E+39 g
  - 2 nuclides in composition
  - No nuclides associated with S(a,b) data
- - 3.58 Mb of memory allocated for data
+ - 3.56 Mb of memory allocated for data
 
 Isotopic composition (non-zero densities):
 

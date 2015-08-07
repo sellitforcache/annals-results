@@ -4,10 +4,10 @@
 #SBATCH --job-name=k20-mcnp
 #SBATCH --output=slurm.out
 #SBATCH --error=slurm.err
-#SBATCH --partition=serial
+#SBATCH --partition=x
 #SBATCH --time=2-00:00:00
-#SBATCH --cpus-per-task=1
-#SBATCH --ntasks=48
+#SBATCH --cpus-per-task=6
+#SBATCH --ntasks=8
 #SBATCH --exclusive
 #SBATCH --account=neutronics
 
