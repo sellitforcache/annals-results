@@ -13,6 +13,11 @@ import MCNPtools
 import numpy as np
 import numpy
 import pylab as pl
+import matplotlib.pyplot as plt 
+
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('font', size=10)
 
 #
 #  loading routines
@@ -136,7 +141,7 @@ ax1.fill_between(mcnp_avg,-2.0*mcnp_err,2.0*mcnp_err,color='black',facecolor='gr
 ax1.set_xscale('log')
 ax1.yaxis.set_major_locator(MaxNLocator(4))
 #ax1.set_xlabel('Energy (MeV)')
-ax1.set_ylabel('Relative Error \n vs. MCNP')
+ax1.set_ylabel('Rel. Err. \n vs. MCNP')
 ax1.grid(True)
 
 ax2.semilogx(serpE,numpy.divide(newflux-serpF,serpF),'b',linestyle='steps-mid',label='Flux Relative Error vs. Serpent')
@@ -146,7 +151,7 @@ ax2.fill_between(serpE,-2.0*serpErr,2.0*serpErr,color='black',facecolor='green',
 ax2.set_xscale('log')
 ax2.yaxis.set_major_locator(MaxNLocator(4))
 ax2.set_xlabel('Energy (MeV)')
-ax2.set_ylabel('Relative Error \n vs. Serpent')
+ax2.set_ylabel('Rel. Err. \n vs. Serpent')
 ax2.grid(True)
 
 if plot:
