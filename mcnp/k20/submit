@@ -13,12 +13,12 @@
 
 export SERPENT_DATA=/usr/local/SERPENT/xsdata/endfb7
 export DATAPATH=/usr/local/SERPENT/xsdata/endfb7
-export name=jezebel
-srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
-export name=homfuel
-srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
-export name=pincell
-srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
+#export name=jezebel
+#srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
+#export name=homfuel
+#srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
+#export name=pincell
+#srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
 export name=flibe
 srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local mcnp6.1.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
 export name=sodiumpin
