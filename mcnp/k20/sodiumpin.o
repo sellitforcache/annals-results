@@ -534,3 +534,83 @@
 
  cycle     3    k(collision)  1.100979    prompt removal lifetime(abs)  5.7696E+01    source points generated5994436
                                           source_entropy =     1.2289E+01
+
+ cycle     4    k(collision)  1.101153    prompt removal lifetime(abs)  5.7814E+01    source points generated6007172
+                                          source_entropy =     1.2289E+01
+
+ cycle     5    k(collision)  1.101301    prompt removal lifetime(abs)  5.7878E+01    source points generated6001358
+                                          source_entropy =     1.2289E+01
+
+ cycle     6    k(collision)  1.101162    prompt removal lifetime(abs)  5.7796E+01    source points generated6002907
+                                          source_entropy =     1.2290E+01
+
+ cycle     7    k(collision)  1.101082    prompt removal lifetime(abs)  5.7852E+01    source points generated5998881
+                                          source_entropy =     1.2289E+01
+
+ cycle     8    k(collision)  1.101110    prompt removal lifetime(abs)  5.7806E+01    source points generated6004379
+                                          source_entropy =     1.2289E+01
+
+ cycle     9    k(collision)  1.100976    prompt removal lifetime(abs)  5.7804E+01    source points generated6000556
+                                          source_entropy =     1.2289E+01
+
+ cycle    10    k(collision)  1.100900    prompt removal lifetime(abs)  5.7799E+01    source points generated5998158
+                                          source_entropy =     1.2289E+01
+
+ cycle    11    k(collision)  1.101127    prompt removal lifetime(abs)  5.7858E+01    source points generated5999579
+                                          source_entropy =     1.2289E+01
+
+ cycle    12    k(collision)  1.100761    prompt removal lifetime(abs)  5.7809E+01    source points generated5998841
+                                          source_entropy =     1.2289E+01
+
+ cycle    13    k(collision)  1.100893    prompt removal lifetime(abs)  5.7791E+01    source points generated6003224
+                                          source_entropy =     1.2289E+01
+
+ cycle    14    k(collision)  1.101091    prompt removal lifetime(abs)  5.7813E+01    source points generated6002631
+                                          source_entropy =     1.2289E+01
+
+ cycle    15    k(collision)  1.100793    prompt removal lifetime(abs)  5.7722E+01    source points generated5996119
+                                          source_entropy =     1.2289E+01
+ warning.  no reaction mt found. collision resampled. zaid =  92238.09c                                                                 
+ nps =    94473821     nrn =                 656 erg = 2.1023E-01                                                                       
+
+ cycle    16    k(collision)  1.101196    prompt removal lifetime(abs)  5.7847E+01    source points generated6004939
+                                          source_entropy =     1.2289E+01
+
+ cycle    17    k(collision)  1.101060    prompt removal lifetime(abs)  5.7777E+01    source points generated5999875
+                                          source_entropy =     1.2290E+01
+
+ cycle    18    k(collision)  1.100993    prompt removal lifetime(abs)  5.7797E+01    source points generated5997078
+                                          source_entropy =     1.2289E+01
+
+ cycle    19    k(collision)  1.101105    prompt removal lifetime(abs)  5.7806E+01    source points generated5999734
+                                          source_entropy =     1.2290E+01
+
+ cycle    20    k(collision)  1.100786    prompt removal lifetime(abs)  5.7762E+01    source points generated5999616
+                                          source_entropy =     1.2289E+01
+
+ cycle    21    k(collision)  1.100803    prompt removal lifetime(abs)  5.7790E+01    source points generated5997882
+                                          source_entropy =     1.2289E+01
+
+  estimator     cycle    22   ave of     2 cycles      combination         simple average    combined average     corr
+ k(collision)      1.100947       1.100875 0.0001     k(col/abs)          0.000000 0.0000     0.000000 0.0000   0.0000
+ k(absorption)     1.100855       1.100965 0.0001     k(abs/tk ln)        0.000000 0.0000     0.000000 0.0000   0.0000
+ k(trk length)     1.101019       1.100846 0.0002     k(tk ln/col)        0.000000 0.0000     0.000000 0.0000   0.0000
+ rem life(col)   5.7770E+01     5.7778E+01 0.0001
+ rem life(abs)   5.7779E+01     5.7785E+01 0.0001     life(col/abs)     0.0000E+00 0.0000   0.0000E+00 0.0000   0.0000
+ source points generated6002073                source_entropy  1.2289E+01
+
+  estimator     cycle    23   ave of     3 cycles      combination         simple average    combined average     corr
+ k(collision)      1.101052       1.100934 0.0001     k(col/abs)          1.100935 0.0000     1.100935 0.0000  -0.8659
+ k(absorption)     1.100877       1.100936 0.0001     k(abs/tk ln)        1.100881 0.0000     1.100892 0.0000  -0.8047
+ k(trk length)     1.100784       1.100825 0.0001     k(tk ln/col)        1.100880 0.0001     1.100908 0.0001   0.3997
+ rem life(col)   5.7829E+01     5.7795E+01 0.0003
+ rem life(abs)   5.7829E+01     5.7799E+01 0.0003     life(col/abs)     5.7797E+01 0.0003   5.7819E+01 0.0002   0.9981
+ source points generated6000234                source_entropy  1.2289E+01
+
+  estimator     cycle    24   ave of     4 cycles      combination         simple average    combined average     corr
+ k(collision)      1.100680       1.100871 0.0001     k(col/abs)          1.100885 0.0000     1.100889 0.0001   0.0233
+ k(absorption)     1.100791       1.100899 0.0001     k(abs/tk ln)        1.100818 0.0001     1.100865 0.0001   0.0514
+ k(trk length)     1.100470       1.100737 0.0001     k(tk ln/col)        1.100804 0.0001     1.100882 0.0001   0.7632
+ rem life(col)   5.7742E+01     5.7782E+01 0.0003     k(col/abs/tk ln)    1.100836 0.0001     1.100897 0.0001
+ rem life(abs)   5.7752E+01     5.7788E+01 0.0003     life(col/abs/tl)  5.7843E+01 0.0002   5.7994E+01 0.0003
+ source points generated5999166                source_entropy  1.2289E+01
