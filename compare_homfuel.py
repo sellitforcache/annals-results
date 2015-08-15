@@ -87,7 +87,7 @@ elif casename[-5:]=='flibe':
 	err_range = 0.02
 elif casename[-9:]=='sodiumpin':
 	mcnp_vol = 1.0*1.0*numpy.pi*40.0
-	err_range = 0.05
+	err_range = 0.02
 
 #title = 'WARP 6e6 histories (2e6 discarded)\n Flux in homogenized block of UO2 and water'	
 
