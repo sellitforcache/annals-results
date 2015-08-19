@@ -216,10 +216,13 @@ The geometry representation in WARP is handled by the NVIDIA OptiX library.  It 
 \item Vacuum (i.e. infinitely absorbing) and specular reflection  (i.e. mirror) boundary conditions are available.  Periodic boundary conditions have not yet been implemented.
 \end{enumerate}
 
-An improved tracking routine has been implemented in WARP since the last publication \cite{dissertation}.  WARP now uses ``cell sense'' to reduce the memory impact of determining in which cell/material a neutron is in.  ``Cell sense'' is like surface sense in that it is positive if a neutron is outside a cell and is negative if a neutron is inside the cell, and is simply the product of the surface senses of the cells consituent planes.  Previously a list of cell numbers was stored for each intersetction and the doubles removed to give a nesting list for the neutron.  Now, cell sense (which is either 1 or -1) is calculated and summed as the query ray traverses the geometry.  When the cumulative sense becomes negative, the containing cell has been interescted and tracing can stop.  This can be done becasue all bodies must be closed.  This scheme takes advantager of the acceleration structure in OptiX while still using the simplicity of combinatorial solid geometry.  It essentially is the same scheme as MCNP/Serpent, except that the acceleration structres allow surfaces which are part cell definitions far away to be skipped.  Also, compared to the past scheme of storing a list, this method requires a single integer to be stored and operated on intead of a (potentially large and slow) list.
+An improved tracking routine has been implemented in WARP since the last publication \cite{dissertation}.  WARP now uses ``cell sense'' to reduce the memory impact of determining in which cell/material a neutron is in.  ``Cell sense'' is like surface sense in that it is positive if a neutron is outside a cell and is negative if a neutron is inside the cell, and is simply the product of the surface senses of the cells constituent planes.  Previously a list of cell numbers was stored for each intersection and the doubles removed to give a nesting list for the neutron.  Now, cell sense (which is either 1 or -1) is calculated and summed as the query ray traverses the geometry.  When the cumulative sense becomes negative, the containing cell has been intersected and tracing can stop.  This can be done because all bodies must be closed.  This scheme takes advantage of the acceleration structure in OptiX while still using the simplicity of combinatorial solid geometry.  It essentially is the same scheme as MCNP/Serpent, except that the acceleration structures allow surfaces which are part cell definitions far away to be skipped.  Also, compared to the past scheme of storing a list, this method requires a single integer to be stored and operated on instead of a (potentially large and slow) list.
 
-picture?
-
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.75\textwidth]{graphics/whereami-new.pdf}
+\caption{The improved point-in-polygon ``where am I?'' algorithm. \label{whereami} }
+\end{figure}
 
 \subsection{Other Features}
 
@@ -235,7 +238,7 @@ WARP only has collision estimators implemented for both flux and multiplication 
 \section{Tests}
 \label{sec:tests}
 
-Various CPU and GPU hardware were chose to test WARP on to give a comprehensive view of the platforms that Monte Carlo neutron transport is typically performed on.  For the CPU platforms, a cluster node and a workstation are used.  For the GPU platforms, a mobile graphics card, a consumer-level graphics card, and compute-specific card are used. The benchmark cases are run at maximum number of histories per criticality batch as possible for the specific GPUs (this is where they perform the best, but is limited by on-card memory), and the CPU cases are run with identical batch parameters.  The CPU cases are run with the maximum number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole. For the k20 and Titan GPUs, the costs include the retail price of a minimal host computer with at least as much memory as the card (~\$200?).  For the 650m, the price is that of a a Lenovo Ideapad Y400, an affordable platform it is available in.   All the tests use ENDFB/VII.1 cross sections.
+Various CPU and GPU hardware were chose to test WARP on to give a comprehensive view of the platforms that Monte Carlo neutron transport is typically performed on.  For the CPU platforms, a cluster node and a workstation are used.  For the GPU platforms, a mobile graphics card, a consumer-level graphics card, and compute-specific card are used. The benchmark cases are run at maximum number of histories per criticality batch as possible for the specific GPUs (this is where they perform the best, but is limited by on-card memory), and the CPU cases are run with identical batch parameters.  The CPU cases are run with the maximum number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole. For the k20 and Titan GPUs, the costs include the retail price of a minimal host computer with at least as much memory as the card (~\$200?).  All the tests use ENDFB/VII cross sections that ship with the Serpent XXX release.  This 
 
 power specs http://www.techpowerup.com/gpudb/547/geforce-gt-650m.html
 
@@ -249,11 +252,7 @@ power specs http://www.techpowerup.com/gpudb/547/geforce-gt-650m.html
 \multirow{2}{*}{Platform} &  Cost   &Total Processor  & Local       & Memory     \\
                                        & (USD)  & Power (Watts) & Memory  & Frequency \\
 \hline
-HP Z230 Workstation     &    2,044    & 95 &  8 GB         &  1.333 GHz                      \\
-\hline
 PSSC PowerWulf Blade       &    9,310   & 460 &  96 GB        &  1.6 GHz                    \\
-\hline
-NVIDIA 650m                &    800   & 45 &  1 GB        &  2.5 GHz                 \\
 \hline
 NVIDIA Tesla k20         &    3,125     & 225 &  4.8  GB      &  2.6 GHz                  \\
 \hline
@@ -264,11 +263,7 @@ NVIDIA Titan Black       &     1,321   & 250 &  6.14 GB        & 3.5 GHz        
 \multirow{2}{*}{Platform}  &  \multicolumn{2}{r|}{Physical }     & Processor  & Maximum \\
                                         & \multicolumn{2}{r|}{Processors}  & Frequency  & Threads \\
 \hline
-Hp X270 Workstation      &  \multicolumn{2}{r|}{1x Xeon E3-1245}  &  3.4 GHz     &  8           \\
-\hline
 PSSC PowerWulf Blade       &   \multicolumn{2}{r|}{4x AMD Opteron 6172 }  &  2.1 GHz     &  48           \\
-\hline
-NVIDIA 650m                &     \multicolumn{2}{r|}{2}   &   900 MHz    &  $2^{32}-1$           \\
 \hline
 NVIDIA Tesla k20         &       \multicolumn{2}{r|}{13}   &  705.5 MHz     &  $2^{32}-1$           \\
 \hline
@@ -280,6 +275,7 @@ NVIDIA Titan Black       &      \multicolumn{2}{r|}{ 15 }  &  1071.5 MHz     & $
 
 
 %%%%%%%%%%%%%%%%%%%
+\newpage
 \subsection{Test 1 - ``Jezebel'' Bare Pu Sphere}
 
 The ``Jezebel'' criticality test is a bare plutonium sphere with vacuum boundary conditions.   The fission neutron rate from $^{239}$Pu is balanced by the leakage rate from the 5.1 cm radius to give a $k_\mathrm{eff}$ of approximately 1.  Since this system is so leaky, producing results consistent with MCNP and Serpent ensures that the boundary conditions are correctly being enforced.  The Jezebel test is a standard test used to validate neutron transport codes.  It is described in the International Handbook of Evaluated Criticality Safety Test Experiments under the name ``Pu-MET-FAST-001'' \cite{bench_handbook}.  The geometry and materials are outlined in Table \ref{jezebel_geom}.  All cross sections used were processed at 273.5 K.
@@ -303,6 +299,7 @@ Cells & Isotopes (Atm. Frac.)& Densities \\
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%
+\newpage
 \subsection{Test 2 - Homogenized Fuel Block}
 
 The ``Jezebel'' criticality test is a bare plutonium sphere with vacuum boundary conditions.   The fission neutron rate from $^{239}$Pu is balanced by the leakage rate from the 5.1 cm radius to give a $k_\mathrm{eff}$ of approximately 1.  Since this system is so leaky, producing results consistent with MCNP and Serpent ensures that the boundary conditions are correctly being enforced.  The Jezebel test is a standard test used to validate neutron transport codes.  It is described in the International Handbook of Evaluated Criticality Safety Test Experiments under the name ``Pu-MET-FAST-001'' \cite{bench_handbook}.  The geometry and materials are outlined in Table \ref{jezebel_geom}.  All cross sections used were processed at 273.5 K.
@@ -327,6 +324,7 @@ Cells & Isotopes (Atm. Frac.)& Densities \\
 
 
 %%%%%%%%%%%%%%%%%%%
+\newpage
 \subsection{Test 3 - Zr-Clad UO$_2$ Pin in Light Water}
 
 This criticality test consists of a UO$_2$ cylinder clad in zirconium surrounded by a block of light water.  This test increases complexity by having two materials, each with multiple isotopes, and two cells.  The water block has vacuum boundary conditions.  Its dimensions are relatively large and the absorption is low, so the mean neutron lifetime should be large.  This test serves to highlight that all the processing routines work simultaneously, the effect of introducing more than one cell, and the effect of long-lived neutrons.  The geometry and materials are outlined in Table \ref{uo2_pincell_geom}.  All cross sections used were processed at 273.5 K.
@@ -356,6 +354,7 @@ Cells & Isotopes (Atm. Frac.)& Densities \\
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%
+\newpage
 \subsection{Test 4 - Homogenized Fuel Pebble in FLiBe}
 
 This criticality test consists of a single sphere of homogenized UO$_2$ and C surrounded by molten FLiBe (Li$_2$BeF$_4$) salt at 600 K.  The outer cell is right hexagonal prism with specular reflective boundary conditions.  Reflective boundary conditions approximates an infinite lattice of fuel spheres or a very large volumes of spheres like that in a molten salt reactor. This test introduces more isotopes, uses two temperatures simultaneously, and tests the reflective boundary condition setting.  The geometry and materials are outlined in Table \ref{pebble_geom}. The FLiBe cross sections used were processed at 900 K and the pebble cross sections at 1200 K.
@@ -383,6 +382,7 @@ Cells & Isotopes (Atm. Frac.)& Densities \\
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%
+\newpage
 \subsection{Test 5 - Stainless Steel-Clad Metallic Uranium Pin in Liquid Sodium}
 
 This criticality test consists of a single cylinder of metallic uranium surrounded by molten sodium.  The outer cell is right hexagonal prism with specular reflective boundary conditions.  Reflective boundary conditions approximates an infinite lattice of fuel spheres or a very large volumes of  pin cells like that in a sodium reactor.  This test serves to benchmark a fast system with a coolant as well as introduce more isotopes.  The geometry and materials are outlined in Table \ref{sodium_geom}.  The fuel and clad cross sections used were processed at 900 K, and the sodium coolant cross sections were processed at 600 K.  In order to keep the specification tenable, only the major components of 316 stainless steel were included in the clad material. 
@@ -417,6 +417,7 @@ Cells & Isotopes (Atm \%)& Densities \\
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%
+\newpage
 \subsection{Test 6 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
 
 This criticality test consists of 631 Zr-clad UO$_2$ cylinders laid out in a hexagonal lattice surrounded by light water.  The material compositions, densities, and the cylinder dimensions are similar to the pin cell test case, but since this test has two orders of magnitude more objects, it serves to highlight the effect of introducing many geometric objects into the problem and will further validate that the geometry processing routines work correctly if consistent results are obtained.  The lattice is in the x-y plane, has a pitch to diameter ratio of 1.164, and has 15 elements on a side.  The geometry and materials are outlined in table \ref{hex_geom}.  All cross sections used were processed at 273.5 K.
@@ -452,41 +453,134 @@ Cells & Isotopes (Atm \%)& Densities \\
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
+\newpage
 \section{Results}
 \label{sec:results}
 
-ANALOG ESTIMATOR FOR SERPENT, ? FOR MCNP6
+ANALOG ESTIMATOR FOR SERPENT, COLLISION FOR MCNP6
 
-\subsection{Test 1 - ``Jezebel'' Bare Pu Sphere}
+\subsection{Multiplication Factors and Runtimes}
 
-fission source
 
 \begin{table}[h]
 \centering
-\caption{Summary of $k_\mathrm{eff}$ single-run results of the WARP criticality tests with 20/40 discarded/active criticality cycles.}
-\label{jezebel_table}
+\caption{The multiplication factors and runtimes of the test cases using Serpent 2.1.21 and MCNP 6.1, and WARP using a Titan Black GPU.}
+\label{results_table_titan}
 \small
-\begin{tabular}{| l | r | r | r | r |}
+\begin{tabular}{| l | r | r | r || r | r |}
 \hline
-\multicolumn{4}{|c|}{$9.5\times10^6$ neutrons per cycle} \\
-\hline
-                  & Serpent 2.1.21                           & MCNP 6.1                     & WARP Titan                & $\Delta$ \\
-\hline
-$k_\mathrm{eff}$  & 1.00005$\pm$0.000077 & 0.99995$\pm$0.00005                                      & 0.999771$\pm$0.000096     & -20.3 pcm \\
-\hline
-Runtime           & 10.34 m                               &    37.2 m                                   & 4.60 m                    & 40.92 x \\
+Test & MCNP 6.1 & Serpent 2.1.21 & WARP & $\Delta$ MCNP & $\Delta$ Serp. \\
 \hline
 \hline
-\multicolumn{4}{|c|}{$6.5\times10^6$ neutrons per cycle} \\
+\multicolumn{6}{|l|}{Jezebel} \\
 \hline
-                  & Serpent 2.1.21                           & MCNP 6.1    & WARP k20            & $\Delta$ \\
+$k_\mathrm{eff}$ & 1.00005$\pm$7.7E-5 &	0.99995$\pm$5.0E-5 &	0.999771$\pm$9.6E-5 &	-27.9 pcm &	-17.9 pcm \\
 \hline
-$k_\mathrm{eff}$  & 9.99784$\pm$0.000095 &                        & 0.999826$\pm$0.000096    & -9.5 pcm \\
+Runtime & 10.34 m  &	37.2  m &	4.6  m &	  2.2x      &	8.1x \\
 \hline
-Runtime           & 7.24 m                                 &                                    & 5.24 m              & 22.15 x\\
+\hline
+\multicolumn{6}{|l|}{Homogenized Block }\\
+\hline
+$k_\mathrm{eff}$ & 0.593385$\pm$9.8E-5 &	0.59273$\pm$3.0E-5 &	0.592295$\pm$9.6E-5 &	-109  pcm &	-43.5 pcm  \\
+\hline
+Runtime & 57.84  m &	133.37 m  &	10.93 m  &	5.3x &	12.2x \\
+\hline
+\hline
+\multicolumn{6}{|l|}{Pin Cell}\\
+\hline
+$k_\mathrm{eff}$ & 0.275401$\pm$4.5E-4 &	0.27517$\pm$3.0E-5 &	0.274106$\pm$9.6E-5 &	-129.5  pcm &	-106.4  pcm \\
+\hline
+Runtime & 198.57 m &	177.38 m &	30.43  m &	6.5x &	5.8x \\
+\hline
+\hline
+\multicolumn{6}{|l|}{FLiBe Cell}\\
+\hline
+$k_\mathrm{eff}$ & 0.88049$\pm$7.0E-5 &	0.88086$\pm$2.0E-5 &	0.875701$\pm$9.6E-5 &	-478.9  pcm &	-515.9 pcm  \\
+\hline
+Runtime & 114.65 m  &	416.77 m  &	31.99 m  &	3.6x &	13.0x \\
+\hline
+\hline
+\multicolumn{6}{|l|}{Sodium Pin Cell}\\
+\hline
+$k_\mathrm{eff}$ & 1.09868$\pm$6.4E-5 &	1.10099$\pm$2.0E-5 &	1.096884$\pm$9.6E-5 &	-179.6  pcm &	-410.6  pcm \\
+\hline
+Runtime & 185.78 m  &	494.3 m  &	73.73  m &	2.5x &	6.7x \\
+\hline
+\hline
+\multicolumn{6}{|l|}{Hex Assembly}\\
+\hline
+$k_\mathrm{eff}$ & 1.0757$\pm$6.2E-5 &	0.88634$\pm$4.0E-5 &	1.074026$\pm$7.8E-5 &	-167.4 pcm  &	18768.6 pcm  \\
+\hline
+Runtime & 122.43 m  &	316.45 m  &	41.55  m &	2.9x &	7.6x \\
 \hline
 \end{tabular}
 \end{table}
+
+
+
+
+\begin{table}[h]
+\centering
+\caption{The multiplication factors and runtimes of the test cases using Serpent 2.1.21 and MCNP 6.1, and WARP using a Tesla K20 GPU.}
+\label{results_table_k20}
+\small
+\begin{tabular}{| l | r | r | r || r | r |}
+\hline
+Test & MCNP 6.1 & Serpent 2.1.21 & WARP & $\Delta$ MCNP & $\Delta$ Serp. \\
+\hline
+\hline
+\multicolumn{6}{|l|}{Jezebel} \\
+\hline
+$k_\mathrm{eff}$ & 9.99784$\pm$9.5E-5 &		0.99982$\pm$5E-5 &		0.999771$\pm$9.6E-5	 &	-899806.9 &		-4.9 \\
+\hline
+Runtime & 7.24	 m  &		30.56666667 m 	 &		5.24 m 	 &		1.4x	& 5.8x  \\
+\hline
+\hline
+\multicolumn{6}{|l|}{Homogenized Block }\\
+\hline
+$k_\mathrm{eff}$ & 0.593409$\pm$1.2E-4 &		0.59277$\pm$3E-5 &		0.592259$\pm$1.4E-4 &		-115	 &	-51.1  \\
+\hline
+Runtime & 39.41 m 	 &		98.4 m  &		12.26 m 	 &		3.2x &		8.0x \\
+\hline
+\hline
+\multicolumn{6}{|l|}{Pin Cell}\\
+\hline
+$k_\mathrm{eff}$ & 	 &		0.27517$\pm$3.0E-5	 &	0.274162$\pm$1.6E-4	 &	27416.2	 &	-100.8 \\
+\hline
+Runtime & 	 &		131.2666667 m 	 &		33.7 m  &			0x	 &	3.9x \\
+\hline
+\hline
+\multicolumn{6}{|l|}{FLiBe Cell}\\
+\hline
+$k_\mathrm{eff}$ & 0.88049$\pm$8.7E-5	 &	0.88088$\pm$2.0E-5	 &	0.875728$\pm$9.6E-5	 &	-476.2	 &	-515.2  \\
+\hline
+Runtime & 79.16 m 	 &		269.4666667 m 		 &	32.03 m 	 &		2.5x	 &	8.4x \\
+\hline
+\hline
+\multicolumn{6}{|l|}{Sodium Pin Cell}\\
+\hline
+$k_\mathrm{eff}$ & 	 &		1.10098$\pm$3.0E-5	 &	1.097109$\pm$5.5E-5	 &	109710.9 &		-387.1 \\
+\hline
+Runtime & 		 &	320.4 m 	 &		76.46 m  &			0x &		4.2x \\
+\hline
+\hline
+\multicolumn{6}{|l|}{Hex Assembly}\\
+\hline
+$k_\mathrm{eff}$ & 1.07574$\pm$7.2E-5	 &	0.88636$\pm$5.0E-5	 &	1.073883$\pm$1.1E-4	 &	-185.7 &		18752.3  \\
+\hline
+Runtime & 77.1 m 		 &	217.7833333 m 	 &		42.8 m  &			1.8x	 &	5.1x \\
+\hline
+\end{tabular}
+\end{table}
+
+
+\newpage
+\subsection{Spectra}
+
+
+\newpage
+\subsubsection{Test 1 - ``Jezebel'' Bare Pu Sphere}
+
 
 \begin{figure}[h!]
 \centering
@@ -495,37 +589,8 @@ Runtime           & 7.24 m                                 &                    
 \end{figure}
 
 
-
-\subsection{Test 2 - Homogenized Fuel Block}
-
-fission source
-
-\begin{table}[h]
-\centering
-\caption{Summary of $k_\mathrm{eff}$ single-run results of the WARP criticality tests with 20/40 discarded/active criticality cycles.}
-\label{homfuel_table}
-\small
-\begin{tabular}{| l | r | r | r | r |}
-\hline
-\multicolumn{4}{|c|}{$9.5\times10^6$ neutrons per cycle} \\
-\hline
-                  & Serpent 2.1.21     & MCNP 6.1     & WARP Titan               & $\Delta$ \\
-\hline
-$k_\mathrm{eff}$  & 0.593385$\pm$0.000098  & 0.59273$\pm$0.00003 & 0.592295$\pm$0.000096         & -114.3 pcm \\
-\hline
-Runtime           & 57.84 m               &  133.37 m     & 10.93 m                  & 15.34 x \\
-\hline
-\hline
-\multicolumn{4}{|c|}{$6.5\times10^6$ neutrons per cycle} \\
-\hline
-                  & Serpent 2.1.21    & MCNP 6.1    & WARP k20            & $\Delta$ \\
-\hline
-$k_\mathrm{eff}$  & 0.593409$\pm$0.00012 &                 & 0.592259$\pm$0.000135     & -113.3 pcm \\
-\hline
-Runtime           & 39.41 m             &                                    & 12.26 m             & 8.65 x\\
-\hline
-\end{tabular}
-\end{table}
+\newpage
+\subsubsection{Test 2 - Homogenized Fuel Block}
 
 
 \begin{figure}[h!]
@@ -534,37 +599,9 @@ Runtime           & 39.41 m             &                                    & 1
 \caption{Volume-average flux spectra of a fixed-source simulation with a 2 MeV point source in a block of water. \label{homfuel_spec} }
 \end{figure}
 
+\newpage
+\subsubsection{Test 3 - Zr-Clad UO$_2$ Pin in Light Water}
 
-\subsection{Test 3 - Zr-Clad UO$_2$ Pin in Light Water}
-
-fission source
-
-\begin{table}[h]
-\centering
-\caption{Summary of $k_\mathrm{eff}$ single-run results of the WARP criticality tests with 20/40 discarded/active criticality cycles.}
-\label{pincell_table}
-\small
-\begin{tabular}{| l | r | r | r | r |}
-\hline
-\multicolumn{4}{|c|}{$9.5\times10^6$ neutrons per cycle} \\
-\hline
-                  & Serpent 2.1.21     & MCNP 6.1   & WARP Titan               & $\Delta$ \\
-\hline
-$k_\mathrm{eff}$  & 0.275401$\pm$0.00045 & 0.27517$\pm$0.00003 & 0.274106$\pm$0.000096         & -102.8 pcm \\
-\hline
-Runtime           & 198.57 m            & 177.38 m & 30.43 m                  & 8.83 x \\
-\hline
-\hline
-\multicolumn{4}{|c|}{$6.5\times10^6$ neutrons per cycle} \\
-\hline
-                  & Serpent 2.1.21    & MCNP 6.1    & WARP k20            & $\Delta$ \\
-\hline
-$k_\mathrm{eff}$  & XXXX$\pm$XXX &      &0.274162$\pm$0.000156     & -89 pcm \\
-\hline
-Runtime           & XXXX m             & & 33.70 m             & 4.90 x\\
-\hline
-\end{tabular}
-\end{table}
 
 
 \begin{figure}[h!]
@@ -573,37 +610,8 @@ Runtime           & XXXX m             & & 33.70 m             & 4.90 x\\
 \caption{Volume-average flux spectra of a fixed-source simulation with a 2 MeV point source in a block of water. \label{pincell_spec} }
 \end{figure}
 
-
-\subsection{Test 4 - Homogenized Fuel Pebble in FLiBe}
-
-fission source
-
-\begin{table}[h]
-\centering
-\caption{Summary of $k_\mathrm{eff}$ single-run results of the WARP criticality tests with 20/40 discarded/active criticality cycles.}
-\label{flibe_table}
-\small
-\begin{tabular}{| l | r | r | r | r |}
-\hline
-\multicolumn{4}{|c|}{$9.5\times10^6$ neutrons per cycle} \\
-\hline
-                  & Serpent 2.1.21   & MCNP 6.1      & WARP Titan               & $\Delta$ \\
-\hline
-$k_\mathrm{eff}$  & 0.880490$\pm$0.000070 & & 0.875701$\pm$0.000072         & -483.5 pcm \\
-\hline
-Runtime           & 114.65 m              &  & 31.99 m                  & 6.32 x \\
-\hline
-\hline
-\multicolumn{4}{|c|}{$6.5\times10^6$ neutrons per cycle} \\
-\hline
-                  & Serpent 2.1.21    & MCNP 6.1     & WARP k20            & $\Delta$ \\
-\hline
-$k_\mathrm{eff}$  & 0.880490$\pm$0.000087 & & 0.875728$\pm$0.000096    & -463.3 pcm \\
-\hline
-Runtime           & 79.16 m              &  & 32.03 m             & 3.90 x\\
-\hline
-\end{tabular}
-\end{table}
+\newpage
+\subsubsection{Test 4 - Homogenized Fuel Pebble in FLiBe}
 
 
 \begin{figure}[h!]
@@ -612,40 +620,8 @@ Runtime           & 79.16 m              &  & 32.03 m             & 3.90 x\\
 \caption{Volume-average flux spectra of a fixed-source simulation with a 2 MeV point source in a block of water. \label{flibe_spec} }
 \end{figure}
 
-
-\subsection{Test 5 - Stainless Steel-Clad Metallic Uranium Pin in Liquid Sodium}
-
-had to reduce the cycle size here
-
-
-fission source
-
-\begin{table}[h]
-\centering
-\caption{Summary of $k_\mathrm{eff}$ single-run results of the WARP criticality tests with 20/40 discarded/active criticality cycles.}
-\label{sodiumpin_table}
-\small
-\begin{tabular}{| l | r | r | r | r |}
-\hline
-\multicolumn{4}{|c|}{$8.5\times10^6$ neutrons per cycle} \\
-\hline
-                  & Serpent 2.1.21   & MCNP 6.1     & WARP Titan              & $\Delta$ \\
-\hline
-$k_\mathrm{eff}$  & 1.09868$\pm$0.000058 & & 1.096884$\pm$0.000050        & -176.2 pcm \\
-\hline
-Runtime           & 185.78 m             & & 73.73 m                 & 3.84 x \\
-\hline
-\hline
-\multicolumn{4}{|c|}{$6.0\times10^6$ neutrons per cycle} \\
-\hline
-                  & Serpent 2.1.21   & MCNP 6.1     & WARP k20            & $\Delta$ \\
-\hline
-$k_\mathrm{eff}$  & XXX$\pm$XXX &   &  1.097109$\pm$0.000055    & -172.1 pcm \\
-\hline
-Runtime           & XXXX m             & & 76.46 m             & 2.64 x\\
-\hline
-\end{tabular}
-\end{table}
+\newpage
+\subsubsection{Test 5 - Stainless Steel-Clad Metallic Uranium Pin in Liquid Sodium}
 
 \begin{figure}[h!]
 \centering
@@ -654,38 +630,8 @@ Runtime           & XXXX m             & & 76.46 m             & 2.64 x\\
 \end{figure}
 
 
-
-\subsection{Test 6 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
-
-fission source
-
-\begin{table}[h]
-\centering
-\caption{Summary of $k_\mathrm{eff}$ single-run results of the WARP criticality tests with 20/40 discarded/active criticality cycles.}
-\label{assembly-lw_table}
-\small
-\begin{tabular}{| l | r | r | r | r |}
-\hline
-\multicolumn{4}{|c|}{$9.5\times10^6$ neutrons per cycle} \\
-\hline
-                  & Serpent 2.1.21 & MCNP 6.1 &      WARP Titan               & $\Delta$ \\
-\hline
-$k_\mathrm{eff}$  & 1.07570$\pm$0.000052 & & 1.074026$\pm$0.000078         & -167.4 pcm \\
-\hline
-Runtime           & 122.43 m             & & 41.55 m                  & 4.57 x \\
-\hline
-\hline
-\multicolumn{4}{|c|}{$6.5\times10^6$ neutrons per cycle} \\
-\hline
-                  & Serpent 2.1.21   & MCNP 6.1     & WARP k20            & $\Delta$ \\
-\hline
-$k_\mathrm{eff}$  & 1.07574$\pm$0.000072 & & 1.073883$\pm$0.000111    & -178.7 pcm \\
-\hline
-Runtime           & 77.1 m             &  & 42.80 m             & 2.85 x\\
-\hline
-\end{tabular}
-\end{table}
-
+\newpage
+\subsubsection{Test 6 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
 
 \begin{figure}[h!]
 \centering
@@ -693,74 +639,38 @@ Runtime           & 77.1 m             &  & 42.80 m             & 2.85 x\\
 \caption{Volume-average flux spectra of a fixed-source simulation with a 2 MeV point source in a block of water. \label{assembly-lw_spec} }
 \end{figure}
 
+\newpage
+\subsection{History Power}
 
-
-\subsection{Summary}
-
-table of keff, 1-norm of rel err, 1-norm of some sort of fission distribution, runtimes
-
-table of history powers, historys/s per purchase cost for each unit (whether that is card or node or workstation) and histories/s per watt. 
+For productivity, the ``history power,'' or  number neutrons histories a system can process per unit time, is of interest since this determines how quickly results can be produced.  In addition, the number of neutron histories per capital cost and per unit energy (are of interest for investment purposes.  Table \ref{history_power} shows the history power (neutron histories per second) and relative costs of a GPU system running WARP compared to MCNP and Serpent running on a the aforementioned PSSC CPU platform.  Values shown are averages of the Titan Black runtime values shown in Table \ref{results_table_titan}.
 
 \begin{table}[h]
 \centering
-\caption{Summary of $k_\mathrm{eff}$ single-run results of the WARP criticality tests with 20/40 discarded/active criticality cycles and $10^6$ histories per cycle.}
-\label{test_summary_6}
+\caption{The history power and costs of performing Monte Carlo neutron transport on GPU and CPU systems.}
+\label{history_power}
 \small
-\begin{tabular}{| l | r | r | r | r | r |}
+\begin{tabular}{| l | r | r | r |}
 \hline
-Test & MCNP 6.1 & Serpent 2.1.21 & WARP & $\Delta$ M & $\Delta$ S \\
+              & MCNP 6.1 & Serpent 2.1.21 & WARP  \\
 \hline
+History Power   &  2.2$\times10^5$	 & 7.5$\times10^4$	 & 6.5$\times10^5$    \\
 \hline
-\multicolumn{6}{|l|}{Jezebel} \\
+History Power / USD    & 24 & 	8.1	 & 490    \\
 \hline
-$k_\mathrm{eff}$ & 1.027942$\pm$0.0002 & 1.02837$\pm$0.00017 & 1.0279 & 4.2 pcm (y) & 47 pcm (n) \\
-\hline
-Runtime & 22.75 m & 95.8 m & 2.0 m & 11.3x & 47.6x \\
-\hline
-\hline
-\multicolumn{6}{|l|}{Homogenized Block }\\
-\hline
-$k_\mathrm{eff}$ & 1.215533$\pm$0.0002 & 1.21414$\pm$0.0002 & 1.21346 & 207 pcm (n) & 68 pcm (n) \\
-\hline
-Runtime & 150.7 m & 137.0 m & 2.8 m & 53.8x & 48.6x \\
-\hline
-\hline
-\multicolumn{6}{|l|}{Pin Cell}\\
-\hline
-$k_\mathrm{eff}$ & 0.381564$\pm$0.0003 & 0.380624$\pm$0.00037 & 0.38043 & 113.4 pcm (n) & 19.4 pcm (y) \\
-\hline
-Runtime & 578.62 m & 404.2 m & 7.1 m & 81.9x & 57.2x \\
-\hline
-\hline
-\multicolumn{6}{|l|}{FLiBe Cell}\\
-\hline
-$k_\mathrm{eff}$ & 1.437326$\pm$0.0002 & 1.44722$\pm$0.00014 & 1.4454 & -807.4 pcm (n) & 182 pcm (n) \\
-\hline
-Runtime & 252.77 m & 267.7 m & 8.0 m & 31.7x & 33.6x \\
-\hline
-\hline
-\multicolumn{6}{|l|}{Sodium Pin Cell}\\
-\hline
-$k_\mathrm{eff}$ & 1.437326$\pm$0.0002 & 1.44722$\pm$0.00014 & 1.4454 & -807.4 pcm (n) & 182 pcm (n) \\
-\hline
-Runtime & 252.77 m & 267.7 m & 8.0 m & 31.7x & 33.6x \\
-\hline
-\hline
-\multicolumn{6}{|l|}{Hex Assembly}\\
-\hline
-$k_\mathrm{eff}$ & 1.437326$\pm$0.0002 & 1.44722$\pm$0.00014 & 1.4454 & -807.4 pcm (n) & 182 pcm (n) \\
-\hline
-Runtime & 252.77 m & 267.7 m & 8.0 m & 31.7x & 33.6x \\
+History Power / Watt   & 480	 & 160	 & 2600    \\
 \hline
 \end{tabular}
 \end{table}
 
+\newpage
+\subsection{Scaling}
 
-ALSO HAVE PLOT OF TITAN GOING FROM 1e4 to MAX N/BATCH - SHOWS ***SUB-LINEAR WEAK SCALING*** from n*logn routines
+HAVE PLOT OF TITAN GOING FROM 1e4 to MAX N/BATCH - SHOWS ***SUB-LINEAR WEAK SCALING*** from n*logn routines
 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
+\newpage
 \section{Conclusions and Future Development}
 \label{sec:conc}
 
