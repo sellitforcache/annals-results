@@ -51,7 +51,7 @@
 	<array>
 		<dict>
 			<key>Bounds</key>
-			<string>{{144.5, 349}, {14, 22}}</string>
+			<string>{{146.5, 349}, {14, 22}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -237,7 +237,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{144.5, 301}, {14, 22}}</string>
+			<string>{{151.5, 301}, {9, 22}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -279,7 +279,7 @@
 \deftab720
 \pard\pardeftab720
 
-\f0\fs34 \cf0 -1}</string>
+\f0\fs34 \cf0 0}</string>
 				<key>VerticalPad</key>
 				<integer>0</integer>
 			</dict>
@@ -288,7 +288,7 @@
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{145, 270.5}, {14, 22}}</string>
+			<string>{{145, 270.5}, {18, 22}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -330,7 +330,7 @@
 \deftab720
 \pard\pardeftab720
 
-\f0\fs34 \cf0 -1}</string>
+\f0\fs34 \cf0 +1}</string>
 				<key>VerticalPad</key>
 				<integer>0</integer>
 			</dict>
@@ -381,7 +381,7 @@
 \deftab720
 \pard\pardeftab720
 
-\f0\fs34 \cf0 +1}</string>
+\f0\fs34 \cf0 +2}</string>
 				<key>VerticalPad</key>
 				<integer>0</integer>
 			</dict>
@@ -1139,7 +1139,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2015-08-19 04:21:08 +0000</string>
+	<string>2015-08-19 04:27:16 +0000</string>
 	<key>Modifier</key>
 	<string>Ryan Bergmann</string>
 	<key>NotesVisible</key>
