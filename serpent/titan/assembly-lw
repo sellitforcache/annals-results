@@ -63,7 +63,7 @@ cell 99  0      outside   4  				% Outside world
 
 % --- Fuel materials:
 
-mat fuel1   -15.00
+mat fuel1   -10.97
  92235.03c   0.1
  92238.03c   0.9
   8016.03c   2 

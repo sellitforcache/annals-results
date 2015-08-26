@@ -20,9 +20,9 @@ export exe=/home/rmb/serpent/build2/serpent2/sss2
 #srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local $exe -omp $SLURM_CPUS_PER_TASK $name 
 #export name=pincell
 #srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local $exe -omp $SLURM_CPUS_PER_TASK $name 
-export name=flibe
-srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local $exe -omp $SLURM_CPUS_PER_TASK $name 
-export name=sodiumpin
-srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local $exe -omp $SLURM_CPUS_PER_TASK $name 
+#export name=flibe
+#srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local $exe -omp $SLURM_CPUS_PER_TASK $name 
+#export name=sodiumpin
+#srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local $exe -omp $SLURM_CPUS_PER_TASK $name 
 export name=assembly-lw
 srun --cpu_bind=verbose,rank_ldom --mem_bind=verbose,local $exe -omp $SLURM_CPUS_PER_TASK $name 
