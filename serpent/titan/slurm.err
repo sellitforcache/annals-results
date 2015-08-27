@@ -185,3 +185,8 @@ parameters:
 
 Your MPI job will continue, but may be behave poorly and/or hang.
 --------------------------------------------------------------------------
+srun: Job step aborted: Waiting up to 2 seconds for job step to finish.
+srun: got SIGCONT
+slurmd[x1]: error: *** STEP 31670.0 CANCELLED AT 2015-08-27T11:03:14 ***
+slurmd[x1]: error: *** JOB 31670 CANCELLED AT 2015-08-27T11:03:14 ***
+srun: forcing job termination
