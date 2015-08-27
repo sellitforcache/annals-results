@@ -1,67 +1,187 @@
 /bin/sh: BASH_FUNC_module(): line 0: syntax error near unexpected token `)'
 /bin/sh: BASH_FUNC_module(): line 0: `BASH_FUNC_module() () {  eval `/usr/bin/modulecmd bash $*`'
 /bin/sh: error importing function definition for `BASH_FUNC_module'
-cpu_bind=LDRANK - x7, task  0  0 [27827]: mask 0xfff set
-cpu_bind=LDRANK - x7, task  1  1 [27828]: mask 0xfff000 set
-cpu_bind=LDRANK - x7, task  2  2 [27829]: mask 0xfff000000 set
-cpu_bind=LDRANK - x7, task  3  3 [27830]: mask 0xfff000000000 set
-cpu_bind=LDRANK - x7, task  4  4 [27831]: mask 0xfff set
-cpu_bind=LDRANK - x7, task  5  5 [27832]: mask 0xfff000 set
-cpu_bind=LDRANK - x7, task  6  6 [27833]: mask 0xfff000000 set
-cpu_bind=LDRANK - x7, task  7  7 [27834]: mask 0xfff000000000 set
-[x7][[31640,2],2][btl_openib_component.c:1688:init_one_device] error obtaining device context for mlx4_0 errno says Permission denied
-[x7][[31640,2],4][btl_openib_component.c:1688:init_one_device] error obtaining device context for mlx4_0 errno says Permission denied
-[x7][[31640,2],5][btl_openib_component.c:1688:init_one_device] error obtaining device context for mlx4_0 errno says Permission denied
-[x7][[31640,2],1][btl_openib_component.c:1688:init_one_device] error obtaining device context for mlx4_0 errno says Permission denied
-[x7][[31640,2],3][btl_openib_component.c:1688:init_one_device] error obtaining device context for mlx4_0 errno says Permission denied
-[x7][[31640,2],6][btl_openib_component.c:1688:init_one_device] error obtaining device context for mlx4_0 errno says Permission denied
-[x7][[31640,2],7][btl_openib_component.c:1688:init_one_device] error obtaining device context for mlx4_0 errno says Permission denied
-[x7][[31640,2],0][btl_openib_component.c:1688:init_one_device] error obtaining device context for mlx4_0 errno says Permission denied
+cpu_bind=LDRANK - x1, task  0  0 [39973]: mask 0xfff set
+cpu_bind=LDRANK - x1, task  1  1 [39974]: mask 0xfff000 set
+cpu_bind=LDRANK - x1, task  3  3 [39976]: mask 0xfff000000000 set
+cpu_bind=LDRANK - x1, task  2  2 [39975]: mask 0xfff000000 set
+cpu_bind=LDRANK - x1, task  4  4 [39977]: mask 0xfff set
+cpu_bind=LDRANK - x1, task  5  5 [39978]: mask 0xfff000 set
+cpu_bind=LDRANK - x1, task  6  6 [39979]: mask 0xfff000000 set
+cpu_bind=LDRANK - x1, task  7  7 [39980]: mask 0xfff000000000 set
 --------------------------------------------------------------------------
-WARNING: There was an error initializing an OpenFabrics device.
+WARNING: It appears that your OpenFabrics subsystem is configured to only
+allow registering part of your physical memory.  This can cause MPI jobs to
+run with erratic performance, hang, and/or crash.
 
-  Local host:   x7
-  Local device: mlx4_0
---------------------------------------------------------------------------
---------------------------------------------------------------------------
-WARNING: There was an error initializing an OpenFabrics device.
+This may be caused by your OpenFabrics vendor limiting the amount of
+physical memory that can be registered.  You should investigate the
+relevant Linux kernel module parameters that control how much physical
+memory can be registered, and increase them to allow registering all
+physical memory on your machine.
 
-  Local host:   x7
-  Local device: mlx4_0
---------------------------------------------------------------------------
---------------------------------------------------------------------------
-WARNING: There was an error initializing an OpenFabrics device.
+See this Open MPI FAQ item for more information on these Linux kernel module
+parameters:
 
-  Local host:   x7
-  Local device: mlx4_0
---------------------------------------------------------------------------
---------------------------------------------------------------------------
-WARNING: There was an error initializing an OpenFabrics device.
+    http://www.open-mpi.org/faq/?category=openfabrics#ib-locked-pages
 
-  Local host:   x7
-  Local device: mlx4_0
---------------------------------------------------------------------------
---------------------------------------------------------------------------
-WARNING: There was an error initializing an OpenFabrics device.
+  Local host:              x1
+  Registerable memory:     32768 MiB
+  Total memory:            262141 MiB
 
-  Local host:   x7
-  Local device: mlx4_0
+Your MPI job will continue, but may be behave poorly and/or hang.
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
-WARNING: There was an error initializing an OpenFabrics device.
+WARNING: It appears that your OpenFabrics subsystem is configured to only
+allow registering part of your physical memory.  This can cause MPI jobs to
+run with erratic performance, hang, and/or crash.
 
-  Local host:   x7
-  Local device: mlx4_0
---------------------------------------------------------------------------
---------------------------------------------------------------------------
-WARNING: There was an error initializing an OpenFabrics device.
+This may be caused by your OpenFabrics vendor limiting the amount of
+physical memory that can be registered.  You should investigate the
+relevant Linux kernel module parameters that control how much physical
+memory can be registered, and increase them to allow registering all
+physical memory on your machine.
 
-  Local host:   x7
-  Local device: mlx4_0
---------------------------------------------------------------------------
---------------------------------------------------------------------------
-WARNING: There was an error initializing an OpenFabrics device.
+See this Open MPI FAQ item for more information on these Linux kernel module
+parameters:
 
-  Local host:   x7
-  Local device: mlx4_0
+    http://www.open-mpi.org/faq/?category=openfabrics#ib-locked-pages
+
+  Local host:              x1
+  Registerable memory:     32768 MiB
+  Total memory:            262141 MiB
+
+Your MPI job will continue, but may be behave poorly and/or hang.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+WARNING: It appears that your OpenFabrics subsystem is configured to only
+allow registering part of your physical memory.  This can cause MPI jobs to
+run with erratic performance, hang, and/or crash.
+
+This may be caused by your OpenFabrics vendor limiting the amount of
+physical memory that can be registered.  You should investigate the
+relevant Linux kernel module parameters that control how much physical
+memory can be registered, and increase them to allow registering all
+physical memory on your machine.
+
+See this Open MPI FAQ item for more information on these Linux kernel module
+parameters:
+
+    http://www.open-mpi.org/faq/?category=openfabrics#ib-locked-pages
+
+  Local host:              x1
+  Registerable memory:     32768 MiB
+  Total memory:            262141 MiB
+
+Your MPI job will continue, but may be behave poorly and/or hang.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+WARNING: It appears that your OpenFabrics subsystem is configured to only
+allow registering part of your physical memory.  This can cause MPI jobs to
+run with erratic performance, hang, and/or crash.
+
+This may be caused by your OpenFabrics vendor limiting the amount of
+physical memory that can be registered.  You should investigate the
+relevant Linux kernel module parameters that control how much physical
+memory can be registered, and increase them to allow registering all
+physical memory on your machine.
+
+See this Open MPI FAQ item for more information on these Linux kernel module
+parameters:
+
+    http://www.open-mpi.org/faq/?category=openfabrics#ib-locked-pages
+
+  Local host:              x1
+  Registerable memory:     32768 MiB
+  Total memory:            262141 MiB
+
+Your MPI job will continue, but may be behave poorly and/or hang.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+WARNING: It appears that your OpenFabrics subsystem is configured to only
+allow registering part of your physical memory.  This can cause MPI jobs to
+run with erratic performance, hang, and/or crash.
+
+This may be caused by your OpenFabrics vendor limiting the amount of
+physical memory that can be registered.  You should investigate the
+relevant Linux kernel module parameters that control how much physical
+memory can be registered, and increase them to allow registering all
+physical memory on your machine.
+
+See this Open MPI FAQ item for more information on these Linux kernel module
+parameters:
+
+    http://www.open-mpi.org/faq/?category=openfabrics#ib-locked-pages
+
+  Local host:              x1
+  Registerable memory:     32768 MiB
+  Total memory:            262141 MiB
+
+Your MPI job will continue, but may be behave poorly and/or hang.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+WARNING: It appears that your OpenFabrics subsystem is configured to only
+allow registering part of your physical memory.  This can cause MPI jobs to
+run with erratic performance, hang, and/or crash.
+
+This may be caused by your OpenFabrics vendor limiting the amount of
+physical memory that can be registered.  You should investigate the
+relevant Linux kernel module parameters that control how much physical
+memory can be registered, and increase them to allow registering all
+physical memory on your machine.
+
+See this Open MPI FAQ item for more information on these Linux kernel module
+parameters:
+
+    http://www.open-mpi.org/faq/?category=openfabrics#ib-locked-pages
+
+  Local host:              x1
+  Registerable memory:     32768 MiB
+  Total memory:            262141 MiB
+
+Your MPI job will continue, but may be behave poorly and/or hang.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+WARNING: It appears that your OpenFabrics subsystem is configured to only
+allow registering part of your physical memory.  This can cause MPI jobs to
+run with erratic performance, hang, and/or crash.
+
+This may be caused by your OpenFabrics vendor limiting the amount of
+physical memory that can be registered.  You should investigate the
+relevant Linux kernel module parameters that control how much physical
+memory can be registered, and increase them to allow registering all
+physical memory on your machine.
+
+See this Open MPI FAQ item for more information on these Linux kernel module
+parameters:
+
+    http://www.open-mpi.org/faq/?category=openfabrics#ib-locked-pages
+
+  Local host:              x1
+  Registerable memory:     32768 MiB
+  Total memory:            262141 MiB
+
+Your MPI job will continue, but may be behave poorly and/or hang.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+WARNING: It appears that your OpenFabrics subsystem is configured to only
+allow registering part of your physical memory.  This can cause MPI jobs to
+run with erratic performance, hang, and/or crash.
+
+This may be caused by your OpenFabrics vendor limiting the amount of
+physical memory that can be registered.  You should investigate the
+relevant Linux kernel module parameters that control how much physical
+memory can be registered, and increase them to allow registering all
+physical memory on your machine.
+
+See this Open MPI FAQ item for more information on these Linux kernel module
+parameters:
+
+    http://www.open-mpi.org/faq/?category=openfabrics#ib-locked-pages
+
+  Local host:              x1
+  Registerable memory:     32768 MiB
+  Total memory:            262141 MiB
+
+Your MPI job will continue, but may be behave poorly and/or hang.
 --------------------------------------------------------------------------

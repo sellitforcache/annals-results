@@ -20,7 +20,7 @@ A Continuous-energy Monte Carlo Reactor Physics Burnup Calculation Code
 
  - Default data path set to: "/usr/local/SERPENT/xsdata/endfb7"
 
-Begin calculation on Wed Aug 26 08:06:46 2015
+Begin calculation on Thu Aug 27 10:47:06 2015
 
 Reading input file "assembly-lw"...
 
@@ -136,3 +136,49 @@ Allocating memory for macroscopic cross section data...
 OK.
 
 Allocating memory for particle structures...
+OK.
+
+Calculating maximum densities...
+OK.
+
+Performing density cut-off...
+OK.
+
+Sorting material-wise reaction lists:
+
+   0% complete
+  33% complete
+  67% complete
+ 100% complete
+
+Calculating macroscopic cross sections:
+
+   0% complete
+  33% complete
+  67% complete
+ 100% complete
+
+Waiting for results from other MPI tasks...
+OK.
+
+Calculating DT neutron majorant cross section:
+
+   0% complete
+ 100% complete
+
+Clearing results and statistics...
+OK.
+
+Sampling initial source...
+OK.
+
+Inactive cycle   1 / 160: k-eff = 1.00000
+Inactive cycle   2 / 160: k-eff = 1.05899
+Inactive cycle   3 / 160: k-eff = 1.04119
+Inactive cycle   4 / 160: k-eff = 1.03785
+Inactive cycle   5 / 160: k-eff = 1.04211
+Inactive cycle   6 / 160: k-eff = 1.04915
+Inactive cycle   7 / 160: k-eff = 1.04768
+Inactive cycle   8 / 160: k-eff = 1.04431
+Inactive cycle   9 / 160: k-eff = 1.04871
+Inactive cycle  10 / 160: k-eff = 1.05338
