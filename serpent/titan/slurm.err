@@ -1,14 +1,14 @@
 /bin/sh: BASH_FUNC_module(): line 0: syntax error near unexpected token `)'
 /bin/sh: BASH_FUNC_module(): line 0: `BASH_FUNC_module() () {  eval `/usr/bin/modulecmd bash $*`'
 /bin/sh: error importing function definition for `BASH_FUNC_module'
-cpu_bind=LDRANK - x1, task  0  0 [39973]: mask 0xfff set
-cpu_bind=LDRANK - x1, task  1  1 [39974]: mask 0xfff000 set
-cpu_bind=LDRANK - x1, task  3  3 [39976]: mask 0xfff000000000 set
-cpu_bind=LDRANK - x1, task  2  2 [39975]: mask 0xfff000000 set
-cpu_bind=LDRANK - x1, task  4  4 [39977]: mask 0xfff set
-cpu_bind=LDRANK - x1, task  5  5 [39978]: mask 0xfff000 set
-cpu_bind=LDRANK - x1, task  6  6 [39979]: mask 0xfff000000 set
-cpu_bind=LDRANK - x1, task  7  7 [39980]: mask 0xfff000000000 set
+cpu_bind=LDRANK - x4, task  0  0 [36207]: mask 0xfff set
+cpu_bind=LDRANK - x4, task  1  1 [36208]: mask 0xfff000 set
+cpu_bind=LDRANK - x4, task  3  3 [36210]: mask 0xfff000000000 set
+cpu_bind=LDRANK - x4, task  2  2 [36209]: mask 0xfff000000 set
+cpu_bind=LDRANK - x4, task  5  5 [36212]: mask 0xfff000 set
+cpu_bind=LDRANK - x4, task  4  4 [36211]: mask 0xfff set
+cpu_bind=LDRANK - x4, task  6  6 [36213]: mask 0xfff000000 set
+cpu_bind=LDRANK - x4, task  7  7 [36214]: mask 0xfff000000000 set
 --------------------------------------------------------------------------
 WARNING: It appears that your OpenFabrics subsystem is configured to only
 allow registering part of your physical memory.  This can cause MPI jobs to
@@ -25,9 +25,9 @@ parameters:
 
     http://www.open-mpi.org/faq/?category=openfabrics#ib-locked-pages
 
-  Local host:              x1
+  Local host:              x4
   Registerable memory:     32768 MiB
-  Total memory:            262141 MiB
+  Total memory:            98301 MiB
 
 Your MPI job will continue, but may be behave poorly and/or hang.
 --------------------------------------------------------------------------
@@ -47,9 +47,9 @@ parameters:
 
     http://www.open-mpi.org/faq/?category=openfabrics#ib-locked-pages
 
-  Local host:              x1
+  Local host:              x4
   Registerable memory:     32768 MiB
-  Total memory:            262141 MiB
+  Total memory:            98301 MiB
 
 Your MPI job will continue, but may be behave poorly and/or hang.
 --------------------------------------------------------------------------
@@ -69,9 +69,9 @@ parameters:
 
     http://www.open-mpi.org/faq/?category=openfabrics#ib-locked-pages
 
-  Local host:              x1
+  Local host:              x4
   Registerable memory:     32768 MiB
-  Total memory:            262141 MiB
+  Total memory:            98301 MiB
 
 Your MPI job will continue, but may be behave poorly and/or hang.
 --------------------------------------------------------------------------
@@ -91,9 +91,9 @@ parameters:
 
     http://www.open-mpi.org/faq/?category=openfabrics#ib-locked-pages
 
-  Local host:              x1
+  Local host:              x4
   Registerable memory:     32768 MiB
-  Total memory:            262141 MiB
+  Total memory:            98301 MiB
 
 Your MPI job will continue, but may be behave poorly and/or hang.
 --------------------------------------------------------------------------
@@ -113,9 +113,9 @@ parameters:
 
     http://www.open-mpi.org/faq/?category=openfabrics#ib-locked-pages
 
-  Local host:              x1
+  Local host:              x4
   Registerable memory:     32768 MiB
-  Total memory:            262141 MiB
+  Total memory:            98301 MiB
 
 Your MPI job will continue, but may be behave poorly and/or hang.
 --------------------------------------------------------------------------
@@ -135,9 +135,9 @@ parameters:
 
     http://www.open-mpi.org/faq/?category=openfabrics#ib-locked-pages
 
-  Local host:              x1
+  Local host:              x4
   Registerable memory:     32768 MiB
-  Total memory:            262141 MiB
+  Total memory:            98301 MiB
 
 Your MPI job will continue, but may be behave poorly and/or hang.
 --------------------------------------------------------------------------
@@ -157,9 +157,9 @@ parameters:
 
     http://www.open-mpi.org/faq/?category=openfabrics#ib-locked-pages
 
-  Local host:              x1
+  Local host:              x4
   Registerable memory:     32768 MiB
-  Total memory:            262141 MiB
+  Total memory:            98301 MiB
 
 Your MPI job will continue, but may be behave poorly and/or hang.
 --------------------------------------------------------------------------
@@ -179,14 +179,10 @@ parameters:
 
     http://www.open-mpi.org/faq/?category=openfabrics#ib-locked-pages
 
-  Local host:              x1
+  Local host:              x4
   Registerable memory:     32768 MiB
-  Total memory:            262141 MiB
+  Total memory:            98301 MiB
 
 Your MPI job will continue, but may be behave poorly and/or hang.
 --------------------------------------------------------------------------
-srun: Job step aborted: Waiting up to 2 seconds for job step to finish.
-srun: got SIGCONT
-slurmd[x1]: error: *** STEP 31670.0 CANCELLED AT 2015-08-27T11:03:14 ***
-slurmd[x1]: error: *** JOB 31670 CANCELLED AT 2015-08-27T11:03:14 ***
-srun: forcing job termination
+srun: error: x4: task 2: Killed
