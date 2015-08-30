@@ -186,3 +186,9 @@ parameters:
 Your MPI job will continue, but may be behave poorly and/or hang.
 --------------------------------------------------------------------------
 srun: error: x4: task 2: Killed
+srun: Job step aborted: Waiting up to 2 seconds for job step to finish.
+srun: got SIGCONT
+slurmd[x4]: error: *** JOB 31694 CANCELLED AT 2015-08-29T08:57:15 ***
+srun: forcing job termination
+slurmd[x4]: error: *** STEP 31694.0 CANCELLED AT 2015-08-29T08:57:15 ***
+srun: error: Timed out waiting for job step to complete
