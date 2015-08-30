@@ -7,7 +7,8 @@ import matplotlib.gridspec as gridspec
 import matplotlib.colorbar as cbar
 import matplotlib.pyplot as plt 
 from matplotlib.ticker import MaxNLocator
-import MCNPtools
+from MCNPtools.mctal import mctal
+
 
 #from pyne import ace
 import numpy as np
@@ -64,7 +65,7 @@ casename=sys.argv[1]
 tally      = numpy.loadtxt('warp/'+casename+'.tally')
 tallybins  = numpy.loadtxt('warp/'+casename+'.tallybins')
 serpdata   = get_serpent_det('serpent/'+casename+'_det0.m')
-mcnp_tal   = MCNPtools.mctal('mcnp/'+casename+'.mctal')
+mcnp_tal   = mctal('mcnp/'+casename+'.mctal')
 #mcnpdata   =[]
 #mcnpdata.append(numpy.linspace(0,20,len(serpdata['DETfluxlog'][:,10])-1) )
 #mcnpdata.append(numpy.zeros(len(serpdata['DETfluxlog'][:,10])))
@@ -78,7 +79,7 @@ elif casename[-7:]=='pincell':
         err_range = 0.025
 elif casename[-11:]=='assembly-lw':
 	mcnp_vol = 1.0*1.0*numpy.pi*40.0
-	err_range = 0.05
+	err_range = 0.1
 elif casename[-7:]=='jezebel':
 	mcnp_vol = 4.0/3.0*numpy.pi*6.6595*6.6595*6.6595
 	err_range = 0.02
