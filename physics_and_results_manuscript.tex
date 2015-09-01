@@ -441,7 +441,7 @@ Table \ref{results_table_titan} shows the multiplication factor deviations and t
 
 \begin{table}[h]
 \centering
-\caption{The multiplication factors and runtimes of the test cases using Serpent 2.1.21 and MCNP 6.1, and WARP using a Titan Black GPU.}
+\caption{The test case multiplication factors and runtimes WARP using a Titan Black GPU versus those of Serpent 2.1.21 and MCNP 6.1.}
 \label{results_table_titan}
 \footnotesize
 \begin{tabular}{| l | r | r | r || r | r |}
@@ -451,42 +451,42 @@ Test & Serpent 2.1.21 & MCNP 6.1 & WARP & $\Delta$ Serp. & $\Delta$ MCNP  \\
 \hline
 \multicolumn{6}{|l|}{Jezebel} \\
 \hline
-$k_\mathrm{eff}$ & 1.00005$\pm$7.7E-5 &	0.99995$\pm$5.0E-5 &	0.999771$\pm$9.6E-5 &	-27.9 pcm &	-17.9 pcm \\
+$k_\mathrm{eff}$ & 1.00005$\pm$7.7E-5 &	0.99995$\pm$5.0E-5 &	0.999771$\pm$9.6E-5 &	-28 pcm (n) &	 -18 pcm (n) \\
 \hline
 Runtime & 10.34 m  &	37.2  m &	4.6  m &	  2.2x      &	8.1x \\
 \hline
 \hline
 \multicolumn{6}{|l|}{Homogenized Block }\\
 \hline
-$k_\mathrm{eff}$ & 0.593385$\pm$9.8E-5 &	0.59273$\pm$3.0E-5 &	0.592295$\pm$9.6E-5 &	-109  pcm &	-43.5 pcm  \\
+$k_\mathrm{eff}$ & 0.593385$\pm$9.8E-5 &	0.59273$\pm$3.0E-5 &	0.592295$\pm$9.6E-5 &	-109  pcm (n)&	-44 pcm  (n)\\
 \hline
 Runtime & 57.84  m &	133.37 m  &	10.93 m  &	5.3x &	12.2x \\
 \hline
 \hline
 \multicolumn{6}{|l|}{Pin Cell}\\
 \hline
-$k_\mathrm{eff}$ & 0.275401$\pm$4.5E-4 &	0.27517$\pm$3.0E-5 &	0.274106$\pm$9.6E-5 &	-129.5  pcm &	-106.4  pcm \\
+$k_\mathrm{eff}$ & 0.275401$\pm$4.5E-4 &	0.27517$\pm$3.0E-5 &	0.274106$\pm$9.6E-5 &	-130  pcm (n)&	-106  pcm (n)\\
 \hline
 Runtime & 198.57 m &	177.38 m &	30.43  m &	6.5x &	5.8x \\
 \hline
 \hline
 \multicolumn{6}{|l|}{FLiBe Cell}\\
 \hline
-$k_\mathrm{eff}$ & 0.88049$\pm$7.0E-5 &	0.88086$\pm$2.0E-5 &	0.875701$\pm$9.6E-5 &	-478.9  pcm &	-515.9 pcm  \\
+$k_\mathrm{eff}$ & 0.88049$\pm$7.0E-5 &	0.88086$\pm$2.0E-5 &	0.875701$\pm$9.6E-5 &	-479  pcm (n) &	-516 pcm  (n)\\
 \hline
 Runtime & 114.65 m  &	416.77 m  &	31.99 m  &	3.6x &	13.0x \\
 \hline
 \hline
 \multicolumn{6}{|l|}{Sodium Pin Cell}\\
 \hline
-$k_\mathrm{eff}$ & 1.09868$\pm$6.4E-5 &	1.10099$\pm$2.0E-5 &	1.096884$\pm$9.6E-5 &	-179.6  pcm &	-410.6  pcm \\
+$k_\mathrm{eff}$ & 1.09868$\pm$6.4E-5 &	1.10099$\pm$2.0E-5 &	1.096884$\pm$9.6E-5 &	-180  pcm (n) &	-411 pcm (n) \\
 \hline
 Runtime & 185.78 m  &	494.3 m  &	73.73  m &	2.5x &	6.7x \\
 \hline
 \hline
 \multicolumn{6}{|l|}{Hex Assembly}\\
 \hline
-$k_\mathrm{eff}$ & 1.05057$\pm$1.90E-04 &	1.05012$\pm$5.00E-05 &	1.048896$\pm$5.53E-05 &	-167.4 pcm  &	-122.357 pcm  \\
+$k_\mathrm{eff}$ & 1.05057$\pm$1.90E-04 &	1.05012$\pm$5.00E-05 &	1.048896$\pm$5.53E-05 &	-167 pcm (n) &	-122 pcm (n)  \\
 \hline
 Runtime & 120.42 m  &	321.27 m  &	43.15  m &	2.79x &	7.44x \\
 \hline
@@ -496,7 +496,7 @@ Runtime & 120.42 m  &	321.27 m  &	43.15  m &	2.79x &	7.44x \\
 
 \begin{table}[h]
 \centering
-\caption{The multiplication factors and runtimes of the test cases using Serpent 2.1.21 and MCNP 6.1, and WARP using a Tesla K20 GPU.}
+\caption{The test case multiplication factors and runtimes WARP using a Tesla K20 GPU versus those of Serpent 2.1.21 and MCNP 6.1.}
 \label{results_table_k20}
 \footnotesize
 \begin{tabular}{| l | r | r | r || r | r |}
@@ -506,42 +506,42 @@ Test & Serpent 2.1.21 & MCNP 6.1 & WARP & $\Delta$ Serp. & $\Delta$ MCNP  \\
 \hline
 \multicolumn{6}{|l|}{Jezebel} \\
 \hline
-$k_\mathrm{eff}$ & 9.99784$\pm$9.5E-5 &		0.99982$\pm$5E-5 &		0.999771$\pm$9.6E-5	 &	-899806.9 &		-4.9 \\
+$k_\mathrm{eff}$ & 0.999784$\pm$9.5E-5 &		0.99982$\pm$5E-5 &		0.999771$\pm$9.6E-5	 &	-1 (y) &		-5 (y)\\
 \hline
 Runtime & 7.24	 m  &		30.56666667 m 	 &		5.24 m 	 &		1.4x	& 5.8x  \\
 \hline
 \hline
 \multicolumn{6}{|l|}{Homogenized Block }\\
 \hline
-$k_\mathrm{eff}$ & 0.593409$\pm$1.2E-4 &		0.59277$\pm$3E-5 &		0.592259$\pm$1.4E-4 &		-115	 &	-51.1  \\
+$k_\mathrm{eff}$ & 0.593409$\pm$1.2E-4 &		0.59277$\pm$3E-5 &		0.592259$\pm$1.4E-4 &		-115	(n) &	-51 (n)  \\
 \hline
 Runtime & 39.41 m 	 &		98.4 m  &		12.26 m 	 &		3.2x &		8.0x \\
 \hline
 \hline
 \multicolumn{6}{|l|}{Pin Cell}\\
 \hline
-$k_\mathrm{eff}$ & 	 0.275051$\pm$0.00018&		0.27517$\pm$3.0E-5	 &	0.274162$\pm$1.6E-4	 &	27416.2	 &	-100.8 \\
+$k_\mathrm{eff}$ & 	 0.275051$\pm$0.00018&		0.27517$\pm$3.0E-5	 &	0.274162$\pm$1.6E-4	 &	-89 (n)	 &	-101 (n) \\
 \hline
 Runtime & 	146.15 &		131.2666667 m 	 &		33.7 m  &			4.3x	 &	3.9x \\
 \hline
 \hline
 \multicolumn{6}{|l|}{FLiBe Cell}\\
 \hline
-$k_\mathrm{eff}$ & 0.88049$\pm$8.7E-5	 &	0.88088$\pm$2.0E-5	 &	0.875728$\pm$9.6E-5	 &	-476.2	 &	-515.2  \\
+$k_\mathrm{eff}$ & 0.88049$\pm$8.7E-5	 &	0.88088$\pm$2.0E-5	 &	0.875728$\pm$9.6E-5	 &	-476 (n)	 &	-515  (n)\\
 \hline
 Runtime & 79.16 m 	 &		269.4666667 m 		 &	32.03 m 	 &		2.5x	 &	8.4x \\
 \hline
 \hline
 \multicolumn{6}{|l|}{Sodium Pin Cell}\\
 \hline
-$k_\mathrm{eff}$ & 	1.09871$\pm$0.00022 &		1.10098$\pm$3.0E-5	 &	1.097109$\pm$5.5E-5	 &	109710.9 &		-387.1 \\
+$k_\mathrm{eff}$ & 	1.09871$\pm$0.00022 &		1.10098$\pm$3.0E-5	 &	1.097109$\pm$5.5E-5	 &	-160 (n)&		-387 (n)\\
 \hline
 Runtime & 	120.86	 &	320.4 m 	 &		76.46 m  &			1.6x &		4.2x \\
 \hline
 \hline
 \multicolumn{6}{|l|}{Hex Assembly}\\
 \hline
-$k_\mathrm{eff}$ & 1.05033$\pm$7.20E-05	 &	1.05019$\pm$0.00006	 &	1.04886055$\pm$5.53E-05	 &	-146.945 &		-132.945  \\
+$k_\mathrm{eff}$ & 1.05033$\pm$7.20E-05	 &	1.05019$\pm$0.00006	 &	1.04886055$\pm$5.53E-05	 &	-147 (n) & -133 (n) \\
 \hline
 Runtime & 81.5 m 		 &	160.68 m 	 &		45.06 m  &			1.8x	 &	3.6x \\
 \hline
@@ -549,16 +549,11 @@ Runtime & 81.5 m 		 &	160.68 m 	 &		45.06 m  &			1.8x	 &	3.6x \\
 \end{table}
 
 
-It can be seen that in the $10^5$ neutrons per batch case, WARP performs 8 to 36 times faster than the production codes, and the multiplication factor differences are slightly different.  Multiplication factors are most notably different in the assembly test, where WARP's answer falls between MCNP and Serpent, but is still very far from either.  Similar trends are shown in the multiplication factor for the $10^6$ runs in Table \ref{test_summary_6}, but the speedup factors are much higher, with WARP being 11 to 82 times faster than the production codes.   The greatest speedup is seen in the pin cell test, followed by the homogenized block, assembly, then finally the bare sphere.  The speedup factors compared to Serpent in the $10^6$ neutrons per batch runs are relatively constant, ranging from 33 to 56, whereas the speedup factors compared to MCNP range from 11 to 82.
+It can be seen that WARP performs 2.2 to 13.0 times faster than the production codes while running on a Titan Black card, and 1.4 to 8.4 times faster on a K20 card.  This speedup factor is calculated over an entire compute node, so these cards can have performance equivalent to 1.4 to 13 compute nodes, depending on the type of simulation.   The smallest speedup is in the jezebel test, and the largest speedups are on the FLiBe and pin cell tests.
 
-In the Jezebel test, all codes agree, but as things get more complicated, deviations start to occur.  WARP is often outside of a single standard deviation for either code.  It is important to point out that Serpent and MCNP are also often more than a standard deviation away from each other, with WARP falling somewhere in between, or if not in between, near one of the two codes.
+Despite the very encouraging speedup factors, the multiplication factors calculated by WARP deviate fro those of the production codes.  Across all test cases, WARP underestimates the multiplication factor.  The only case where the multiplication factors are within simulation statistical error is the jezebel test on the K20 card.  The largest deviation is on the FLiBe test.  
 
-It is also interesting that in the Jezebel test, MCNP is actually much faster than Serpent.  Presumably, this is due to the different methods they use for neutron tracking.  Serpent uses Woodcock tracking, and moves the neutron in small steps across the geometry, but does not have to calculate any surface intersection points.  MCNP uses ray tracing and does calculate intersection points (as does WARP).  Since the Jezebel sphere is a very leaky system, many neutrons stream out of the sphere without interacting many times (or at all).  Since  MCNP and WARP both use ray tracing, they can terminate these particles in a small number of geometry queries.  Serpent, however, needs to query the geometry many times in order to propagate the neutrons to the edge of the sphere where they are leaked.  This difference is not seen in the homogenized block test, where leakage plays very little role in neutron loss.
-
-Tables \ref{test_summary_5} and \ref{test_summary_6} show that the multiplication factors calculated by WARP sometimes fall outside the uncertainty of the production codes.  The exact reason for this has not been determined, but can be speculated.  The deviations are the worst in the assembly test, implying that there may be a bug error in the geometry processing routines.  The fact that WARP treats (n,2/3/4n) multiplicity reactions as neutron sources instead of negative absorptions could also be effecting the results, as per \eqref{k_eff_mcnp} and \eqref{k_eff_warp}.  WARP also produces spectra that have slight differences from Serpent and MCNP (shown in the next section), indicating that the reaction rates are different at certain energies.  And even though they are small, spectral differences may point to a bug in the reaction sampling routines.  WARP also uses single precision float point numbers, and the way that $k_\mathrm{eff}$ is accumulated between batches may also be leading to roundoff errors in the final result.  Another reason could be that the fission source distributions are not completely converged.  Adding a estimator for the fission source convergence, such as Shannon entropy \cite{mcnp}, could be incorporated into WARP in the future to ensure full convergence.  The reproducibility of results has also not been tested in WARP.  CURAND can be seeded with the same number across runs, which should lead to the same sequence of random numbers in the kernel LCRNGs, but exact reproducibility has not been attempted.  Reproducibility is an important feature in validating results, and will be an area of future development for WARP.
-
-
-
+WARP also produces spectra that have slight differences from Serpent and MCNP (shown in the next section), indicating that the reaction rates are different at certain energies, and may indicate that .  And even though they are small, spectral differences may point to a bug in the reaction sampling routines.  CURAND can be seeded with the same number across runs, which should lead to the same sequence of random numbers in the kernel LCRNGs, but exact reproducibility has not been attempted.  Reproducibility is an important feature in validating results, and will be an area of future development for WARP.
 
 \newpage
 \subsection{Spectra}
@@ -566,27 +561,30 @@ Tables \ref{test_summary_5} and \ref{test_summary_6} show that the multiplicatio
 
 \subsubsection{Test 1 - ``Jezebel'' Bare Pu Sphere}
 
+Figure \ref{jezebel_spec} shows the volume-averaged flux spectrum in the Jezebel sphere.  The relative difference compared to the MCNP spectrum is shown in the top subplot below the main spectrum plot, and the relative difference from the Serpent spectrum is shown in the lower subplot.  The relative difference is very low compared to Serpent, with the normalized tally bins being less than 1\% from each other in regions where the flux is large.  Of course, when the flux is small, the statistical uncertainty becomes much higher, and the relative difference becomes noisy.   Despite being low, the relative error is outside the 2-sigma bounds except at 1 MeV.  WARP under-predicts the flux values below 1 MeV, and over-predicts the values above.  This trend indicates there may be a slight sampling error in either the geometry and/or the cross section sampling routines. 
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/jezebel_spec.pdf}
-\caption{Volume-average flux spectra of a fixed-source simulation with a 2 MeV point source in a block of water. \label{jezebel_spec} }
+\caption{Volume-average flux spectra inside the sphere of the Jezebel test case. \label{jezebel_spec} }
 \end{figure}
 
 
 \newpage
 \subsubsection{Test 2 - Homogenized Fuel Block}
 
+Figure \ref{homfuel_spec} shows the volume-averaged flux spectrum in the homogenized fuel cube.  The relative difference compared to the MCNP and Serpent is again shown in the lower subplots.  The relative difference is again generally less than 1\%, but again WARP over-predicts the flux values above 1 MeV.  Below 0.1 MeV, the spectra agree well, but regions around resonances appear be cause relatively large deviations from the production code spectra.  The MCNP spectrum also appears to have a constant offset compared to the WARP spectrum, indicating a slightly different normalization. 
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/homfuel_spec.pdf}
-\caption{Volume-average flux spectra of a fixed-source simulation with a 2 MeV point source in a block of water. \label{homfuel_spec} }
+\caption{Volume-average flux spectra inside the homogenized fuel block. \label{homfuel_spec} }
 \end{figure}
 
 \newpage
 \subsubsection{Test 3 - Zr-Clad UO$_2$ Pin in Light Water}
 
+Figure \ref{pincell_spec} shows the volume-averaged flux spectrum in the Jezebel sphere.  The relative difference compared to the MCNP spectrum is shown in the top subplot below the main spectrum plot, and the relative difference from the Serpent spectrum is shown in the lower subplot.  The relative difference is very low compared to Serpent, with the normalized tally bins being less than 1\% from each other in regions where the flux is large.  Of course, when the flux is small, the statistical uncertainty becomes much higher, and the relative difference becomes noisy.   Despite being low, the relative error is outside the 2-sigma bounds except at 1 MeV.  WARP under-predicts the flux values below 1 MeV, and over-predicts the values above.  This trend indicates there may be a slight sampling error in either the geometry and/or the cross section sampling routines. 
 
 
 \begin{figure}[h!]
@@ -598,6 +596,8 @@ Tables \ref{test_summary_5} and \ref{test_summary_6} show that the multiplicatio
 \newpage
 \subsubsection{Test 4 - Homogenized Fuel Pebble in FLiBe}
 
+Figure \ref{flibe_spec} shows the volume-averaged flux spectrum in the Jezebel sphere.  The relative difference compared to the MCNP spectrum is shown in the top subplot below the main spectrum plot, and the relative difference from the Serpent spectrum is shown in the lower subplot.  The relative difference is very low compared to Serpent, with the normalized tally bins being less than 1\% from each other in regions where the flux is large.  Of course, when the flux is small, the statistical uncertainty becomes much higher, and the relative difference becomes noisy.   Despite being low, the relative error is outside the 2-sigma bounds except at 1 MeV.  WARP under-predicts the flux values below 1 MeV, and over-predicts the values above.  This trend indicates there may be a slight sampling error in either the geometry and/or the cross section sampling routines. 
+
 
 \begin{figure}[h!]
 \centering
@@ -608,6 +608,8 @@ Tables \ref{test_summary_5} and \ref{test_summary_6} show that the multiplicatio
 \newpage
 \subsubsection{Test 5 - Stainless Steel-Clad Metallic Uranium Pin in Liquid Sodium}
 
+Figure \ref{sodiumpin_spec} shows the volume-averaged flux spectrum in the Jezebel sphere.  The relative difference compared to the MCNP spectrum is shown in the top subplot below the main spectrum plot, and the relative difference from the Serpent spectrum is shown in the lower subplot.  The relative difference is very low compared to Serpent, with the normalized tally bins being less than 1\% from each other in regions where the flux is large.  Of course, when the flux is small, the statistical uncertainty becomes much higher, and the relative difference becomes noisy.   Despite being low, the relative error is outside the 2-sigma bounds except at 1 MeV.  WARP under-predicts the flux values below 1 MeV, and over-predicts the values above.  This trend indicates there may be a slight sampling error in either the geometry and/or the cross section sampling routines. 
+
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/sodiumpin_spec.pdf}
@@ -617,6 +619,9 @@ Tables \ref{test_summary_5} and \ref{test_summary_6} show that the multiplicatio
 
 \newpage
 \subsubsection{Test 6 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
+
+Figure \ref{assmebly_spec} shows the volume-averaged flux spectrum in the Jezebel sphere.  The relative difference compared to the MCNP spectrum is shown in the top subplot below the main spectrum plot, and the relative difference from the Serpent spectrum is shown in the lower subplot.  The relative difference is very low compared to Serpent, with the normalized tally bins being less than 1\% from each other in regions where the flux is large.  Of course, when the flux is small, the statistical uncertainty becomes much higher, and the relative difference becomes noisy.   Despite being low, the relative error is outside the 2-sigma bounds except at 1 MeV.  WARP under-predicts the flux values below 1 MeV, and over-predicts the values above.  This trend indicates there may be a slight sampling error in either the geometry and/or the cross section sampling routines. 
+
 
 \begin{figure}[h!]
 \centering
