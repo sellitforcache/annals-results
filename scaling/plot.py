@@ -34,10 +34,13 @@ for d in dirs:
 		N.append(float(res2.group(1))*total_cycles)
 		f.close()
 
+rate = numpy.divide(N,numpy.multiply(t,60.0))
+
 f = plt.figure()
 ax = f.add_subplot(111)
-ax.semilogx(N,numpy.divide(N,numpy.multiply(t,60.0)),'b',linewidth=2)
-ax.set_ylabel(r'Neutron Processing Rate (neutrons/sec)')
-ax.set_xlabel(r'Dataset Size')
+ax.semilogx(N,rate,'b',linewidth=2)
+ax.set_ylabel(r'Avg. Neutron Processing Rate (n/sec)')
+ax.set_xlabel(r'Dataset Size (n/cycle)')
 ax.grid(1)
+plt.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 plt.show()
