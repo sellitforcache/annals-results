@@ -179,9 +179,9 @@ Developing WARP was motivated by modern supercomputers commonly being built with
      \caption{Data-parallel neutron trasport loop vs. a task-parallel transport loop for transporting N neutrons in parallel.  \label{datavtask} }
 \end{figure}
 
-Execution on GPUs also requires additional data management, since the on-chip memory of the GPU is separate from the host CPUs memory \cite{cuda}.  Execution on NVIDIA GPUs also required code to be written in CUDA, which is a set of extensions for C/C++.  The simplest way to accommodate all these requirements was to write a new code from scratch, which ultimately resulted in WARP.  
+Execution on GPUs requires additional data management since the on-chip memory of the GPU is separate from the host CPUs memory \cite{cuda}.  Execution on NVIDIA GPUs also required code to be written in CUDA, which is a set of extensions for C/C++.  The simplest way to accommodate all these requirements was to write a new code from scratch, which ultimately resulted in WARP.  
 
-In this paper, results calculated by WARP are compared against those calculated by Serpent 2.XX.X and MCNP 6.1, two widely-used production-level Monte Carlo neutron transport codes, in order to ensure the accuracy of WARP and to highlight its performance differences.  The details about the algorithms used in WARP are discussed in \cite{algorithms}.
+In this paper, results calculated by WARP are compared against those calculated by Serpent 2.1.21 and MCNP 6.1, two widely-used production-level Monte Carlo neutron transport codes, in order to ensure the accuracy of WARP and to highlight its performance differences.  The details about the algorithms used in WARP are discussed in \cite{algorithms}.
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -190,18 +190,17 @@ In this paper, results calculated by WARP are compared against those calculated 
 \section{Features of WARP}
 \label{sec:features}
 
-WARP has only existed since 2013, and is not as fully-featured as more mature Monte Carlo codes.  It has the functionality necessary to compare its performance against  Serpent 2.XX.X and MCNP 6.1, and this section outlines the current set of features available in WARP.  
+WARP has only existed since 2013, and is not as fully-featured as more mature Monte Carlo codes.  It has the functionality necessary to compare its performance against  Serpent 2.1.21 and MCNP 6.1, and this section outlines the current set of features available in WARP.  
 
 \subsection{Physics}
 
-Only neutrons are transported by WARP.  Any other particles are not considered in any way.  WARP loads ACE-formatted nuclear data libraries via the ``ace'' module in PyNE \cite{}.  The cross section data are then re-formatted to use a unionionzed energy grid via numpy, then then passed to the C++ routines via the Python C API.  Cross section data compiled by the United States is distributed by the Department of Energy in \emph{ENDF} files.  ENDF stands for ``evaluated nuclear data file,'' and can contain data for nuclear decay, photons, atomic relaxation, fission yields, thermal neutron scattering, and charged particle reactions as well as neutron reactions.  ACE stands for ``a compact ENDF'' and strips out a lot of the extra information unnecessary for neutron transport.  Since many Monte Carlo codes read ACE-formatted data rather than the original ENDF file, WARP can eliminate one potential cause for discrepancies by loading identical data as other codes.  
+Only neutrons are transported by WARP.  Any other particles are not considered in any way.  WARP loads ACE-formatted nuclear data libraries via the ``ace'' module in PyNE \cite{pyne}.  The cross section data are then re-formatted to use a unionionzed energy grid via numpy, then then passed to the C++ routines via the Python C API.  Cross section data compiled by the United States is distributed by the Department of Energy in \emph{ENDF} files.  ENDF stands for ``evaluated nuclear data file,'' and can contain data for nuclear decay, photons, atomic relaxation, fission yields, thermal neutron scattering, and charged particle reactions as well as neutron reactions.  ACE stands for ``a compact ENDF'' and strips out a lot of the extra information unnecessary for neutron transport and formats the data into the specified tabulation \cite{endfnums}.  Since many Monte Carlo codes read ACE-formatted data rather than the original ENDF file, WARP can eliminate one potential cause for discrepancies by loading identical data as other codes.  
 
-In its current state, WARP does not use the thermal scattering (S($\alpha,$$\beta$)) tables or unresolved resonance parameters and only uses the free-gas approximation for target nuclei.  This treats the target as part of a gas at a certain temperature and does not consider anything other than purely elastic scattering. Thermal scattering and unresolved resonance data tables improve the physical fidelity of the simulation, but these features can be turned off in production codes and direct comparisons can be made without them.  Their incorporation may lead to more divergent program flow and is left as an area of future work.
+In its current state, WARP does not use S($\alpha,$$\beta$) thermal scattering tables or unresolved resonance parameters and only uses the free-gas approximation for target nuclei.  This treats the target as part of a gas at a certain temperature and does not consider other modes of energy transfer that rise from inter- and intra-molecular phenomena.  Thermal scattering and unresolved resonance data improve the physical fidelity of the simulation, but these features can be turned off in production codes and direct comparisons can be made without them.  Their incorporation may lead to more divergent program flow and is left as an area of future work.
 
 WARP currently also has an incomplete set of the ENDF sampling laws implemented.   These are laws 3 (level scattering), 4 (continuous tabular distribution), 7 (Simple Maxwell Fission Spectrum), 9 (Evaporation Spectrum), 44 (Kalbach-87 Formalism), 61 (LAW 44 but tabular angular distribution), and 66 (N-body phase space distribution) \cite{MCNP}.  These laws cover all the reactions present in the test problems presented here, but some nuclei may have interactions that require the remaining laws (1, 2, 5, 11, 22, 24, 67). Problems containing any such nuclides cannot be simulated according to the data specifications with the current version of WARP.
 
-Also mention that there are weights now, multiplicity reactions are treated as doubling the weight \cite{openmc}.  
-
+Sophisticated variance reduction is also not implemented in WARP, but it does use neutron weight to calculate fluxes and multiplication factors.  Currently the only reactions that adjust neutron weight are multiplicity reactions, like (n,2n), where the neutron weight is multiplied by the exiting neutron number in a similar way to OpenMC \cite{openmc}.  This means that new neutron histories do not have to be created mid-batch in criticality calculations, and makes program flow simpler.  Since neutron weights are implemented in WARP, however, simple variance reduction techniques like implicit capture should be a straight-forward part of future development.
 
 \subsection{Geometry}
 
@@ -224,13 +223,14 @@ An improved tracking routine has been implemented in WARP since the last publica
 \caption{The improved point-in-polygon ``where am I?'' algorithm. \label{whereami} }
 \end{figure}
 
+
 \subsection{Other Features}
 
 WARP is mainly written in C/C++ and is compiled to a shared library.   and  with Python.  Pythonic wrapping is done via SWIG \cite{swig}, which automatically wraps compiled languages like C/C++ in high-level scripting languages.  With the C++ classes exposed in Python, the main() function can be replaced with a Python script, eliminating the need recompiled a main function and link it to the WARP library when different geometries or different run parameters are desired.  Of course, there is flexibility as well, and one could write a main function that could handle all conceivable cases 
 
 The Python wrapping approach deviates from the standard flat text input file structure that many Monte Carlo codes use.  Flat text input relies on keywords and adds a layer where input files need to be parsed and data structures are then built in the application based on the information parsed from the input.  Using Python to directly access the classes and their data removes this layer, and allows a user to build complex, custom applications if necessary.  Since the results would also be resident in a Python session and would therefore be easily available to the user for potting scripts or analysis tools.  To process data in the same way from text-file-based output, the output needs to be parsed with a user written function or processed by hand, which is time consuming and can lead to human error.
 
-WARP only has collision estimators implemented for both flux and multiplication factor estimation.  The relative error of these estimations are calculated, but any additional convergence estimation beyond relative error has not been implemented.  WARP is also only able to estimate the flux in a single volume.  No variance reduction schemes have been implemented either, and WARP treats all neutrons as having the same importance.
+WARP only has collision estimators implemented for both flux and multiplication factor estimation.  The relative error of these estimations are calculated, but any additional convergence estimation beyond relative error has not been implemented.  WARP is also only able to estimate the flux in a single volume and developing a GPU-efficient algorithm for multiple tallies is a major area of future development.  Since path lengths are already calculated in OptiX, implementing tack length tallies could be a straight-forward variance reduction technique to introduce into WARP in the future.
 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
@@ -238,7 +238,7 @@ WARP only has collision estimators implemented for both flux and multiplication 
 \section{Tests}
 \label{sec:tests}
 
-Various CPU and GPU hardware were chose to test WARP on to give a comprehensive view of the platforms that Monte Carlo neutron transport is typically performed on.  For the CPU platforms, a cluster node and a workstation are used.  For the GPU platforms, a mobile graphics card, a consumer-level graphics card, and compute-specific card are used. The benchmark cases are run at maximum number of histories per criticality batch as possible for the specific GPUs (this is where they perform the best, but is limited by on-card memory), and the CPU cases are run with identical batch parameters.  The CPU cases are run with the maximum number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole. For the k20 and Titan GPUs, the costs include the retail price of a minimal host computer with at least as much memory as the card (~\$200?).  All the tests use ENDFB/VII cross sections that ship with the Serpent 1.XX release from RSICC.  This 
+Various CPU and GPU hardware were chose to test WARP on to give a comprehensive view of the platforms that Monte Carlo neutron transport is typically performed on.  For the CPU platforms, a cluster node was used.  For the GPU platforms, a consumer-level graphics card and a compute-specific card are used. The benchmark cases are run at maximum number of histories per criticality batch as possible for the specific GPUs (this is where they perform the best, but is limited by on-card memory), and the CPU cases are run with identical batch parameters  when possible.   The CPU cases are run with the optimal number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole.    For the k20 and Titan GPUs, the costs include the retail price of a minimal host computer with at least as much memory as the card (~\$200?).  
 
 \begin{table}[h]
 \centering
@@ -271,58 +271,54 @@ NVIDIA Titan Black       &      \multicolumn{2}{r|}{ 15 }  &  1071.5 MHz     & $
 \end{tabular}
 \end{table}
 
+All the tests use ENDF/B-VII cross sections that ship with the Serpent 1.1.7 release from RSICC.  These cross sections contain fewer energy grid points than the END/B-VII.1 cross sections that ship with the MCNP 6.1 release from RSICC, and allow more isotopes to be use by WARP since it it does not performa any type of grid thinning after energy grid unoinization.
+
 
 %%%%%%%%%%%%%%%%%%%
-\newpage
 \subsection{Test 1 - ``Jezebel'' Bare Pu Sphere}
 
-The ``Jezebel'' criticality test is a bare plutonium sphere with vacuum boundary conditions.   The fission neutron rate from $^{239}$Pu is balanced by the leakage rate from the 5.1 cm radius to give a $k_\mathrm{eff}$ of approximately 1.  Since this system is so leaky, producing results consistent with MCNP and Serpent ensures that the boundary conditions are correctly being enforced.  The Jezebel test is a standard test used to validate neutron transport codes.  It is described in the International Handbook of Evaluated Criticality Safety Test Experiments under the name ``Pu-MET-FAST-001'' \cite{bench_handbook}.  The geometry and materials are outlined in Table \ref{jezebel_geom}.  All cross sections used were processed at 273.5 K.
+The ``Jezebel'' criticality test is a bare plutonium/gallium sphere with vacuum boundary conditions.   The fission neutron rate from $^{239}$Pu is balanced by the leakage rate from the 5.1 cm radius to give a $k_\mathrm{eff}$ of approximately 1.  Since this system is so leaky, producing results consistent with MCNP and Serpent ensures that the boundary conditions are correctly being enforced.  The Jezebel test is a standard test used to validate neutron transport codes and is described in the International Handbook of Evaluated Criticality Safety Test Experiments under the name ``Pu-MET-FAST-001'' \cite{bench_handbook}.  The geometry and materials are outlined in Table \ref{jezebel_geom}.  All cross sections used were processed at 273.5 K.
 
 \begin{table}[h]
 \centering
 \caption{Geometry and materials used in the ``Jezebel'' benchmark.}
 \label{jezebel_geom}
-\begin{tabular}{| l | c | c | c |}
+\begin{tabular}{| l | c  c | c |}
 \hline
-Cells & Isotopes (Atm. Frac.)& Densities \\
+Cells & Isotopes & (Atm. Frac.)& Densities \\
 \hline
-\multirow{6}{*}{1 sphere, r=6.6595 cm }  &  $^{239}$Pu (0.7381) &    \multirow{6}{*}{15.73 g/cm$^3$} \\
-                                         &  $^{240}$Pu (0.1942)    & \\
-                                         &  $^{241}$Pu (0.0299)    & \\
-                                         &  $^{242}$Pu (0.0038)    & \\
-                                         &  $^{69}$Ga  (0.0203)    & \\
-                                         &  $^{71}$Ga  (0.0135)     & \\ 
+\multirow{3}{*}{1 sphere, r=6.6595 cm }  &  $^{239}$Pu (0.7381)    &    $^{240}$Pu (0.1942)     &  \multirow{3}{*}{15.73 g/cm$^3$} \\
+                                         &  $^{241}$Pu (0.0299)    &     $^{242}$Pu (0.0038)    &   \\
+                                         &  $^{69}$Ga  (0.0203)    &     $^{71}$Ga  (0.0135)    &   \\
 \hline
 \end{tabular}
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%
-\newpage
 \subsection{Test 2 - Homogenized Fuel Block}
 
-The ``Jezebel'' criticality test is a bare plutonium sphere with vacuum boundary conditions.   The fission neutron rate from $^{239}$Pu is balanced by the leakage rate from the 5.1 cm radius to give a $k_\mathrm{eff}$ of approximately 1.  Since this system is so leaky, producing results consistent with MCNP and Serpent ensures that the boundary conditions are correctly being enforced.  The Jezebel test is a standard test used to validate neutron transport codes.  It is described in the International Handbook of Evaluated Criticality Safety Test Experiments under the name ``Pu-MET-FAST-001'' \cite{bench_handbook}.  The geometry and materials are outlined in Table \ref{jezebel_geom}.  All cross sections used were processed at 273.5 K.
+The homogenized block criticality test is a bare cube with vacuum boundary conditions.  This test keeps the same boundary condition, temperature, and number of cells as test 1, but it introduces multiple isotopes into the cell material.   The geometry and materials are outlined in Table \ref{homfuel_geom}.  
 
 \begin{table}[h]
 \centering
-\caption{Geometry and materials used in the ``Jezebel'' benchmark.}
-\label{jezebel_geom}
-\begin{tabular}{| l | c | c | c |}
+\caption{Geometry and materials used in the homogenized fuel block benchmark.}
+\label{homfuel_geom}
+\begin{tabular}{| l | c  c | c |}
 \hline
-Cells & Isotopes (Atm. Frac.)& Densities \\
+Cells & Isotopes & (Atm. \%)& Densities \\
 \hline
-\multirow{6}{*}{1 sphere, r=6.6595 cm }  &  $^{239}$Pu (0.7381) &    \multirow{6}{*}{15.73 g/cm$^3$} \\
-                                         &  $^{240}$Pu (0.1942)    & \\
-                                         &  $^{241}$Pu (0.0299)    & \\
-                                         &  $^{242}$Pu (0.0038)    & \\
-                                         &  $^{69}$Ga  (0.0203)    & \\
-                                         &  $^{71}$Ga  (0.0135)     & \\ 
+\multirow{5}{*}{1 cube, 100x100x50 cm }            &   $^{238}$U   (0.90)   &  $^{235}$U   (0.10)   &  \multirow{5}{*}{5.50 g/cm$^3$} \\
+                                                   &   $^{16}$O    (3.00)   &  $^{2}$H     (2.0)    &  \\
+                                                   &   $^{90}$Zr   (0.5145) &  $^{91}$Zr   (0.1122) &  \\
+                                                   &   $^{92}$Zr   (0.1715) &  $^{94}$Zr   (0.1738) &  \\
+                                                   &   $^{96}$Zr   (0.0280) &                       &  \\
 \hline
 \end{tabular}
 \end{table}
 
 
+
 %%%%%%%%%%%%%%%%%%%
-\newpage
 \subsection{Test 3 - Zr-Clad UO$_2$ Pin in Light Water}
 
 This criticality test consists of a UO$_2$ cylinder clad in zirconium surrounded by a block of light water.  This test increases complexity by having two materials, each with multiple isotopes, and two cells.  The water block has vacuum boundary conditions.  Its dimensions are relatively large and the absorption is low, so the mean neutron lifetime should be large.  This test serves to highlight that all the processing routines work simultaneously, the effect of introducing more than one cell, and the effect of long-lived neutrons.  The geometry and materials are outlined in Table \ref{uo2_pincell_geom}.  All cross sections used were processed at 273.5 K.
@@ -331,56 +327,48 @@ This criticality test consists of a UO$_2$ cylinder clad in zirconium surrounded
 \centering
 \caption{Geometry and materials used in the single UO$_2$ pin in H$_2$O benchmark.}
 \label{uo2_pincell_geom}
-\begin{tabular}{| l | c | c | c |}
+\begin{tabular}{| l | c  c | c |}
 \hline
-Cells & Isotopes (Atm. Frac.)& Densities \\
+Cells & Isotopes & (Atm. \%)& Densities \\
 \hline
-\multirow{3}{*}{1 cylinder, r=2.0 cm z=$\pm$20 }  &   $^{238}$U   (0.90) &    \multirow{3}{*}{10.97 g/cm$^3$} \\
-                                       &   $^{235}$U   (0.10)& \\
-                                       &   $^{16}$O    (2.00)& \\
+\multirow{2}{*}{1 cylinder, r=2.0 cm z=$\pm$20 }  &   $^{238}$U   (0.90) &  $^{235}$U   (0.10) &  \multirow{2}{*}{10.97 g/cm$^3$} \\
+                                                                              &   $^{16}$O    (2.00)  &                              &  \\
 \hline
-\multirow{5}{*}{1 cylinder, r=2.2 cm z=$\pm$20.2}  &   $^{90}$Zr   (0.5145) &    \multirow{5}{*}{6.52 g/cm$^3$} \\
-                                       &   $^{91}$Zr   (0.1122)& \\
-                                       &   $^{92}$Zr   (0.1715)& \\
-                                       &   $^{94}$Zr   (0.1738)& \\
-                                       &   $^{96}$Zr   (0.0280)& \\
+\multirow{3}{*}{1 cylinder, r=2.2 cm z=$\pm$20.2}  &   $^{90}$Zr   (0.5145) &  $^{91}$Zr   (0.1122)&  \multirow{3}{*}{6.52 g/cm$^3$} \\
+                                                   &   $^{92}$Zr   (0.1715) &  $^{94}$Zr   (0.1738)& \\
+                                                   &   $^{96}$Zr   (0.0280) &                      & \\
 \hline
-\multirow{2}{*}{1 box, r=50x50x50 cm }  &    $^{2}$H   (2.0) &    \multirow{2}{*}{1.11 g/cm$^3$} \\
-                                  &   $^{16}$O   (1.0) & \\
+\multirow{1}{*}{1 box, r=50x50x50 cm }  &    $^{2}$H   (2.0) & $^{16}$O   (1.0) &   \multirow{1}{*}{1.11 g/cm$^3$} \\
 \hline
 \end{tabular}
 \end{table}
 
+
+
 %%%%%%%%%%%%%%%%%%%
-\newpage
 \subsection{Test 4 - Homogenized Fuel Pebble in FLiBe}
 
-This criticality test consists of a single sphere of homogenized UO$_2$ and C surrounded by molten FLiBe (Li$_2$BeF$_4$) salt at 600 K.  The outer cell is right hexagonal prism with specular reflective boundary conditions.  Reflective boundary conditions approximates an infinite lattice of fuel spheres or a very large volumes of spheres like that in a molten salt reactor. This test introduces more isotopes, uses two temperatures simultaneously, and tests the reflective boundary condition setting.  The geometry and materials are outlined in Table \ref{pebble_geom}. The FLiBe cross sections used were processed at 900 K and the pebble cross sections at 1200 K.
+This criticality test consists of a single sphere of homogenized UO$_2$ and C surrounded by molten FLiBe (Li$_2$BeF$_4$) salt.  The outer cell is right hexagonal prism with specular reflective boundary conditions.  This test introduces more isotopes, uses two temperatures simultaneously, and tests the reflective boundary condition setting.  The geometry and materials are outlined in Table \ref{pebble_geom}.  The FLiBe cross sections used were processed at 900 K and the pebble cross sections at 1200 K.
 
 \begin{table}[h]
 \centering
 \caption{Geometry and materials used in the pebble in molten FLiBe benchmark.}
 \label{pebble_geom}
-\begin{tabular}{| l | c | c | c |}
+\begin{tabular}{| l | c  c | c |}
 \hline
-Cells & Isotopes (Atm. Frac.)& Densities \\
+Cells & Isotopes & (Atm.  \%)& Densities \\
 \hline
-\multirow{5}{*}{1 sphere, r=5.0 cm }  &   $^{238}$U   (0.90) &    \multirow{3}{*}{8.75 g/cm$^3$} \\
-                                     &   $^{235}$U   (0.10) & \\
-                                     &   $^{16}$O    (2.00) & \\
-                                     &   $^{12}$C    (1.978)& \\
-                                     &   $^{13}$C    (0.022)& \\
+\multirow{3}{*}{1 sphere, r=5.0 cm }  &   $^{238}$U   (0.90) &  $^{235}$U   (0.10) &  \multirow{3}{*}{8.75 g/cm$^3$} \\
+                                      &   $^{16}$O    (2.00) &                     &  \\
+                                      &   $^{13}$C    (0.022)& $^{12}$C    (1.978) &  \\
 \hline
-\multirow{4}{*}{1 right hex prism, r=5.1 cm }  &   $^{6}$Li  (0.15) &    \multirow{2}{*}{1.94 g/cm$^3$} \\
-                                               &  $^{7}$Li  (1.85)& \\
-                                               &  $^{9}$Be  (1.00) & \\
-                                               &  $^{19}$F  (4.00) & \\
+\multirow{2}{*}{1 right hex prism, r=5.1 cm }  &   $^{6}$Li  (0.15) &  $^{7}$Li  (1.85)&  \multirow{2}{*}{1.94 g/cm$^3$} \\
+                                               &  $^{9}$Be  (1.00) & $^{19}$F  (4.00) &  \\
 \hline
 \end{tabular}
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%
-\newpage
 \subsection{Test 5 - Stainless Steel-Clad Metallic Uranium Pin in Liquid Sodium}
 
 This criticality test consists of a single cylinder of metallic uranium surrounded by molten sodium.  The outer cell is right hexagonal prism with specular reflective boundary conditions.  Reflective boundary conditions approximates an infinite lattice of fuel spheres or a very large volumes of  pin cells like that in a sodium reactor.  This test serves to benchmark a fast system with a coolant as well as introduce more isotopes.  The geometry and materials are outlined in Table \ref{sodium_geom}.  The fuel and clad cross sections used were processed at 900 K, and the sodium coolant cross sections were processed at 600 K.  In order to keep the specification tenable, only the major components of 316 stainless steel were included in the clad material. 
@@ -389,33 +377,26 @@ This criticality test consists of a single cylinder of metallic uranium surround
 \centering
 \caption{Geometry and materials used in the 316 stainless steel clad metallic uranium single pin benchmark.}
 \label{sodium_geom}
-\begin{tabular}{| l | c | c | c |}
+\begin{tabular}{| l | c  c  | c |}
 \hline
-Cells & Isotopes (Atm \%)& Densities \\
+Cells & Isotopes & (Atm \%)     & Densities \\
 \hline
-\multirow{2}{*}{1 cylinder, r=1.0 cm }  &  $^{238}$U   (0.90) &    \multirow{3}{*}{19.1 g/cm$^3$} \\
-                                        &  $^{235}$U   (0.10)& \\
+\multirow{1}{*}{1 cylinder, r=1.0 cm }   &  $^{238}$U   (0.90)   & $^{235}$U   (0.10)   &    \multirow{1}{*}{19.1 g/cm$^3$} \\
 \hline
-\multirow{12}{*}{1 cylinder, r=1.2 cm }  &  $^{54}$Fe  (0.0435)&    \multirow{5}{*}{7.99 g/cm$^3$} \\
-                                         &  $^{56}$Fe  (0.6879)& \\
-                                         &  $^{57}$Fe  (0.0165)& \\
-                                         &  $^{58}$Fe  (0.0021)& \\
-                                         &  $^{50}$Cr  (0.0065)& \\
-                                         &  $^{52}$Cr  (0.1257)& \\
-                                         &  $^{53}$Cr  (0.0143)& \\
-                                         &  $^{54}$Cr  (0.0035)& \\
-                                         &  $^{58}$Ni  (0.0681)& \\
-                                         &  $^{60}$Ni  (0.0262)& \\
-                                         &  $^{62}$Ni  (0.0036)& \\
-                                         &  $^{64}$Ni  (0.0009)& \\
+\multirow{6}{*}{1 cylinder, r=1.2 cm }   &  $^{54}$Fe  (0.0435) & $^{56}$Fe  (0.6879)  &   \multirow{6}{*}{7.99 g/cm$^3$} \\
+                                         &  $^{57}$Fe  (0.0165) & $^{58}$Fe  (0.0021)  &   \\
+                                         &  $^{50}$Cr  (0.0065) & $^{52}$Cr  (0.1257)  &   \\
+                                         &  $^{53}$Cr  (0.0143) & $^{54}$Cr  (0.0035)  &   \\
+                                         &  $^{58}$Ni  (0.0681) & $^{60}$Ni  (0.0262)  &   \\
+                                         &  $^{62}$Ni  (0.0036) &  $^{64}$Ni  (0.0009) &   \\
 \hline
-1 right hex prism, r=1.8 cm   &   $^{23}$Na   (1.00) &    0.927 g/cm$^3$ \\
+1 right hex prism, r=1.8 cm              &  $^{23}$Na   (1.00)  &                      &    0.927 g/cm$^3$ \\
 \hline
 \end{tabular}
 \end{table}
 
+
 %%%%%%%%%%%%%%%%%%%
-\newpage
 \subsection{Test 6 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
 
 This criticality test consists of 631 Zr-clad UO$_2$ cylinders laid out in a hexagonal lattice surrounded by light water.  The material compositions, densities, and the cylinder dimensions are similar to the pin cell test case, but since this test has two orders of magnitude more objects, it serves to highlight the effect of introducing many geometric objects into the problem and will further validate that the geometry processing routines work correctly if consistent results are obtained.  The lattice is in the x-y plane, has a pitch to diameter ratio of 1.164, and has 15 elements on a side.  The geometry and materials are outlined in table \ref{hex_geom}.  All cross sections used were processed at 273.5 K.
@@ -424,26 +405,21 @@ This criticality test consists of 631 Zr-clad UO$_2$ cylinders laid out in a hex
 \centering
 \caption{Geometry and materials used in the UO$_2$ pin hexagonal lattice in light water benchmark.}
 \label{hex_geom}
-\begin{tabular}{| l | c | c | c |}
+\begin{tabular}{| l | c  c | c |}
 \hline
-Cells & Isotopes (Atm \%)& Densities \\
+Cells & Isotopes & (Atm \%) & Densities \\
 \hline
-\multirow{3}{*}{631 cylinder, r= 1.0 cm }  &   $^{238}$U   (0.90) &    \multirow{3}{*}{10.97 g/cm$^3$} \\
-                                           &   $^{235}$U   (0.10)& \\
-                                           &   $^{16}$O    (2.00)& \\
+\multirow{2}{*}{631 cylinder, r= 1.0 cm }  &   $^{238}$U   (0.90)   &    $^{235}$U   (0.10)  &  \multirow{2}{*}{10.97 g/cm$^3$} \\
+                                           &   $^{16}$O    (2.00)   &                        &  \\
 \hline
-\multirow{5}{*}{631 cylinder, r= 1.2 cm }  &   $^{90}$Zr   (0.5145) &    \multirow{5}{*}{6.52 g/cm$^3$} \\
-                                           &   $^{91}$Zr   (0.1122)& \\
-                                           &   $^{92}$Zr   (0.1715)& \\
-                                           &   $^{94}$Zr   (0.1738)& \\
-                                           &   $^{96}$Zr   (0.0280)& \\
+\multirow{3}{*}{631 cylinder, r= 1.2 cm }  &   $^{90}$Zr   (0.5145) &    $^{91}$Zr   (0.1122)&  \multirow{3}{*}{6.52 g/cm$^3$} \\
+                                           &   $^{92}$Zr   (0.1715) &    $^{94}$Zr   (0.1738)& \\
+                                           &   $^{96}$Zr   (0.0280) &                        & \\
 \hline
-\multirow{2}{*}{1 box, r= 1.0 cm }  &    $^{1}$H  (2.0) &    \multirow{2}{*}{1 g/cm$^3$} \\
-                                    &   $^{16}$O  (1.0) & \\
+\multirow{1}{*}{1 box, r= 1.0 cm }         &   $^{1}$H     (2.0)    &   $^{16}$O  (1.0) & \multirow{1}{*}{1 g/cm$^3$} \\
 \hline
 \end{tabular}
 \end{table}
-
 
 
 
@@ -507,9 +483,9 @@ Runtime & 185.78 m  &	494.3 m  &	73.73  m &	2.5x &	6.7x \\
 \hline
 \multicolumn{6}{|l|}{Hex Assembly}\\
 \hline
-$k_\mathrm{eff}$ & 1.0757$\pm$6.2E-5 &	0.88634$\pm$4.0E-5 &	1.074026$\pm$7.8E-5 &	-167.4 pcm  &	18768.6 pcm  \\
+$k_\mathrm{eff}$ & 1.05057$\pm$1.90E-04 &	1.05012$\pm$5.00E-05 &	1.048896$\pm$5.53E-05 &	-167.4 pcm  &	-122.357 pcm  \\
 \hline
-Runtime & 122.43 m  &	316.45 m  &	41.55  m &	2.9x &	7.6x \\
+Runtime & 120.42 m  &	321.27 m  &	43.15  m &	2.79x &	7.44x \\
 \hline
 \end{tabular}
 \end{table}
@@ -564,9 +540,9 @@ Runtime & 		 &	320.4 m 	 &		76.46 m  &			0x &		4.2x \\
 \hline
 \multicolumn{6}{|l|}{Hex Assembly}\\
 \hline
-$k_\mathrm{eff}$ & 1.07574$\pm$7.2E-5	 &	0.88636$\pm$5.0E-5	 &	1.073883$\pm$1.1E-4	 &	-185.7 &		18752.3  \\
+$k_\mathrm{eff}$ & 1.05033$\pm$7.20E-05	 &	1.05019$\pm$0.00006	 &	1.04886055$\pm$5.53E-05	 &	-146.945 &		-132.945  \\
 \hline
-Runtime & 77.1 m 		 &	217.7833333 m 	 &		42.8 m  &			1.8x	 &	5.1x \\
+Runtime & 81.5 m 		 &	160.68 m 	 &		45.06 m  &			1.8x	 &	3.6x \\
 \hline
 \end{tabular}
 \end{table}
@@ -669,7 +645,7 @@ HAVE PLOT OF TITAN GOING FROM 1e4 to MAX N/BATCH - SHOWS ***SUB-LINEAR WEAK SCAL
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.8\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/scaling.pdf}
-\caption{Something \label{scaling} }
+\caption{Neutron processing rate vs. number of neutrons per cycle for test case 6 (pin lattice) \label{scaling} }
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%
