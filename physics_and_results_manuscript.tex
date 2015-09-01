@@ -319,7 +319,7 @@ Cells & Isotopes & (Atm. \%)& Densities \\
 
 
 %%%%%%%%%%%%%%%%%%%
-\subsection{Test 3 - Zr-Clad UO$_2$ Pin in Light Water}
+\subsection{Test 3 - Zr-Clad UO$_2$ Pin in Heavy Water}
 
 This criticality test consists of a UO$_2$ cylinder clad in zirconium surrounded by a block of light water.  This test increases complexity by having two materials, each with multiple isotopes, and two cells.  The water block has vacuum boundary conditions.  Its dimensions are relatively large and the absorption is low, so the mean neutron lifetime should be large.  This test serves to highlight that all the processing routines work simultaneously, the effect of introducing more than one cell, and the effect of long-lived neutrons.  The geometry and materials are outlined in Table \ref{uo2_pincell_geom}.  All cross sections used were processed at 273.5 K.
 
@@ -438,6 +438,8 @@ The multiplication factor differences shown in this section are reported in ``pe
 The goal of WARP is to be the first step in creating a full-featured continuous energy Monte Carlo neutron transport code that is \emph{accelerated} by running on GPUs.  The crux of the effort is to make Monte Carlo calculations faster but still produce accurate results.  In the following tables, the $\Delta$M column is for WARP's difference from MCNP, and the $\Delta$S column is for WARP's difference from Serpent.  The differences are reported in pcm for multiplication factors, and speedup factors ($t/t_\mathrm{WARP}$) for runtimes.  The (y) in the $\Delta$ columns signify if the WARP value is inside (y) or outside (n) two standard deviations of the production code's value. 
 
 Table \ref{results_table_titan} shows the multiplication factor deviations and the speedup factors for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.21 for WARP running on a NVIDIA Titan Black.   All cases were run with 20 discard cycles and 40 active cycles with 9.5$\times10^{6}$ neutrons per cycle.  The sodium pin test case used a slightly larger cross section dataset than the other tests, so only 8.5$\times10^{6}$ neutrons per cycle were possible for this case.  Table  \ref{results_table_k20} shows the same information, but for for WARP running on a NVIDIA Tesla K20.  All cases were again run with 20 discard cycles and 40 active cycles with 6.5$\times10^{6}$ neutrons per cycle except for the sodium pin test case, where 6.0$\times10^{6}$ neutrons per cycle were used due to memory limitations.
+
+Since the PSSC node contains 4 processors which each contain 2 non-uniform memory access (NUMA) nodes each, the most efficient configuration for running the CPU codes was to use 8 MPI processes (one for each NUMA node), which each ran 6 threads for the 6 cores in each NUMA node.  In this configuration, Serpent could not fit the neutron data set into the available memory, so the neutrons per cycle and the total number of cycles were changed to allow Serpent to run in its most efficient mode.  The number of neutrons per cycle was divided by 8, while the number of cycles was increased by a factor of 8.  This way, the neutron memory structures could fit into memory and the total number of histories was preserved.
 
 \begin{table}[h]
 \centering
@@ -558,7 +560,7 @@ WARP also produces spectra that have slight differences from Serpent and MCNP (s
 \newpage
 \subsection{Spectra}
 
-
+%%%%%
 \subsubsection{Test 1 - ``Jezebel'' Bare Pu Sphere}
 
 Figure \ref{jezebel_spec} shows the volume-averaged flux spectrum in the Jezebel sphere.  The relative difference compared to the MCNP spectrum is shown in the top subplot below the main spectrum plot, and the relative difference from the Serpent spectrum is shown in the lower subplot.  The relative difference is very low compared to Serpent, with the normalized tally bins being less than 1\% from each other in regions where the flux is large.  Of course, when the flux is small, the statistical uncertainty becomes much higher, and the relative difference becomes noisy.   Despite being low, the relative error is outside the 2-sigma bounds except at 1 MeV.  WARP under-predicts the flux values below 1 MeV, and over-predicts the values above.  This trend indicates there may be a slight sampling error in either the geometry and/or the cross section sampling routines. 
@@ -566,10 +568,10 @@ Figure \ref{jezebel_spec} shows the volume-averaged flux spectrum in the Jezebel
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/jezebel_spec.pdf}
-\caption{Volume-average flux spectra inside the sphere of the Jezebel test case. \label{jezebel_spec} }
+\caption{Volume-averaged flux spectra inside the sphere of the Jezebel test case. \label{jezebel_spec} }
 \end{figure}
 
-
+%%%%%
 \newpage
 \subsubsection{Test 2 - Homogenized Fuel Block}
 
@@ -578,55 +580,56 @@ Figure \ref{homfuel_spec} shows the volume-averaged flux spectrum in the homogen
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/homfuel_spec.pdf}
-\caption{Volume-average flux spectra inside the homogenized fuel block. \label{homfuel_spec} }
+\caption{Volume-averaged flux spectra inside the homogenized fuel block. \label{homfuel_spec} }
 \end{figure}
 
+%%%%%
 \newpage
-\subsubsection{Test 3 - Zr-Clad UO$_2$ Pin in Light Water}
+\subsubsection{Test 3 - Zr-Clad UO$_2$ Pin in Heavy Water}
 
-Figure \ref{pincell_spec} shows the volume-averaged flux spectrum in the Jezebel sphere.  The relative difference compared to the MCNP spectrum is shown in the top subplot below the main spectrum plot, and the relative difference from the Serpent spectrum is shown in the lower subplot.  The relative difference is very low compared to Serpent, with the normalized tally bins being less than 1\% from each other in regions where the flux is large.  Of course, when the flux is small, the statistical uncertainty becomes much higher, and the relative difference becomes noisy.   Despite being low, the relative error is outside the 2-sigma bounds except at 1 MeV.  WARP under-predicts the flux values below 1 MeV, and over-predicts the values above.  This trend indicates there may be a slight sampling error in either the geometry and/or the cross section sampling routines. 
-
+Figure \ref{pincell_spec} shows the volume-averaged flux spectrum inside the fuel rod in the Zr-clad UO$_2$ pin in heavy water test case.  Again, the relative difference is generally less than 1\% where the flux is large.  Compared to Serpent, the WARP spectrum is only outside of statistical bounds around 0.2 MeV.   WARP has large deviations from MCNP in the thermal region, and again appears to over-predict the flux above 1 MeV.
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/pincell_spec.pdf}
-\caption{Volume-average flux spectra of a fixed-source simulation with a 2 MeV point source in a block of water. \label{pincell_spec} }
+\caption{Volume-averaged flux spectra inside the oxide fuel of the Zr-clad pin in heavy test case \label{pincell_spec} }
 \end{figure}
 
+%%%%%
 \newpage
 \subsubsection{Test 4 - Homogenized Fuel Pebble in FLiBe}
 
-Figure \ref{flibe_spec} shows the volume-averaged flux spectrum in the Jezebel sphere.  The relative difference compared to the MCNP spectrum is shown in the top subplot below the main spectrum plot, and the relative difference from the Serpent spectrum is shown in the lower subplot.  The relative difference is very low compared to Serpent, with the normalized tally bins being less than 1\% from each other in regions where the flux is large.  Of course, when the flux is small, the statistical uncertainty becomes much higher, and the relative difference becomes noisy.   Despite being low, the relative error is outside the 2-sigma bounds except at 1 MeV.  WARP under-predicts the flux values below 1 MeV, and over-predicts the values above.  This trend indicates there may be a slight sampling error in either the geometry and/or the cross section sampling routines. 
-
+Figure \ref{flibe_spec} shows the volume-averaged flux spectrum in the fuel pebble for the reflective FLiBe test case.  Again, the relative difference is generally less than 2\% where the flux is large.  Like the homogenized block test, the WARP spectrum has a constant offset compared to the MCNP spectrum, but compares well to Serpent below 30 keV. WARP has large deviations from both Serpent and MCNP around large resonances, and again appears to over-predict the flux above 1 MeV.
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/flibe_spec.pdf}
-\caption{Volume-average flux spectra of a fixed-source simulation with a 2 MeV point source in a block of water. \label{flibe_spec} }
+\caption{Volume-averaged flux spectra inside the fuel pebble of the reflective FLiBe test case. \label{flibe_spec} }
 \end{figure}
 
+%%%%%
 \newpage
 \subsubsection{Test 5 - Stainless Steel-Clad Metallic Uranium Pin in Liquid Sodium}
 
-Figure \ref{sodiumpin_spec} shows the volume-averaged flux spectrum in the Jezebel sphere.  The relative difference compared to the MCNP spectrum is shown in the top subplot below the main spectrum plot, and the relative difference from the Serpent spectrum is shown in the lower subplot.  The relative difference is very low compared to Serpent, with the normalized tally bins being less than 1\% from each other in regions where the flux is large.  Of course, when the flux is small, the statistical uncertainty becomes much higher, and the relative difference becomes noisy.   Despite being low, the relative error is outside the 2-sigma bounds except at 1 MeV.  WARP under-predicts the flux values below 1 MeV, and over-predicts the values above.  This trend indicates there may be a slight sampling error in either the geometry and/or the cross section sampling routines. 
+Figure \ref{sodiumpin_spec} shows the volume-averaged flux spectrum in the fuel for the reflective sodium cooled, steel clad, metallic fuel test case.  Again, the relative difference is generally less than 2\% where the flux is large.  Again the WARP spectrum has a constant offset compared to the MCNP spectrum, has large deviations from both Serpent and MCNP around large resonances, and again appears to over-predict the flux above 1 MeV.
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/sodiumpin_spec.pdf}
-\caption{Volume-average flux spectra of a fixed-source simulation with a 2 MeV point source in a block of water. \label{sodiumpin_spec} }
+\caption{Volume-averaged flux spectra inside the fuel of the reflective steel clad, sodium cooled pin test case. \label{sodiumpin_spec} }
 \end{figure}
 
 
+%%%%%
 \newpage
 \subsubsection{Test 6 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
 
-Figure \ref{assmebly_spec} shows the volume-averaged flux spectrum in the Jezebel sphere.  The relative difference compared to the MCNP spectrum is shown in the top subplot below the main spectrum plot, and the relative difference from the Serpent spectrum is shown in the lower subplot.  The relative difference is very low compared to Serpent, with the normalized tally bins being less than 1\% from each other in regions where the flux is large.  Of course, when the flux is small, the statistical uncertainty becomes much higher, and the relative difference becomes noisy.   Despite being low, the relative error is outside the 2-sigma bounds except at 1 MeV.  WARP under-predicts the flux values below 1 MeV, and over-predicts the values above.  This trend indicates there may be a slight sampling error in either the geometry and/or the cross section sampling routines. 
-
+Figure \ref{assembly-lw_spec} shows the volume-averaged flux spectrum in the center pin of the Zr-clad hexagonal oxide fuel pin lattice in light water test case.  Again, the relative difference is generally less than 1\% where the flux is large, and is always within the statistical error of both MCNP and Serpent, unlike the other test cases.  There is no constant offset, and resonance regions appear to be treated correctly.  
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/assembly-lw_spec.pdf}
-\caption{Volume-average flux spectra of a fixed-source simulation with a 2 MeV point source in a block of water. \label{assembly-lw_spec} }
+\caption{Volume-averaged flux spectra inside the center fuel pin of the hexagonal pin lattice test case. \label{assembly-lw_spec} }
 \end{figure}
 
 \newpage
@@ -641,7 +644,7 @@ For productivity, the ``history power,'' or  number neutrons histories a system 
 \small
 \begin{tabular}{| l | r | r | r |}
 \hline
-              & MCNP 6.1 & Serpent 2.1.21 & WARP  \\
+              &  Serpent 2.1.21 & MCNP 6.1 & WARP  \\
 \hline
 History Power   &  2.2$\times10^5$	 & 7.5$\times10^4$	 & 6.5$\times10^5$    \\
 \hline
@@ -652,17 +655,19 @@ History Power / Watt   & 480	 & 160	 & 2600    \\
 \end{tabular}
 \end{table}
 
-\newpage
+On a Titan Black, WARP has about 3 and 8 times the history power of Serpent and MCNP, respectively, run on a single cluster node.    This figure simply states the average worth of a Titan Black card compared to the PSSC node.  If the nodes were very cheap, one could simply buy more of them to gain a history power equal to or above WARP on a single card.  The costs of the node per history compared to the cost of the GPU card per history is what determines the real-world competition between these two compute platforms.  The second line of Table \ref{history_power} shows the history power of all three codes per cost of their platforms.  The third line of the table shows the history power per electrical costs of running the platforms.  Looking at these figures, running WARP on a GPU platform is by far the best choice.  Since WARP uses single-precision data and math in order to fully exploit the capacities available on consumer GPUs like the Titan Black, its capital costs are significantly reduced.  GPUs are also more energy efficient than the CPU platforms, and WARP can outperform the CPU node by a order of magnitude on histories per watt.
+
 \subsection{Scaling}
 
-HAVE PLOT OF TITAN GOING FROM 1e4 to MAX N/BATCH - SHOWS ***SUB-LINEAR WEAK SCALING*** from n*logn routines
-
+Larger neutron datasets allow the GPU to schedule threads better, but the size of the dataset is limited by the available on-card memory.  Cross sections are also stored on-card, and compete with the neutrons for space in memory (which is why the sodium pin test case had lower neutrons per cycle compared to the other test cases).  It is of interest to know where performance saturates so a user can always choose to run the number of neutrons per cycles which gives the best performance.  Figure \ref{scaling} shows the neutron processing rate of WARP compared to the neutron dataset size.
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.8\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/scaling.pdf}
-\caption{Neutron processing rate vs. number of neutrons per cycle for test case 6 (pin lattice) \label{scaling} }
+\caption{Neutron processing rate vs. number of neutrons per cycle for the hexagonal lattice test case. \label{scaling} }
 \end{figure}
+
+Performance increases until $5\times10^6$ neutrons per cycle, the flattens above this.  This curve was calculated using the hexagonal pin lattice test case, and may look different for different problems, but this number gives a rough estimate of where maximum performance occurs for WARP running on a Titan Black card.
 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
