@@ -92,7 +92,7 @@
 
 \hypersetup{colorlinks=true,
   pdftitle={Criticality Performance and Accuracy of WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs},
-  pdfauthor={Ryan M. Bergmann, Kelly Rowland, Nikola Radnovi\'c, Rachel Slaybaugh?, Jasmina L. Vuji\'c}}
+  pdfauthor={Ryan M. Bergmann, Kelly Rowland, Nikola Radnovi\'c, Rachel Slaybaugh, Jasmina L. Vuji\'c}}
 
 \journal{Annals of Nuclear Energy}
 
@@ -176,7 +176,7 @@ Developing WARP was motivated by modern supercomputers commonly being built with
 \begin{figure}[h!] 
   \centering
     \includegraphics[width=\textwidth]{graphics/datavtask.pdf}
-     \caption{Data-parallel neutron trasport loop vs. a task-parallel transport loop for N neutrons in parallel.  \label{datavtask} }
+     \caption{Data-parallel neutron trasport loop vs. a task-parallel transport loop for transporting N neutrons in parallel.  \label{datavtask} }
 \end{figure}
 
 Execution on GPUs also requires additional data management, since the on-chip memory of the GPU is separate from the host CPUs memory \cite{cuda}.  Execution on NVIDIA GPUs also required code to be written in CUDA, which is a set of extensions for C/C++.  The simplest way to accommodate all these requirements was to write a new code from scratch, which ultimately resulted in WARP.  
@@ -238,9 +238,7 @@ WARP only has collision estimators implemented for both flux and multiplication 
 \section{Tests}
 \label{sec:tests}
 
-Various CPU and GPU hardware were chose to test WARP on to give a comprehensive view of the platforms that Monte Carlo neutron transport is typically performed on.  For the CPU platforms, a cluster node and a workstation are used.  For the GPU platforms, a mobile graphics card, a consumer-level graphics card, and compute-specific card are used. The benchmark cases are run at maximum number of histories per criticality batch as possible for the specific GPUs (this is where they perform the best, but is limited by on-card memory), and the CPU cases are run with identical batch parameters.  The CPU cases are run with the maximum number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole. For the k20 and Titan GPUs, the costs include the retail price of a minimal host computer with at least as much memory as the card (~\$200?).  All the tests use ENDFB/VII cross sections that ship with the Serpent XXX release.  This 
-
-power specs http://www.techpowerup.com/gpudb/547/geforce-gt-650m.html
+Various CPU and GPU hardware were chose to test WARP on to give a comprehensive view of the platforms that Monte Carlo neutron transport is typically performed on.  For the CPU platforms, a cluster node and a workstation are used.  For the GPU platforms, a mobile graphics card, a consumer-level graphics card, and compute-specific card are used. The benchmark cases are run at maximum number of histories per criticality batch as possible for the specific GPUs (this is where they perform the best, but is limited by on-card memory), and the CPU cases are run with identical batch parameters.  The CPU cases are run with the maximum number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole. For the k20 and Titan GPUs, the costs include the retail price of a minimal host computer with at least as much memory as the card (~\$200?).  All the tests use ENDFB/VII cross sections that ship with the Serpent 1.XX release from RSICC.  This 
 
 \begin{table}[h]
 \centering
@@ -666,6 +664,13 @@ History Power / Watt   & 480	 & 160	 & 2600    \\
 \subsection{Scaling}
 
 HAVE PLOT OF TITAN GOING FROM 1e4 to MAX N/BATCH - SHOWS ***SUB-LINEAR WEAK SCALING*** from n*logn routines
+
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/scaling.pdf}
+\caption{Something \label{scaling} }
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
