@@ -31,10 +31,10 @@ for d in dirs:
 		res1 = regex1.search(dat)
 		res2 = regex2.search(dat)
 		t.append(float(res1.group(1)))
-		N.append(float(res2.group(1))*total_cycles)
+		N.append(float(res2.group(1)))
 		f.close()
 
-rate = numpy.divide(N,numpy.multiply(t,60.0))
+rate = numpy.divide(numpy.multiply(N,total_cycles),numpy.multiply(t,60.0))
 
 f = plt.figure()
 ax = f.add_subplot(111)
