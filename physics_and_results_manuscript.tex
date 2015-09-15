@@ -91,7 +91,7 @@
 \renewcommand{\eqref}{Eq.~\originaleqref}
 
 \hypersetup{colorlinks=true,
-  pdftitle={Criticality Performance and Accuracy of WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs},
+  pdftitle={Relative Criticality Performance and Accuracy of WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs},
   pdfauthor={Ryan M. Bergmann, Kelly L. Rowland, Nikola Radnovi\'c, Rachel N. Slaybaugh, Jasmina L. Vuji\'c}}
 
 \journal{Annals of Nuclear Energy}
@@ -121,7 +121,7 @@
 %% \address{Address\fnref{label3}}
 %% \fntext[label3]{}
 
-\title{Relative Performance and Accuracy of WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs}
+\title{Relative Criticality Performance and Accuracy of WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs}
 
 %% use optional labels to link authors explicitly to addresses:
 %% \author[label1,label2]{<author name>}
@@ -681,7 +681,7 @@ Performance increases until $5\times10^6$ neutrons per cycle, then flattens abov
 
 It has been shown that WARP is able to perform high-fidelity neutron transport on GPUs.  Depending on the problem type and the card used, WARP can achieve performance equivalent to that of 2 to 13 CPU nodes with 4 AMD Opteron 6172 processors (48 cores) each.  The low capital and electrical cost of GPU platforms then lead to at least an order of magnitude more histories calculated per dollar spent.  This figure clearly shows that GPUs can be a very cost effective way to perform continuous energy Monte Carlo neutron transport.
 
-The development of WARP has led to important conclusions regarding how to conduct neutron transport on GPUs as well, mainly that running with large datasets, and therefore a large number of threads, is important for good performance.  It was found that in the hexagonal lattice test case, maximum performance was achieved at $5\times10^6$ neutrons per criticality cycle.  It is important to keep the GPU saturated with threads so it can effectively pipeline data loads and issue intructions.  
+The development of WARP has led to important conclusions regarding how to conduct neutron transport on GPUs as well, mainly that running with large datasets, and therefore a large number of threads, is important for good performance.  It was found that in the hexagonal lattice test case, maximum performance was achieved at $5\times10^6$ neutrons per criticality cycle.  It is important to keep the GPU saturated with threads so it can effectively pipeline data loads and issue instructions.  
 
 WARP still has some bugs, as evidenced by the uniform deviation of the multiplication factors compared to MCNP/Serpent and the deviations apparent in the calculated spectra.  A large part of future development will be tracking them down to ensure that accurate results are produced.
 
