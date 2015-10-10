@@ -458,12 +458,19 @@ Cells & Isotopes & (Atm. \%) & Densities \\
 \section{Results}
 \label{sec:results}
 
-The multiplication factor differences shown in this section are reported in ``per cent mille'' (pcm), which is a thousandth of a percent, or $10^{-5}$.  This is a standard way of reporting differences in the multiplication factor, as any small deviation from unity can cause a reactor to change its power level.  The flux spectra are normalized per source neutron and per unit lethargy.   ``Lethargy'' means the logarithm of the neutron energy, $\ln(E_0/E)$ \cite{duderstadt}.  Normalizing the flux per unit lethargy accentuates the high energy region, but used in conjunction with plotting on a logarithmic scale, it also yields a plot where the area under the line gives fraction of neutrons (flux) in a specific energy bin.  
-% "...but the magnitudes should have the same mean values." magnitudes of what, exactly? this is really unclear to me.  -> should be mean!  This section is kind of unnecessary, reduced.
+%I'd add an opening paragraph about the results. What measures will you use? What does success look like? Tell us know to know if something is good or not before giving the next paragraph of details.
+
+The multiplication factor differences shown in this section are reported in ``per cent mille'' (pcm), which is a thousandth of a percent, or $10^{-5}$.  This is a standard way of reporting differences in the multiplication factor, as any small deviation can cause a significant change in system behavior.
+% Not all of these systems are critical :)
+The difference in runtimes are reported in speedup factors ($t/t_\mathrm{WARP}$).
+  The flux spectra are normalized per source neutron and per unit lethargy.   ``Lethargy'' means the logarithm of the neutron energy, $\ln(E_0/E)$ \cite{duderstadt}.  Normalizing the flux per unit lethargy accentuates the high energy region, but, used in conjunction with plotting on a logarithmic scale, also yields a plot where the area under the curve gives the fraction of neutrons (flux) in a specific energy bin.  
 
 \subsection{Multiplication Factors and Runtimes}
 
-The goal of WARP is to be the first step in creating a full-featured continuous energy Monte Carlo neutron transport code that is \emph{accelerated} by running on GPUs.  The crux of the effort is to make Monte Carlo calculations faster but still produce accurate results.  In the following tables, the $\Delta$M column is for WARP's difference from MCNP, and the $\Delta$S column is for WARP's difference from Serpent.  The differences are reported in pcm for multiplication factors, and speedup factors ($t/t_\mathrm{WARP}$) for runtimes.  The (y/n) in the $\Delta$ columns signifies if the WARP value is inside (y) or outside (n) two standard deviations of the production code's value. 
+The goal of WARP is to be the first step in creating a full-featured, continuous energy, Monte Carlo neutron transport code that is \emph{accelerated} by running on GPUs.  The crux of the effort is to make Monte Carlo calculations faster while producing accurate results.  
+% I think these two sentences should be moved to the introduction. Tell us the goal at the start, not 11 pages in!
+In the following tables, the $\Delta$M column is for WARP's difference from MCNP, and the $\Delta$S column is for WARP's difference from Serpent.  
+  The (y/n) in the $\Delta$ columns signifies if the WARP value is inside (y) or outside (n) two standard deviations of the production code's value. 
 
 Table \ref{results_table_titan} shows the multiplication factor deviations and the speedup factors for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.21 for WARP running on an NVIDIA Titan Black.   All cases were run with 20 discard cycles and 40 active cycles with 9.5$\times10^{6}$ neutrons per cycle.  The sodium pin test case used a slightly larger cross section dataset than the other tests, so only 8.5$\times10^{6}$ neutrons per cycle were possible for this case.  Table  \ref{results_table_k20} shows the same information, but for for WARP running on an NVIDIA Tesla K20.  All cases were again run with 20 discard cycles and 40 active cycles with 6.5$\times10^{6}$ neutrons per cycle except for the sodium pin test case, where 6.0$\times10^{6}$ neutrons per cycle were used due to memory limitations.
 
