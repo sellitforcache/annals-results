@@ -472,13 +472,13 @@ The goal of WARP is to be the first step in creating a full-featured, continuous
 In the following tables, the $\Delta$M column is for WARP's difference from MCNP, and the $\Delta$S column is for WARP's difference from Serpent.  
   The (y/n) in the $\Delta$ columns signifies if the WARP value is inside (y) or outside (n) two standard deviations of the production code's value. 
 
-Table \ref{results_table_titan} shows the multiplication factor deviations and the speedup factors for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.21 for WARP running on an NVIDIA Titan Black.   All cases were run with 20 discard cycles and 40 active cycles with 9.5$\times10^{6}$ neutrons per cycle.  The sodium pin test case used a slightly larger cross section dataset than the other tests, so only 8.5$\times10^{6}$ neutrons per cycle were possible for this case.  Table  \ref{results_table_k20} shows the same information, but for for WARP running on an NVIDIA Tesla K20.  All cases were again run with 20 discard cycles and 40 active cycles with 6.5$\times10^{6}$ neutrons per cycle except for the sodium pin test case, where 6.0$\times10^{6}$ neutrons per cycle were used due to memory limitations.
+Table \ref{results_table_titan} shows the multiplication factor deviations and the speedup factors for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.21 for WARP running on an NVIDIA Titan Black.   All cases were run with 20 discard cycles and 40 active cycles with 9.5$\times10^{6}$ neutrons per cycle.  The sodium pin test case used a slightly larger cross section dataset than the other tests, so only 8.5$\times10^{6}$ neutrons per cycle were possible for this case.  Table  \ref{results_table_k20} shows the same information, but for for WARP running on an NVIDIA Tesla K20.  All cases were again run with 20 discard cycles and 40 active cycles with 6.5$\times10^{6}$ neutrons per cycle except for the sodium pin test case, where 6.0$\times10^{6}$ neutrons per cycle were used because of memory limitations.
 
-Since the PSSC node contains 4 processors which each contain 2 non-uniform memory access (NUMA) nodes each, the most efficient configuration for running the CPU codes was to use 8 MPI processes (one for each NUMA node), which each ran 6 threads for the 6 cores in each NUMA node.  In this configuration, Serpent could not fit the neutron data set into the available memory, so the neutrons per cycle and the total number of cycles were changed to allow Serpent to run in its most efficient mode.  The number of neutrons per cycle was divided by 8, while the number of cycles was increased by a factor of 8.  This way, the neutron memory structures could fit into memory and the total number of histories was preserved.
+Since the PSSC node contains 4 processors that each contain 2 non-uniform memory access (NUMA) nodes, the most efficient configuration for running the CPU codes was to use 8 MPI processes (one for each NUMA node), which each ran 6 threads for the 6 cores in each NUMA node.  In this configuration, Serpent could not fit the neutron data set into the available memory, so the neutrons per cycle and the total number of cycles were changed to allow Serpent to run in its most efficient mode.  The number of neutrons per cycle was divided by 8, while the number of cycles was increased by a factor of 8.  This way, the neutron data structures could fit into memory and the total number of histories was preserved.
 
 \begin{table}[h]
 \centering
-\caption{The test case multiplication factors and runtimes WARP using a Titan Black GPU versus those of Serpent 2.1.21 and MCNP 6.1.}
+\caption{The test case multiplication factors and runtimes for WARP using a Titan Black GPU versus those of Serpent 2.1.21 and MCNP 6.1.}
 \label{results_table_titan}
 \footnotesize
 \begin{tabular}{| l | r | r | r || r | r |}
@@ -533,7 +533,7 @@ Runtime & 120.42 m  &	321.27 m  &	43.15  m &	2.79x &	7.44x \\
 
 \begin{table}[h]
 \centering
-\caption{The test case multiplication factors and runtimes WARP using a Tesla K20 GPU versus those of Serpent 2.1.21 and MCNP 6.1.}
+\caption{The test case multiplication factors and runtimes for WARP using a Tesla K20 GPU versus those of Serpent 2.1.21 and MCNP 6.1.}
 \label{results_table_k20}
 \footnotesize
 \begin{tabular}{| l | r | r | r || r | r |}
@@ -589,10 +589,16 @@ Runtime & 81.5 m 		 &	160.68 m 	 &		45.06 m  &			1.8x	 &	3.6x \\
 It can be seen that WARP performs 2.2 to 13.0 times faster than the production codes while running on a Titan Black card and 1.4 to 8.4 times faster on a K20 card.  This speedup factor is calculated over an entire compute node, so these cards can have performance equivalent to 1.4 to 13 compute nodes, depending on the type of simulation.   The smallest speedup is in the Jezebel test, and the largest speedups are on the FLiBe and pin cell tests.
 
 Despite the very encouraging speedup factors, the multiplication factors calculated by WARP deviate from those of the production codes.  Across all test cases, WARP underestimates the multiplication factor.  The only case where the multiplication factors are within simulation statistical error is the Jezebel test on the K20 card.  The largest deviation is on the FLiBe test.  
+% You  may want to say that the implications of this will be discussed in detail in the discussion section, then add a discussion section. 
+% After reading through all of the results, I feel totally dissatisfied as a reader. What might the bug be? How likely is it that we can deal with this keff issue? What will we do to take this on? 
+% I feel the same way about the spectra. Why do some problems match in certain locations and others don't? What's unique about the problems with the offset from MCNP? Why isn't there an offset from Serpent? What do the differences have in common across problems and what is different? Can this provide any clues about the bugs? How do the spectral differences relate to the k differences?
+% This feels like just blind results reporting, which is fine, but there's no discussion about what they mean to follow it. Additional analysis would really strengthen this paper. 
+% Warp can be as fast and cost efficient as all get out, but if it can't get the right answers, who cares? This is a pretty serious concern and needs to really be addressed.
 
 WARP also produces spectra that have slight differences from Serpent and MCNP (shown in the next section), indicating that the reaction rates are different at certain energies.  Even though they are small, spectral differences may point to a bug in the reaction sampling routines.  CURAND can be seeded with the same number across runs, which should lead to the same sequence of random numbers in the kernel linear congruential random number generators (LCRNGs), but exact reproducibility has not been attempted.  Reproducibility is an important feature in validating results and will be an area of future development for WARP.
 
 \newpage
+% why newpage?
 \subsection{Spectra}
 
 %%%%%
@@ -610,7 +616,8 @@ Figure \ref{jezebel_spec} shows the volume-averaged flux spectrum in the Jezebel
 \newpage
 \subsubsection{Test 2 - Homogenized Fuel Block}
 
-Figure \ref{homfuel_spec} shows the volume-averaged flux spectrum in the homogenized fuel cube.  The relative difference compared to the MCNP and Serpent is again shown in the lower subplots.  The relative difference is again generally less than 1\%, but again WARP over-predicts the flux values above 1 MeV.  Below 0.1 MeV, the spectra agree well, but regions around resonances appear to cause relatively large deviations from the production code spectra.  The MCNP spectrum also appears to have a constant offset compared to the WARP spectrum, indicating a slightly different normalization. 
+Figure \ref{homfuel_spec} shows the volume-averaged flux spectrum in the homogenized fuel cube.  The relative difference compared to MCNP and Serpent is again shown in the lower subplots.  The relative difference is again generally less than 1\%, but again WARP over-predicts the flux values above 1 MeV.  Below 0.1 MeV, the spectra agree well, but regions around resonances appear to cause relatively large deviations from the production code spectra.  The MCNP spectrum also appears to have a constant offset compared to the WARP spectrum, indicating a slightly different normalization. 
+% you might want to say how it differs from serpent as well to give a hint about which normalization might be more correct. The current comparison feels incomplete.
 
 \begin{figure}[h!]
 \centering
@@ -623,6 +630,8 @@ Figure \ref{homfuel_spec} shows the volume-averaged flux spectrum in the homogen
 \subsubsection{Test 3 - Zr-Clad UO$_2$ Pin in Heavy Water}
 
 Figure \ref{pincell_spec} shows the volume-averaged flux spectrum inside the fuel rod in the Zr-clad UO$_2$ pin in heavy water test case.  Again, the relative difference is generally less than 1\% where the flux is large.  Compared to Serpent, the WARP spectrum is only outside of statistical bounds around 0.2 MeV.   WARP has large deviations from MCNP in the thermal region, and again appears to over-predict the flux above 1 MeV.
+% Here too you might want to point out that MCNP and Serpent don't match one another. 
+% It is, I think, a pretty serious problem that your ks don't match, but it can help your case to highlight when MCNP and Serpent are out of sync because it shows that getting the same answers is hard and that each code handles things differently - making it difficult to know what is really correct.
 
 \begin{figure}[h!]
 \centering
@@ -634,7 +643,8 @@ Figure \ref{pincell_spec} shows the volume-averaged flux spectrum inside the fue
 \newpage
 \subsubsection{Test 4 - Homogenized Fuel Pebble in FLiBe}
 
-Figure \ref{flibe_spec} shows the volume-averaged flux spectrum in the fuel pebble for the reflective FLiBe test case.  Again, the relative difference is generally less than 2\% where the flux is large.  Like the homogenized block test, the WARP spectrum has a constant offset compared to the MCNP spectrum, but compares well to Serpent below 30 keV. WARP has large deviations from both Serpent and MCNP around large resonances, and again appears to over-predict the flux above 1 MeV.
+Figure \ref{flibe_spec} shows the volume-averaged flux spectrum in the fuel pebble for the reflective FLiBe test case.  Here, the relative difference is generally less than 2\% where the flux is large.  Like the homogenized block test, the WARP spectrum has a constant offset compared to the MCNP spectrum, but compares well to Serpent below 30 keV. WARP has large deviations from both Serpent and MCNP around large resonances, and again appears to over-predict the flux above 1 MeV.
+
 
 \begin{figure}[h!]
 \centering
@@ -644,14 +654,14 @@ Figure \ref{flibe_spec} shows the volume-averaged flux spectrum in the fuel pebb
 
 %%%%%
 \newpage
-\subsubsection{Test 5 - Stainless Steel-Clad Metallic Uranium Pin in Liquid Sodium}
+\subsubsection{Test 5 - Stainless Steel Clad Metallic Uranium Pin in Liquid Sodium}
 
-Figure \ref{sodiumpin_spec} shows the volume-averaged flux spectrum in the fuel for the reflective sodium cooled, steel clad, metallic fuel test case.  Again, the relative difference is generally less than 2\% where the flux is large.  Again the WARP spectrum has a constant offset compared to the MCNP spectrum, has large deviations from both Serpent and MCNP around large resonances, and again appears to over-predict the flux above 1 MeV.
+Figure \ref{sodiumpin_spec} shows the volume-averaged flux spectrum in the fuel for the reflective sodium cooled, steel clad, metallic fuel test case.  The relative difference is generally less than 2\% where the flux is large.  The WARP spectrum again has a constant offset compared to the MCNP spectrum, has large deviations from both Serpent and MCNP around large resonances, and appears to over-predict the flux above 1 MeV.
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/sodiumpin_spec.pdf}
-\caption{Volume-averaged flux spectra inside the fuel of the reflective steel clad, sodium cooled pin test case. \label{sodiumpin_spec} }
+\caption{Volume-averaged flux spectra inside the fuel of the reflective, steel clad, sodium cooled pin test case. \label{sodiumpin_spec} }
 \end{figure}
 
 
@@ -659,7 +669,8 @@ Figure \ref{sodiumpin_spec} shows the volume-averaged flux spectrum in the fuel 
 \newpage
 \subsubsection{Test 6 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
 
-Figure \ref{assembly-lw_spec} shows the volume-averaged flux spectrum in the center pin of the Zr-clad hexagonal oxide fuel pin lattice in light water test case.  Again, the relative difference is generally less than 1\% where the flux is large, and is always within the statistical error of both MCNP and Serpent, unlike the other test cases.  There is no constant offset, and resonance regions appear to be treated correctly.  
+Figure \ref{assembly-lw_spec} shows the volume-averaged flux spectrum in the center pin of the Zr-clad hexagonal oxide fuel pin lattice in light water test case. The relative difference is generally less than 1\% where the flux is large, but this time the WARP results are always within the statistical error of both MCNP and Serpent. This is the first test case where the spectra match across the entire energy range; there is not a constant offset, and resonance regions appear to be treated correctly.  
+% I think it's worth making sure to highlight this. By the time were at test 6 it's hard to keep paying attention to what's going on (the repeptitive nature = people skim). Maybe one more sentence pointing 
 
 \begin{figure}[h!]
 \centering
@@ -690,19 +701,22 @@ History Power / Watt   & 480	 & 160	 & 2600    \\
 \end{tabular}
 \end{table}
 
-On a Titan Black, WARP has about 3 and 8 times the history power of Serpent and MCNP, respectively, run on a single cluster node.    This figure simply states the average worth of a Titan Black card compared to the PSSC node.  If the nodes were very cheap, one could simply buy more of them to gain a history power equal to or above WARP on a single card.  The costs of the node per history compared to the cost of the GPU card per history is what determines the real-world competition between these two compute platforms.  The second line of Table \ref{history_power} shows the history power of all three codes per cost of their platforms.  The third line of the table shows the history power per electrical costs of running the platforms.  Looking at these figures, running WARP on a GPU platform is by far the best choice.  Since WARP uses single-precision data and math in order to fully exploit the capacities available on consumer GPUs like the Titan Black, its capital costs are significantly reduced.  GPUs are also more energy efficient than the CPU platforms, and WARP can outperform the CPU node by an order of magnitude on histories per watt.
+On a Titan Black, WARP has about 3 and 8 times the history power of Serpent and MCNP, respectively, run on a single cluster node.  This figure simply states the average worth of a Titan Black card compared to the PSSC node.  One could simply use more NUMA nodes to the CPU node to gain a history power equal to or above WARP on a single card. 
+% This comparison is a little weird. It feels like it needs to be normalized somehow to account for strong scaling. I am not sure how to do that fairly...divide by the product of threads and frequency? That sort of accounts for how much work can be done?
+ The cost of the node per history compared to the cost of the GPU card per history  in one of that metrics that can be used to compare the value of these compute platforms.  That comparison is shown in the second line of Table \ref{history_power}, which shows the history power of all three codes per cost of their platforms.  The third line of the table shows the history power per unit of electricity required to run the platforms.  Looking at these figures, running WARP on a GPU platform is by far the best choice.  Since WARP uses single-precision data and math in order to fully exploit the capacities available on consumer GPUs like the Titan Black, its capital costs are significantly reduced.  GPUs are also more energy efficient than the CPU platforms, and WARP can outperform the CPU node by an order of magnitude on histories per watt.
 
 \subsection{Scaling}
 
-Larger neutron datasets allow the GPU to schedule threads better, but the size of the dataset is limited by the available on-card memory.  Cross sections are also stored on-card and compete with the neutrons for space in memory (which is why the sodium pin test case had lower neutrons per cycle compared to the other test cases).  It is of interest to know where performance saturates so a user can always choose to run the number of neutrons per cycle which gives the best performance.  Figure \ref{scaling} shows the neutron processing rate of WARP compared to the neutron dataset size.
+Larger neutron datasets allow the GPU to schedule threads better, but the size of the dataset is limited by the available on-card memory.  Cross sections are also stored on-card and compete with the neutrons for space in memory (which is why the sodium pin test case had fewer neutrons per cycle compared to the other test cases).  It is of interest to know where performance saturates so a user can choose to run the number of neutrons per cycle that gives the best performance.  Figure \ref{scaling} shows the neutron processing rate of WARP compared to the neutron dataset size.
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.8\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/scaling.pdf}
-\caption{Neutron processing rate vs. number of neutrons per cycle for the hexagonal lattice test case. \label{scaling} }
+\caption{Neutron processing rate vs.\ number of neutrons per cycle for the hexagonal lattice test case. \label{scaling} }
 \end{figure}
 
-Performance increases until $5\times10^6$ neutrons per cycle, then flattens above this.  This curve was calculated using the hexagonal pin lattice test case, and may look different for different problems, but this number gives a rough estimate of where maximum performance occurs for WARP running on a Titan Black card.  This plot also shows ``tail effect'' - that the processing rate decreases with the number of active neutrons in a cycle.  
+Performance increases until $5\times10^6$ neutrons per cycle, then flattens above this.  This curve was calculated using the hexagonal pin lattice test case, and may look different for different problems, but this number gives a rough estimate of where maximum performance occurs for WARP running on a Titan Black card.  This plot also shows ``tail effect''\textemdash that the processing rate decreases with the number of active neutrons in a cycle.  
+% This is one example, do you have any incite into how this changes with problem size or complexity? Any sense of the boundaries of applicability? Should the user just do a couple of quick test runs to get a sense of this curve before running their real calculation? I feel like just a little more info would translate this into good advice :)
 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
