@@ -185,7 +185,7 @@ Execution on GPUs requires strategic data management since the on-chip memory of
 %You may want to add a sentence here about the need to use a different MC algorithm than the standard approach (you mention data parallel vs. task parallel, but you don't say how that relates to MC). This would provide some cohesion.
 The simplest way to accommodate all these requirements was to write a new code from scratch, which ultimately resulted in WARP.  
 
-In this paper, results calculated by WARP are compared against those calculated by Serpent 2.1.21 and MCNP 6.1, two widely-used production-level Monte Carlo neutron transport codes, in order to ensure the accuracy of WARP and to highlight its performance differences.  The details about the algorithms used in WARP are discussed in \cite{algorithms}.
+In this paper, results calculated by WARP are compared against those calculated by Serpent 2.1.21 [citation] and MCNP 6.1 [citation], two widely-used production-level Monte Carlo neutron transport codes, in order to ensure the accuracy of WARP and to highlight its performance differences.  The details about the algorithms used in WARP are discussed in \cite{algorithms}.
 %Here I'd more fully outline the paper. It is common to give a section-by-section breakdown.
 
 
@@ -248,7 +248,11 @@ WARP only has collision estimators implemented for both flux and multiplication 
 \section{Tests}
 \label{sec:tests}
 
-A small set of CPU and GPU hardwares that were easily accessible from UC Berkeley were chosen on which to test WARP.  For the CPU platforms, a cluster node was used.  For the GPU platforms, a consumer-level graphics card and a compute-specific card was used. The benchmark cases were run at the highest number of histories per criticality batch as possible for the specific GPUs (this is where they perform the best, but is limited by on-card memory), and the CPU cases were run with identical batch parameters when possible.  The CPU cases were run with the optimal number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole.  For the K20 and Titan GPUs, the costs include the retail price of a minimal host computer with at least as much memory as the card ({\raise.17ex\hbox{$\scriptstyle\sim$}}\$400).  
+A small set of CPU and GPU hardwares that were easily accessible from UC Berkeley were chosen for use in testing WARP.  For the CPU platforms, a cluster node was used.  For the GPU platforms, a consumer-level graphics card and a compute-specific card was used. Descriptions of each piece of hardware can be found in Table~\ref{platform_table}. For the K20 and Titan GPUs, the costs include the retail price of a minimal host computer with at least as much memory as the card ({\raise.17ex\hbox{$\scriptstyle\sim$}}\$400).
+
+The benchmark cases were run at the highest number of histories per criticality batch possible for the specific GPUs (this is where they perform the best, but is limited by on-card memory),
+% I don't understand what "this" is referring to in the parenthetical statement.
+ and the CPU cases were run with identical batch parameters when possible.  The CPU cases were run with the optimal number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole.    
 
 \begin{table}[h]
 \centering
@@ -281,7 +285,10 @@ NVIDIA Titan Black       &      \multicolumn{2}{r|}{ 15 }  &  1071.5 MHz     & $
 \end{tabular}
 \end{table}
 
-All tests use ENDF/B-VII cross sections that ship with the Serpent 1.1.7 release from RSICC.  These cross sections contain fewer energy grid points than the ENDF/B-VII.1 cross sections that ship with the MCNP 6.1 release from RSICC and allow more isotopes to be used by WARP since it does not perform any type of grid thinning after energy grid unionization.
+All tests use ENDF/B-VII cross sections that ship with the Serpent 1.1.7 release from RSICC.
+% you need to say what RSICC is, either a citation or description.
+  These cross sections contain fewer energy grid points than the ENDF/B-VII.1 cross sections that ship with the MCNP 6.1 release from RSICC and allow more isotopes to be used by WARP since it does not perform any type of grid thinning after energy grid unionization.
+% It's not clear to me that someone reading this paper would know what this sentence means. I'd add another one with more information or leave the second part of this sentence out. If you do that, I'd combine this paragraph with the previous one. 
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -307,7 +314,9 @@ Cells & Isotopes & (Atm. \%)& Density \\
 %%%%%%%%%%%%%%%%%%%
 \subsection{Test 2 - Homogenized Fuel Block}
 
-The homogenized block criticality test is a bare cube with vacuum boundary conditions.  This test keeps the same boundary condition, temperature, and number of cells as test 1, but it introduces multiple isotopes into the cell material.   The geometry and materials are outlined in Table \ref{homfuel_geom}.  
+The homogenized block criticality test is a bare cube with vacuum boundary conditions.  This test keeps the same boundary condition, temperature, and number of cells as test 1, but it introduces multiple isotopes into the cell material. 
+% It looks like test 1 has multiple isotopes...what?
+  The geometry and materials are outlined in Table \ref{homfuel_geom}.  
 
 \begin{table}[h]
 \centering
@@ -331,7 +340,7 @@ Cells & Isotopes & (Atm. \%)& Density \\
 %%%%%%%%%%%%%%%%%%%
 \subsection{Test 3 - Zr-Clad UO$_2$ Pin in Heavy Water}
 
-This criticality test consists of a UO$_2$ cylinder clad in zirconium surrounded by a block of light water.  This test increases complexity by having two materials, each with multiple isotopes, and two cells.  The water block has vacuum boundary conditions.  Its dimensions are relatively large and the absorption is low, so the mean neutron lifetime should be large.  This test serves to highlight that all the processing routines work simultaneously, the effect of introducing more than one cell, and the effect of long-lived neutrons.  The geometry and materials are outlined in Table \ref{uo2_pincell_geom}.  All cross sections used were processed at 273.5 K.
+This criticality test consists of a UO$_2$ cylinder clad in zirconium surrounded by a block of light water.  This test increases complexity by having three materials, each with multiple isotopes, and three cells.  The water block has vacuum boundary conditions.  Its dimensions are relatively large and the absorption is low, so the mean neutron lifetime should be large.  This test serves to highlight that all the processing routines work simultaneously, the effect of introducing more than one cell, and the effect of long-lived neutrons.  The geometry and materials are outlined in Table \ref{uo2_pincell_geom}.  All cross sections used were also processed at 273.5 K.
 
 \begin{table}[h]
 \centering
@@ -348,7 +357,7 @@ Cells & Isotopes & (Atm. \%)& Densities \\
                                                    &   $^{92}$Zr   (0.1715) &  $^{94}$Zr   (0.1738)& \\
                                                    &   $^{96}$Zr   (0.0280) &                      & \\
 \hline
-\multirow{1}{*}{1 box, r=50x50x50 cm }  &    $^{2}$H   (2.0) & $^{16}$O   (1.0) &   \multirow{1}{*}{1.11 g/cm$^3$} \\
+\multirow{1}{*}{1 box, 50x50x50 cm }  &    $^{2}$H   (2.0) & $^{16}$O   (1.0) &   \multirow{1}{*}{1.11 g/cm$^3$} \\
 \hline
 \end{tabular}
 \end{table}
@@ -358,7 +367,10 @@ Cells & Isotopes & (Atm. \%)& Densities \\
 %%%%%%%%%%%%%%%%%%%
 \subsection{Test 4 - Homogenized Fuel Pebble in FLiBe}
 
-This criticality test consists of a single sphere of homogenized UO$_2$ and C surrounded by molten FLiBe (Li$_2$BeF$_4$) salt.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  This test introduces more isotopes, uses two temperatures simultaneously, and tests the reflective boundary condition setting.  The geometry and materials are outlined in Table \ref{pebble_geom}.  The FLiBe cross sections used were processed at 900 K and the pebble cross sections at 1200 K.
+This criticality test consists of a single sphere of homogenized UO$_2$ and C surrounded by molten FLiBe (Li$_2$BeF$_4$) salt.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  This test introduces more isotopes, uses two temperatures simultaneously, and tests the reflective boundary condition setting.
+% This test has fewer isotopes than the previous one. 
+  The geometry and materials are outlined in Table \ref{pebble_geom}.  The FLiBe cross sections used were processed at 900 K and the pebble cross sections at 1200 K.
+% In the table, is r the length of one of the sides?  That's not completely clear.
 
 \begin{table}[h]
 \centering
@@ -379,9 +391,13 @@ Cells & Isotopes & (Atm.  \%)& Densities \\
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%
-\subsection{Test 5 - Stainless Steel-Clad Metallic Uranium Pin in Liquid Sodium}
+\subsection{Test 5 - Stainless Steel Clad Metallic Uranium Pin in Liquid Sodium}
 
-This criticality test consists of a single cylinder of metallic uranium surrounded by molten sodium.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  The reflective boundary condition approximates an infinite lattice of fuel spheres or a very large volume of pin cells like that in a sodium-cooled reactor.  This test serves to benchmark a fast system with a coolant as well as introduce more isotopes.  The geometry and materials are outlined in Table \ref{sodium_geom}.  The fuel and clad cross sections used were processed at 900 K, and the sodium coolant cross sections were processed at 600 K.  In order to keep the specification tenable, only the major components of 316 stainless steel were included in the clad material. 
+This criticality test consists of a single cylinder of metallic uranium surrounded by molten sodium.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  The reflective boundary condition approximates an infinite lattice of fuel spheres, or a very large volume of pin cells like that in a sodium-cooled reactor. 
+% What? Fuel spheres? This sentence is unclear.
+ This test serves to benchmark a fast system with a coolant as well as introduces more isotopes.
+% It just occurred to me that you haven't mentioned why the number of isotopes matters. I'd add some brief discussion about this in the features of warp section. The reader might not know why this is so important in warp.
+   The geometry and materials are outlined in Table \ref{sodium_geom}.  The fuel and clad cross sections used were processed at 900 K, and the sodium coolant cross sections were processed at 600 K.  In order to keep the specification tenable, only the major components of 316 stainless steel were included in the clad material. 
 
 \begin{table}[h]
 \centering
@@ -409,11 +425,12 @@ Cells & Isotopes & (Atm. \%)     & Densities \\
 %%%%%%%%%%%%%%%%%%%
 \subsection{Test 6 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
 
-This criticality test consists of 631 Zr-clad UO$_2$ cylinders laid out in a hexagonal lattice surrounded by light water.  The material compositions, densities, and cylinder dimensions are similar to the pin cell test case, but since this test has two orders of magnitude more objects, it serves to highlight the effect of introducing many geometric objects into the problem and will further validate that the geometry processing routines work correctly if consistent results are obtained.  The lattice is in the x-y plane, has a pitch to diameter ratio of 1.164, and has 15 elements on a side.  The geometry and materials are outlined in table \ref{hex_geom}.  All cross sections used were processed at 273.5 K.
+This criticality test consists of 631 Zr-clad UO$_2$ cylinders laid out in a hexagonal lattice surrounded by light water.  The material compositions, densities, and cylinder dimensions are similar to the pin cell test case, but, since this test has two orders of magnitude more objects, it serves to highlight the effect of introducing many geometric objects into the problem and will further validate that the geometry processing routines work correctly.  The lattice is in the x-y plane, has a pitch to diameter ratio of 1.164, and has 15 elements on a side.  The geometry and materials are outlined in Table \ref{hex_geom}.  All cross sections used were processed at 273.5 K.
 
 \begin{table}[h]
 \centering
 \caption{Geometry and materials used in the UO$_2$ pin hexagonal lattice in light water benchmark.}
+% This doesn't seem like the correct caption.
 \label{hex_geom}
 \begin{tabular}{| l | c  c | c |}
 \hline
