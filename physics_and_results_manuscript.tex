@@ -171,17 +171,22 @@ Monte Carlo \sep Neutron Transport \sep GPU \sep CUDA \sep CUDPP \sep OptiX
 \section{Introduction}
 \label{sec:intro}
 
-Developing WARP was motivated by modern supercomputers commonly being built with graphics processing units (GPU) coprocessor cards in their nodes to increase their computational efficiency and performance.  Compared to more common central processing units, or CPUs, GPUs have a larger aggregate memory bandwidth, much larger rate of floating-point operations per second (FLOPS), and lower energy consumption per FLOP.  GPUs execute efficiently on data-parallel problems, and since most CPU codes are task-parallel, the algorithms used had to be reconsidered.  Data-parallelism is simply parallelism that arises from operating on many different pieces of data at one time, whereas task-parallelism is parallelism that arises from running many concurrent tasks at one time which act on a single piece of data.   Figure \ref{datavtask} shows an illustration of the difference between a data-parallel and a task-parallel neutron transport loop.
+%I would add an introductory paragraph here mentioning that warp solves the neutron transport equation, that the specific application is reactor physics, and the overall goals of the project. The current start is a bit out of nowhere.
+
+Developing WARP was motivated by modern supercomputers commonly being built with graphics processing units (GPU) coprocessor cards in their nodes to increase their computational efficiency and performance.  Compared to more common central processing units, or CPUs, GPUs have a larger aggregate memory bandwidth, much larger rate of floating-point operations per second (FLOPS), and lower energy consumption per FLOP.  GPUs execute efficiently on data-parallel problems, and since most CPU codes are task-parallel, the algorithms used had to be reconsidered.  Data-parallelism is simply parallelism that arises from operating on many different pieces of data at one time, whereas task-parallelism is parallelism that arises from running many concurrent tasks that act on a single piece of data.   Figure \ref{datavtask} shows an illustration of the difference between a data-parallel and a task-parallel neutron transport loop.
 
 \begin{figure}[h!] 
   \centering
     \includegraphics[width=\textwidth]{graphics/datavtask.pdf}
-     \caption{Data-parallel neutron trasport loop vs. a task-parallel transport loop for transporting N neutrons in parallel.  \label{datavtask} }
+     \caption{Data-parallel neutron trasport loop vs.\ a task-parallel transport loop for transporting N neutrons in parallel.  \label{datavtask} }
 \end{figure}
 
-Execution on GPUs requires additional data management since the on-chip memory of the GPU is separate from the host CPU's memory \cite{cuda}.  Execution on NVIDIA GPUs also required code to be written in CUDA, which is a set of extensions for C/C++.  The simplest way to accommodate all these requirements was to write a new code from scratch, which ultimately resulted in WARP.  
+Execution on GPUs requires strategic data management since the on-chip memory of the GPU is separate from the host CPU's memory \cite{cuda}. To use NVIDIA GPUs, parts of software must be written in a language that facilitates interaction with the GPU. We chose CUDA \cite{cuda}, a set of extensions for C/C++.  
+%You may want to add a sentence here about the need to use a different MC algorithm than the standard approach (you mention data parallel vs. task parallel, but you don't say how that relates to MC). This would provide some cohesion.
+The simplest way to accommodate all these requirements was to write a new code from scratch, which ultimately resulted in WARP.  
 
-In this paper, results calculated by WARP are compared against those calculated by Serpent 2.1.21 and MCNP 6.1, two widely-used production-level Monte Carlo neutron transport codes, in order to ensure the accuracy of WARP and to highlight its performance differences.  The details about the algorithms used in WARP are discussed in \cite{algorithms}.
+In this paper, results calculated by WARP are compared against those calculated by Serpent 2.1.21 [citation] and MCNP 6.1 [citation], two widely-used production-level Monte Carlo neutron transport codes, in order to ensure the accuracy of WARP and to highlight its performance differences.  The details about the algorithms used in WARP are discussed in \cite{algorithms}.
+%Here I'd more fully outline the paper. It is common to give a section-by-section breakdown.
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -190,21 +195,22 @@ In this paper, results calculated by WARP are compared against those calculated 
 \section{Features of WARP}
 \label{sec:features}
 
-WARP has only existed since 2013, and is not as fully-featured as more mature Monte Carlo codes.  It has the functionality necessary to compare its performance against  Serpent 2.1.21 and MCNP 6.1, and this section outlines the current set of features available in WARP.  
+WARP has only existed since 2013, and is not as fully-featured as more mature Monte Carlo codes.  However, it has the functionality necessary to compare its performance against  Serpent 2.1.21 and MCNP 6.1, and this section outlines the current set of features available in WARP.  
 
 \subsection{Physics}
 
-Only neutrons are transported by WARP.  Any other particles are not considered in any way.  WARP loads ACE-formatted nuclear data libraries via the ``ace'' module in PyNE \cite{pyne}.  The cross section data are then re-formatted to use a unionionzed energy grid via NumPy, then then passed to the C++ routines via the Python C API.  Cross section data compiled by the United States is distributed by the Department of Energy in \emph{ENDF} files.  ENDF stands for ``evaluated nuclear data file'' and can contain data for nuclear decay, photons, atomic relaxation, fission yields, thermal neutron scattering, and charged particle reactions as well as neutron reactions.  ACE stands for ``a compact ENDF'' and strips out much of the extra information unnecessary for neutron transport and formats the data into the specified tabulation \cite{endfnums}.  Since many Monte Carlo codes read ACE-formatted data rather than the original ENDF file, WARP can eliminate one potential cause for discrepancies by loading identical data as other codes.  
+Only neutrons are transported by WARP.  Any other particles are not considered in any way.  WARP loads ACE-formatted nuclear data libraries via the ``ace'' module in PyNE \cite{pyne}.  The cross section data are then re-formatted to use a unionionzed energy grid via NumPy [citation], the re-formatted data are then passed to the C++ routines via the Python C API.  Cross section data compiled by the United States is distributed by the Department of Energy in \emph{ENDF} files.  ENDF stands for ``evaluated nuclear data file'' and can contain data for nuclear decay, photons, atomic relaxation, fission yields, thermal neutron scattering, and charged particle reactions as well as neutron reactions.  ACE stands for ``a compact ENDF'' and strips out much of the extra information unnecessary for neutron transport and formats the data into the specified tabulation \cite{endfnums}.  Since many Monte Carlo codes read ACE-formatted data rather than the original ENDF file, WARP can eliminate one potential cause for discrepancies by loading the same data as other codes.  
 
-In its current state, WARP does not use S($\alpha,$$\beta$) thermal scattering tables or unresolved resonance parameters and only uses the free-gas approximation for target nuclei.  This treats the target as part of a gas at a certain temperature and does not consider other modes of energy transfer that rise from inter- and intra-molecular phenomena.  Thermal scattering and unresolved resonance data improve the physical fidelity of the simulation, but these features can be turned off in production codes and direct comparisons can be made without them.  Their incorporation may lead to more divergent program flow and is left as an area of future work.
+In its current state, WARP does not use S($\alpha,\beta$) thermal scattering tables or unresolved resonance parameters and only uses the free-gas approximation for target nuclei.  The free-gas approximation treats the target as part of a gas at a certain temperature and does not consider other modes of energy transfer that rise from inter- and intra-molecular phenomena.  Thermal scattering and unresolved resonance data improve the physical fidelity of the simulation, but these features can be turned off in production codes so that WARP can be directly compared to them.  The incorporation of S($\alpha,\beta$) thermal scattering tables or unresolved resonance parameters in WARP could lead to more divergent program flow and is therefore an area for future investigation.
 
-WARP currently also has an incomplete set of the ENDF sampling laws implemented.   These are laws 3 (level scattering), 4 (continuous tabular distribution), 7 (simple Maxwell fission spectrum), 9 (evaporation spectrum), 44 (Kalbach-87 formalism), 61 (LAW=44 but tabular angular distribution), and 66 (N-body phase space distribution) \cite{MCNP}.  These laws cover all the reactions present in the test problems presented here, but some nuclei may have interactions that require the remaining laws (1, 2, 5, 11, 22, 24, 67). Problems containing any such nuclides cannot be simulated according to the data specifications with the current version of WARP.
+WARP currently also has an incomplete set of the ENDF sampling laws implemented: laws 3 (level scattering), 4 (continuous tabular distribution), 7 (simple Maxwell fission spectrum), 9 (evaporation spectrum), 44 (Kalbach-87 formalism), 61 (LAW=44 but tabular angular distribution), and 66 (N-body phase space distribution) \cite{MCNP}.  These laws cover all the reactions present in the test problems presented here, but some nuclei may have interactions that require the remaining laws (1, 2, 5, 11, 22, 24, 67). Problems containing any such nuclides cannot be simulated according to the data specifications with the current version of WARP.
+% You may want to mention whether any of the ones left out are important or state that they aren't important for the problems we care about or something along those lines. Brief information about whether this is inportant would be helpful.
 
-Sophisticated variance reduction is also not implemented in WARP, but it does use neutron weight to calculate fluxes and multiplication factors.  Currently the only reactions that adjust neutron weight are multiplicity reactions, like (n,2n), where the neutron weight is multiplied by the exiting neutron number in a similar way to OpenMC \cite{openmc}.  This means that new neutron histories do not have to be created mid-batch in criticality calculations, and makes program flow simpler.  Since neutron weights are implemented in WARP, however, simple variance reduction techniques like implicit capture should be a straight-forward part of future development.
+Sophisticated variance reduction is also not implemented in WARP. WARP does use neutron weight to calculate fluxes and multiplication factors so simple variance reduction techniques like implicit capture should be a straight-forward part of future development. Currently, the only reactions that adjust neutron weight are multiplicity reactions, like (n,2n), where the neutron weight is multiplied by the exiting neutron number in a manner similar to OpenMC \cite{openmc}.  This means that new neutron histories do not have to be created mid-batch in criticality calculations, and makes program flow simpler.  
 
 \subsection{Geometry}
 
-The geometry representation in WARP is handled by the NVIDIA OptiX library.  It provides high performance on the GPU, but imposes some limitations on the how geometries must be input.  These limitations restrict the kinds of benchmarks that can be done.
+The geometry representation in WARP is handled by the NVIDIA OptiX library [citation].  OptiX provides good performance on the GPU, but imposes some limitations on the how geometries must be input and that restricts the kinds of benchmarks that can be done. Pertinent limitations are:
 
 \begin{enumerate}
 \item Cells are the basic building blocks, not surfaces.
@@ -212,10 +218,10 @@ The geometry representation in WARP is handled by the NVIDIA OptiX library.  It 
 \item Implicit nesting determines what material exists inside of a cell.  In other words, since cells are defined directly, the material of cell A is only that space where cell A is the lowest nested cell.  If cell B is within cell A, the entire space within cell B is excluded from cell A simply because cell B resides within cell A and does not need to be excluded explicitly.
 \item The only cell types available are spheres, cylinders, right rectangular prisms, and right hexagonal prisms.
 \item Only translational transforms have been implemented, although this restriction could be lifted by some additional development.
-\item Vacuum (i.e. infinitely absorbing) and specular reflection  (i.e. mirror) boundary conditions are available.  Periodic boundary conditions have not yet been implemented.
+\item Vacuum (i.e.\ infinitely absorbing) and specular reflection  (i.e.\ mirror) boundary conditions are available.  Periodic boundary conditions have not yet been implemented.
 \end{enumerate}
 
-An improved tracking routine has been implemented in WARP since the last publication \cite{algorithms}.  WARP now uses ``cell sense'' to reduce the memory impact of determining in which cell/material a neutron is in.  ``Cell sense'' is like surface sense in that it is positive if a neutron is outside a cell and is negative if a neutron is inside the cell, and is simply the product of the surface senses of the cell's constituent planes.  In other words, the surface normals in WARP always point outward, and the signs of the normals encountered are summed along a trace.  When the sum becomes negative, the last intersected surface is the cell in which the neutron is located.  Figure \ref{whereami} shows an illustration of this process.
+An improved tracking routine has been implemented in WARP since the last publication \cite{algorithms}.  WARP now uses ``cell sense'' to reduce the memory impact of determining in which cell/material a neutron resides.  ``Cell sense'' is like surface sense in that it is positive if a neutron is outside a cell and is negative if a neutron is inside the cell. Cell sense is simply the product of the surface senses of the cell's constituent planes.  In other words, the surface normals in WARP always point outward, and the signs of the normals encountered are summed along a trace.  When the sum becomes negative, the last intersected surface is the cell in which the neutron is located.  Figure \ref{whereami} shows an illustration of this process.
 
 \begin{figure}[h!]
 \centering
@@ -223,14 +229,16 @@ An improved tracking routine has been implemented in WARP since the last publica
 \caption{The improved point-in-polygon ``where am I?'' algorithm. \label{whereami} }
 \end{figure}
 
-Previously, a list of cell numbers was stored for each intersection and the double entries removed to give a nesting list for the neutron.  Now, cell sense (which is either 1 or -1) is calculated and summed as the query ray traverses the geometry.  When the cumulative sense becomes negative, the containing cell has been intersected and tracing can stop.  This can be done because all bodies must be closed.  This scheme takes advantage of the acceleration structure in OptiX while still using the simplicity of combinatorial solid geometry.  It essentially is the same scheme as MCNP/Serpent, except that the acceleration structures allow surfaces which are part cell definitions far away to be skipped.  Also, compared to the past scheme of storing a list, this method requires a single integer to be stored and operated on instead of a (potentially large and slow) list.
-% "...which are part cell definitions..." reads very awkwardly to me, but i'm not sure how to word it better to still get the point across
+Previously, a list of cell numbers was stored for each intersection and the double entries removed to give a nesting list for the neutron.  Now, the cell sense (which is either 1 or -1) is calculated and summed as the query ray traverses the geometry.  When the cumulative sense becomes negative, the containing cell has been intersected and tracing can stop.  This can be done because all bodies must be closed.  This scheme takes advantage of the acceleration structure in OptiX while still using the simplicity of combinatorial solid geometry.  It essentially is the same scheme as MCNP/Serpent, except that the acceleration structures allow surfaces that are part of cells that are far away to be skipped.  Also, compared to the past scheme of storing a list of doubles, this method requires a single integer to be stored and operated on instead of a (potentially large and slow) list. This change should reduce the memory required by the geometry tracking routine.
+% or some final sentence like that. It is not explicitly stated and is the whole point :)
+
 
 \subsection{Other Features}
 
-WARP is mainly written in C/C++ and is compiled to a shared library.  Pythonic wrapping is done via SWIG \cite{swig}, which automatically wraps compiled languages like C/C++ in high-level scripting languages.  With the C++ classes exposed in Python, the \texttt{main()} function can be replaced with a Python script, eliminating the need to recompile a main function and link it to the WARP library when different geometries or different run parameters are desired.  Of course, there is flexibility as well, and one could write a main function that could handle all conceivable cases 
+WARP is mainly written in C/C++ and is compiled to a shared library.  Pythonic wrapping is done via SWIG \cite{swig}, which automatically wraps compiled languages like C/C++ in high-level scripting languages.  With the C++ classes exposed in Python, the \texttt{main()} function can be replaced with a Python script, eliminating the need to recompile a main function and link it to the WARP library when different geometries or different run parameters are desired.  %Of course, there is flexibility as well, and one could write a main function that could handle all conceivable cases 
+% I don't really see the point of this last sentence...maybe clarify it or leave it out?
 
-The Python wrapping approach deviates from the standard flat text input file structure that many Monte Carlo codes use.  Flat text input relies on keywords and adds a layer where input files need to be parsed and data structures are then built in the application based on the information parsed from the input.  Using Python to directly access the classes and their data removes this layer, and allows a user to build complex, custom applications if necessary.  The results would also be resident in a Python session and would therefore be easily available to the user for plotting scripts or analysis tools.  To process data in the same way from text-file-based output, the output needs to be parsed with a user written function or processed by hand, which is time consuming and can lead to human error.
+The Python wrapping approach deviates from the standard flat text input file structure that many Monte Carlo codes use.  Flat text input relies on keywords and adds a layer in which input files need to be parsed and then data structures are built in the application based on the information parsed from the input.  Using Python to directly access the classes and their data removes this layer and allows a user to build complex, custom applications if necessary.  With Python, the results of a calculation are also resident in a Python session and are therefore easily available to the user for plotting with scripts or processing with other analysis tools.  To process data in the same way from text-file-based output, the output needs to be parsed with a user written function or processed by hand, which is time consuming and can lead to human error.
 
 WARP only has collision estimators implemented for both flux and multiplication factor estimation.  The relative error of these estimations are calculated, but any additional convergence estimation beyond relative error has not been implemented.  WARP is also only able to estimate the flux in a single volume and developing a GPU-efficient algorithm for multiple tallies is a major area of future development.  Since path lengths are already calculated in OptiX, implementing track length tallies could be a straight-forward variance reduction technique to introduce into WARP in the future.
 
@@ -240,7 +248,11 @@ WARP only has collision estimators implemented for both flux and multiplication 
 \section{Tests}
 \label{sec:tests}
 
-A small set of CPU and GPU hardwares that were easily accessible from UC Berkeley were chosen on which to test WARP.  For the CPU platforms, a cluster node was used.  For the GPU platforms, a consumer-level graphics card and a compute-specific card was used. The benchmark cases were run at the highest number of histories per criticality batch as possible for the specific GPUs (this is where they perform the best, but is limited by on-card memory), and the CPU cases were run with identical batch parameters when possible.  The CPU cases were run with the optimal number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole.  For the K20 and Titan GPUs, the costs include the retail price of a minimal host computer with at least as much memory as the card ({\raise.17ex\hbox{$\scriptstyle\sim$}}\$400).  
+A small set of CPU and GPU hardwares that were easily accessible from UC Berkeley were chosen for use in testing WARP.  For the CPU platforms, a cluster node was used.  For the GPU platforms, a consumer-level graphics card and a compute-specific card was used. Descriptions of each piece of hardware can be found in Table~\ref{platform_table}. For the K20 and Titan GPUs, the costs include the retail price of a minimal host computer with at least as much memory as the card ({\raise.17ex\hbox{$\scriptstyle\sim$}}\$400).
+
+The benchmark cases were run at the highest number of histories per criticality batch possible for the specific GPUs (this is where they perform the best, but is limited by on-card memory),
+% I don't understand what "this" is referring to in the parenthetical statement.
+ and the CPU cases were run with identical batch parameters when possible.  The CPU cases were run with the optimal number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole.    
 
 \begin{table}[h]
 \centering
@@ -273,7 +285,10 @@ NVIDIA Titan Black       &      \multicolumn{2}{r|}{ 15 }  &  1071.5 MHz     & $
 \end{tabular}
 \end{table}
 
-All tests use ENDF/B-VII cross sections that ship with the Serpent 1.1.7 release from RSICC.  These cross sections contain fewer energy grid points than the ENDF/B-VII.1 cross sections that ship with the MCNP 6.1 release from RSICC and allow more isotopes to be used by WARP since it does not perform any type of grid thinning after energy grid unionization.
+All tests use ENDF/B-VII cross sections that ship with the Serpent 1.1.7 release from RSICC.
+% you need to say what RSICC is, either a citation or description.
+  These cross sections contain fewer energy grid points than the ENDF/B-VII.1 cross sections that ship with the MCNP 6.1 release from RSICC and allow more isotopes to be used by WARP since it does not perform any type of grid thinning after energy grid unionization.
+% It's not clear to me that someone reading this paper would know what this sentence means. I'd add another one with more information or leave the second part of this sentence out. If you do that, I'd combine this paragraph with the previous one. 
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -299,7 +314,9 @@ Cells & Isotopes & (Atm. \%)& Density \\
 %%%%%%%%%%%%%%%%%%%
 \subsection{Test 2 - Homogenized Fuel Block}
 
-The homogenized block criticality test is a bare cube with vacuum boundary conditions.  This test keeps the same boundary condition, temperature, and number of cells as test 1, but it introduces multiple isotopes into the cell material.   The geometry and materials are outlined in Table \ref{homfuel_geom}.  
+The homogenized block criticality test is a bare cube with vacuum boundary conditions.  This test keeps the same boundary condition, temperature, and number of cells as test 1, but it introduces multiple isotopes into the cell material. 
+% It looks like test 1 has multiple isotopes...what?
+  The geometry and materials are outlined in Table \ref{homfuel_geom}.  
 
 \begin{table}[h]
 \centering
@@ -323,7 +340,7 @@ Cells & Isotopes & (Atm. \%)& Density \\
 %%%%%%%%%%%%%%%%%%%
 \subsection{Test 3 - Zr-Clad UO$_2$ Pin in Heavy Water}
 
-This criticality test consists of a UO$_2$ cylinder clad in zirconium surrounded by a block of light water.  This test increases complexity by having two materials, each with multiple isotopes, and two cells.  The water block has vacuum boundary conditions.  Its dimensions are relatively large and the absorption is low, so the mean neutron lifetime should be large.  This test serves to highlight that all the processing routines work simultaneously, the effect of introducing more than one cell, and the effect of long-lived neutrons.  The geometry and materials are outlined in Table \ref{uo2_pincell_geom}.  All cross sections used were processed at 273.5 K.
+This criticality test consists of a UO$_2$ cylinder clad in zirconium surrounded by a block of light water.  This test increases complexity by having three materials, each with multiple isotopes, and three cells.  The water block has vacuum boundary conditions.  Its dimensions are relatively large and the absorption is low, so the mean neutron lifetime should be large.  This test serves to highlight that all the processing routines work simultaneously, the effect of introducing more than one cell, and the effect of long-lived neutrons.  The geometry and materials are outlined in Table \ref{uo2_pincell_geom}.  All cross sections used were also processed at 273.5 K.
 
 \begin{table}[h]
 \centering
@@ -340,7 +357,7 @@ Cells & Isotopes & (Atm. \%)& Densities \\
                                                    &   $^{92}$Zr   (0.1715) &  $^{94}$Zr   (0.1738)& \\
                                                    &   $^{96}$Zr   (0.0280) &                      & \\
 \hline
-\multirow{1}{*}{1 box, r=50x50x50 cm }  &    $^{2}$H   (2.0) & $^{16}$O   (1.0) &   \multirow{1}{*}{1.11 g/cm$^3$} \\
+\multirow{1}{*}{1 box, 50x50x50 cm }  &    $^{2}$H   (2.0) & $^{16}$O   (1.0) &   \multirow{1}{*}{1.11 g/cm$^3$} \\
 \hline
 \end{tabular}
 \end{table}
@@ -350,7 +367,10 @@ Cells & Isotopes & (Atm. \%)& Densities \\
 %%%%%%%%%%%%%%%%%%%
 \subsection{Test 4 - Homogenized Fuel Pebble in FLiBe}
 
-This criticality test consists of a single sphere of homogenized UO$_2$ and C surrounded by molten FLiBe (Li$_2$BeF$_4$) salt.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  This test introduces more isotopes, uses two temperatures simultaneously, and tests the reflective boundary condition setting.  The geometry and materials are outlined in Table \ref{pebble_geom}.  The FLiBe cross sections used were processed at 900 K and the pebble cross sections at 1200 K.
+This criticality test consists of a single sphere of homogenized UO$_2$ and C surrounded by molten FLiBe (Li$_2$BeF$_4$) salt.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  This test introduces more isotopes, uses two temperatures simultaneously, and tests the reflective boundary condition setting.
+% This test has fewer isotopes than the previous one. 
+  The geometry and materials are outlined in Table \ref{pebble_geom}.  The FLiBe cross sections used were processed at 900 K and the pebble cross sections at 1200 K.
+% In the table, is r the length of one of the sides?  That's not completely clear.
 
 \begin{table}[h]
 \centering
@@ -371,9 +391,13 @@ Cells & Isotopes & (Atm.  \%)& Densities \\
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%
-\subsection{Test 5 - Stainless Steel-Clad Metallic Uranium Pin in Liquid Sodium}
+\subsection{Test 5 - Stainless Steel Clad Metallic Uranium Pin in Liquid Sodium}
 
-This criticality test consists of a single cylinder of metallic uranium surrounded by molten sodium.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  The reflective boundary condition approximates an infinite lattice of fuel spheres or a very large volume of pin cells like that in a sodium-cooled reactor.  This test serves to benchmark a fast system with a coolant as well as introduce more isotopes.  The geometry and materials are outlined in Table \ref{sodium_geom}.  The fuel and clad cross sections used were processed at 900 K, and the sodium coolant cross sections were processed at 600 K.  In order to keep the specification tenable, only the major components of 316 stainless steel were included in the clad material. 
+This criticality test consists of a single cylinder of metallic uranium surrounded by molten sodium.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  The reflective boundary condition approximates an infinite lattice of fuel spheres, or a very large volume of pin cells like that in a sodium-cooled reactor. 
+% What? Fuel spheres? This sentence is unclear.
+ This test serves to benchmark a fast system with a coolant as well as introduces more isotopes.
+% It just occurred to me that you haven't mentioned why the number of isotopes matters. I'd add some brief discussion about this in the features of warp section. The reader might not know why this is so important in warp.
+   The geometry and materials are outlined in Table \ref{sodium_geom}.  The fuel and clad cross sections used were processed at 900 K, and the sodium coolant cross sections were processed at 600 K.  In order to keep the specification tenable, only the major components of 316 stainless steel were included in the clad material. 
 
 \begin{table}[h]
 \centering
@@ -401,11 +425,12 @@ Cells & Isotopes & (Atm. \%)     & Densities \\
 %%%%%%%%%%%%%%%%%%%
 \subsection{Test 6 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
 
-This criticality test consists of 631 Zr-clad UO$_2$ cylinders laid out in a hexagonal lattice surrounded by light water.  The material compositions, densities, and cylinder dimensions are similar to the pin cell test case, but since this test has two orders of magnitude more objects, it serves to highlight the effect of introducing many geometric objects into the problem and will further validate that the geometry processing routines work correctly if consistent results are obtained.  The lattice is in the x-y plane, has a pitch to diameter ratio of 1.164, and has 15 elements on a side.  The geometry and materials are outlined in table \ref{hex_geom}.  All cross sections used were processed at 273.5 K.
+This criticality test consists of 631 Zr-clad UO$_2$ cylinders laid out in a hexagonal lattice surrounded by light water.  The material compositions, densities, and cylinder dimensions are similar to the pin cell test case, but, since this test has two orders of magnitude more objects, it serves to highlight the effect of introducing many geometric objects into the problem and will further validate that the geometry processing routines work correctly.  The lattice is in the x-y plane, has a pitch to diameter ratio of 1.164, and has 15 elements on a side.  The geometry and materials are outlined in Table \ref{hex_geom}.  All cross sections used were processed at 273.5 K.
 
 \begin{table}[h]
 \centering
 \caption{Geometry and materials used in the UO$_2$ pin hexagonal lattice in light water benchmark.}
+% This doesn't seem like the correct caption.
 \label{hex_geom}
 \begin{tabular}{| l | c  c | c |}
 \hline
@@ -433,20 +458,27 @@ Cells & Isotopes & (Atm. \%) & Densities \\
 \section{Results}
 \label{sec:results}
 
-The multiplication factor differences shown in this section are reported in ``per cent mille'' (pcm), which is a thousandth of a percent, or $10^{-5}$.  This is a standard way of reporting differences in the multiplication factor, as any small deviation from unity can cause a reactor to change its power level.  The flux spectra are normalized per source neutron and per unit lethargy.   ``Lethargy'' means the logarithm of the neutron energy, $\ln(E_0/E)$ \cite{duderstadt}.  Normalizing the flux per unit lethargy accentuates the high energy region, but used in conjunction with plotting on a logarithmic scale, it also yields a plot where the area under the line gives fraction of neutrons (flux) in a specific energy bin.  
-% "...but the magnitudes should have the same mean values." magnitudes of what, exactly? this is really unclear to me.  -> should be mean!  This section is kind of unnecessary, reduced.
+%I'd add an opening paragraph about the results. What measures will you use? What does success look like? Tell us know to know if something is good or not before giving the next paragraph of details.
+
+The multiplication factor differences shown in this section are reported in ``per cent mille'' (pcm), which is a thousandth of a percent, or $10^{-5}$.  This is a standard way of reporting differences in the multiplication factor, as any small deviation can cause a significant change in system behavior.
+% Not all of these systems are critical :)
+The difference in runtimes are reported in speedup factors ($t/t_\mathrm{WARP}$).
+  The flux spectra are normalized per source neutron and per unit lethargy.   ``Lethargy'' means the logarithm of the neutron energy, $\ln(E_0/E)$ \cite{duderstadt}.  Normalizing the flux per unit lethargy accentuates the high energy region, but, used in conjunction with plotting on a logarithmic scale, also yields a plot where the area under the curve gives the fraction of neutrons (flux) in a specific energy bin.  
 
 \subsection{Multiplication Factors and Runtimes}
 
-The goal of WARP is to be the first step in creating a full-featured continuous energy Monte Carlo neutron transport code that is \emph{accelerated} by running on GPUs.  The crux of the effort is to make Monte Carlo calculations faster but still produce accurate results.  In the following tables, the $\Delta$M column is for WARP's difference from MCNP, and the $\Delta$S column is for WARP's difference from Serpent.  The differences are reported in pcm for multiplication factors, and speedup factors ($t/t_\mathrm{WARP}$) for runtimes.  The (y/n) in the $\Delta$ columns signifies if the WARP value is inside (y) or outside (n) two standard deviations of the production code's value. 
+The goal of WARP is to be the first step in creating a full-featured, continuous energy, Monte Carlo neutron transport code that is \emph{accelerated} by running on GPUs.  The crux of the effort is to make Monte Carlo calculations faster while producing accurate results.  
+% I think these two sentences should be moved to the introduction. Tell us the goal at the start, not 11 pages in!
+In the following tables, the $\Delta$M column is for WARP's difference from MCNP, and the $\Delta$S column is for WARP's difference from Serpent.  
+  The (y/n) in the $\Delta$ columns signifies if the WARP value is inside (y) or outside (n) two standard deviations of the production code's value. 
 
-Table \ref{results_table_titan} shows the multiplication factor deviations and the speedup factors for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.21 for WARP running on an NVIDIA Titan Black.   All cases were run with 20 discard cycles and 40 active cycles with 9.5$\times10^{6}$ neutrons per cycle.  The sodium pin test case used a slightly larger cross section dataset than the other tests, so only 8.5$\times10^{6}$ neutrons per cycle were possible for this case.  Table  \ref{results_table_k20} shows the same information, but for for WARP running on an NVIDIA Tesla K20.  All cases were again run with 20 discard cycles and 40 active cycles with 6.5$\times10^{6}$ neutrons per cycle except for the sodium pin test case, where 6.0$\times10^{6}$ neutrons per cycle were used due to memory limitations.
+Table \ref{results_table_titan} shows the multiplication factor deviations and the speedup factors for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.21 for WARP running on an NVIDIA Titan Black.   All cases were run with 20 discard cycles and 40 active cycles with 9.5$\times10^{6}$ neutrons per cycle.  The sodium pin test case used a slightly larger cross section dataset than the other tests, so only 8.5$\times10^{6}$ neutrons per cycle were possible for this case.  Table  \ref{results_table_k20} shows the same information, but for for WARP running on an NVIDIA Tesla K20.  All cases were again run with 20 discard cycles and 40 active cycles with 6.5$\times10^{6}$ neutrons per cycle except for the sodium pin test case, where 6.0$\times10^{6}$ neutrons per cycle were used because of memory limitations.
 
-Since the PSSC node contains 4 processors which each contain 2 non-uniform memory access (NUMA) nodes each, the most efficient configuration for running the CPU codes was to use 8 MPI processes (one for each NUMA node), which each ran 6 threads for the 6 cores in each NUMA node.  In this configuration, Serpent could not fit the neutron data set into the available memory, so the neutrons per cycle and the total number of cycles were changed to allow Serpent to run in its most efficient mode.  The number of neutrons per cycle was divided by 8, while the number of cycles was increased by a factor of 8.  This way, the neutron memory structures could fit into memory and the total number of histories was preserved.
+Since the PSSC node contains 4 processors that each contain 2 non-uniform memory access (NUMA) nodes, the most efficient configuration for running the CPU codes was to use 8 MPI processes (one for each NUMA node), which each ran 6 threads for the 6 cores in each NUMA node.  In this configuration, Serpent could not fit the neutron data set into the available memory, so the neutrons per cycle and the total number of cycles were changed to allow Serpent to run in its most efficient mode.  The number of neutrons per cycle was divided by 8, while the number of cycles was increased by a factor of 8.  This way, the neutron data structures could fit into memory and the total number of histories was preserved.
 
 \begin{table}[h]
 \centering
-\caption{The test case multiplication factors and runtimes WARP using a Titan Black GPU versus those of Serpent 2.1.21 and MCNP 6.1.}
+\caption{The test case multiplication factors and runtimes for WARP using a Titan Black GPU versus those of Serpent 2.1.21 and MCNP 6.1.}
 \label{results_table_titan}
 \footnotesize
 \begin{tabular}{| l | r | r | r || r | r |}
@@ -501,7 +533,7 @@ Runtime & 120.42 m  &	321.27 m  &	43.15  m &	2.79x &	7.44x \\
 
 \begin{table}[h]
 \centering
-\caption{The test case multiplication factors and runtimes WARP using a Tesla K20 GPU versus those of Serpent 2.1.21 and MCNP 6.1.}
+\caption{The test case multiplication factors and runtimes for WARP using a Tesla K20 GPU versus those of Serpent 2.1.21 and MCNP 6.1.}
 \label{results_table_k20}
 \footnotesize
 \begin{tabular}{| l | r | r | r || r | r |}
@@ -557,10 +589,16 @@ Runtime & 81.5 m 		 &	160.68 m 	 &		45.06 m  &			1.8x	 &	3.6x \\
 It can be seen that WARP performs 2.2 to 13.0 times faster than the production codes while running on a Titan Black card and 1.4 to 8.4 times faster on a K20 card.  This speedup factor is calculated over an entire compute node, so these cards can have performance equivalent to 1.4 to 13 compute nodes, depending on the type of simulation.   The smallest speedup is in the Jezebel test, and the largest speedups are on the FLiBe and pin cell tests.
 
 Despite the very encouraging speedup factors, the multiplication factors calculated by WARP deviate from those of the production codes.  Across all test cases, WARP underestimates the multiplication factor.  The only case where the multiplication factors are within simulation statistical error is the Jezebel test on the K20 card.  The largest deviation is on the FLiBe test.  
+% You  may want to say that the implications of this will be discussed in detail in the discussion section, then add a discussion section. 
+% After reading through all of the results, I feel totally dissatisfied as a reader. What might the bug be? How likely is it that we can deal with this keff issue? What will we do to take this on? 
+% I feel the same way about the spectra. Why do some problems match in certain locations and others don't? What's unique about the problems with the offset from MCNP? Why isn't there an offset from Serpent? What do the differences have in common across problems and what is different? Can this provide any clues about the bugs? How do the spectral differences relate to the k differences?
+% This feels like just blind results reporting, which is fine, but there's no discussion about what they mean to follow it. Additional analysis would really strengthen this paper. 
+% Warp can be as fast and cost efficient as all get out, but if it can't get the right answers, who cares? This is a pretty serious concern and needs to really be addressed.
 
 WARP also produces spectra that have slight differences from Serpent and MCNP (shown in the next section), indicating that the reaction rates are different at certain energies.  Even though they are small, spectral differences may point to a bug in the reaction sampling routines.  CURAND can be seeded with the same number across runs, which should lead to the same sequence of random numbers in the kernel linear congruential random number generators (LCRNGs), but exact reproducibility has not been attempted.  Reproducibility is an important feature in validating results and will be an area of future development for WARP.
 
 \newpage
+% why newpage?
 \subsection{Spectra}
 
 %%%%%
@@ -578,7 +616,8 @@ Figure \ref{jezebel_spec} shows the volume-averaged flux spectrum in the Jezebel
 \newpage
 \subsubsection{Test 2 - Homogenized Fuel Block}
 
-Figure \ref{homfuel_spec} shows the volume-averaged flux spectrum in the homogenized fuel cube.  The relative difference compared to the MCNP and Serpent is again shown in the lower subplots.  The relative difference is again generally less than 1\%, but again WARP over-predicts the flux values above 1 MeV.  Below 0.1 MeV, the spectra agree well, but regions around resonances appear to cause relatively large deviations from the production code spectra.  The MCNP spectrum also appears to have a constant offset compared to the WARP spectrum, indicating a slightly different normalization. 
+Figure \ref{homfuel_spec} shows the volume-averaged flux spectrum in the homogenized fuel cube.  The relative difference compared to MCNP and Serpent is again shown in the lower subplots.  The relative difference is again generally less than 1\%, but again WARP over-predicts the flux values above 1 MeV.  Below 0.1 MeV, the spectra agree well, but regions around resonances appear to cause relatively large deviations from the production code spectra.  The MCNP spectrum also appears to have a constant offset compared to the WARP spectrum, indicating a slightly different normalization. 
+% you might want to say how it differs from serpent as well to give a hint about which normalization might be more correct. The current comparison feels incomplete.
 
 \begin{figure}[h!]
 \centering
@@ -591,6 +630,8 @@ Figure \ref{homfuel_spec} shows the volume-averaged flux spectrum in the homogen
 \subsubsection{Test 3 - Zr-Clad UO$_2$ Pin in Heavy Water}
 
 Figure \ref{pincell_spec} shows the volume-averaged flux spectrum inside the fuel rod in the Zr-clad UO$_2$ pin in heavy water test case.  Again, the relative difference is generally less than 1\% where the flux is large.  Compared to Serpent, the WARP spectrum is only outside of statistical bounds around 0.2 MeV.   WARP has large deviations from MCNP in the thermal region, and again appears to over-predict the flux above 1 MeV.
+% Here too you might want to point out that MCNP and Serpent don't match one another. 
+% It is, I think, a pretty serious problem that your ks don't match, but it can help your case to highlight when MCNP and Serpent are out of sync because it shows that getting the same answers is hard and that each code handles things differently - making it difficult to know what is really correct.
 
 \begin{figure}[h!]
 \centering
@@ -602,7 +643,8 @@ Figure \ref{pincell_spec} shows the volume-averaged flux spectrum inside the fue
 \newpage
 \subsubsection{Test 4 - Homogenized Fuel Pebble in FLiBe}
 
-Figure \ref{flibe_spec} shows the volume-averaged flux spectrum in the fuel pebble for the reflective FLiBe test case.  Again, the relative difference is generally less than 2\% where the flux is large.  Like the homogenized block test, the WARP spectrum has a constant offset compared to the MCNP spectrum, but compares well to Serpent below 30 keV. WARP has large deviations from both Serpent and MCNP around large resonances, and again appears to over-predict the flux above 1 MeV.
+Figure \ref{flibe_spec} shows the volume-averaged flux spectrum in the fuel pebble for the reflective FLiBe test case.  Here, the relative difference is generally less than 2\% where the flux is large.  Like the homogenized block test, the WARP spectrum has a constant offset compared to the MCNP spectrum, but compares well to Serpent below 30 keV. WARP has large deviations from both Serpent and MCNP around large resonances, and again appears to over-predict the flux above 1 MeV.
+
 
 \begin{figure}[h!]
 \centering
@@ -612,14 +654,14 @@ Figure \ref{flibe_spec} shows the volume-averaged flux spectrum in the fuel pebb
 
 %%%%%
 \newpage
-\subsubsection{Test 5 - Stainless Steel-Clad Metallic Uranium Pin in Liquid Sodium}
+\subsubsection{Test 5 - Stainless Steel Clad Metallic Uranium Pin in Liquid Sodium}
 
-Figure \ref{sodiumpin_spec} shows the volume-averaged flux spectrum in the fuel for the reflective sodium cooled, steel clad, metallic fuel test case.  Again, the relative difference is generally less than 2\% where the flux is large.  Again the WARP spectrum has a constant offset compared to the MCNP spectrum, has large deviations from both Serpent and MCNP around large resonances, and again appears to over-predict the flux above 1 MeV.
+Figure \ref{sodiumpin_spec} shows the volume-averaged flux spectrum in the fuel for the reflective sodium cooled, steel clad, metallic fuel test case.  The relative difference is generally less than 2\% where the flux is large.  The WARP spectrum again has a constant offset compared to the MCNP spectrum, has large deviations from both Serpent and MCNP around large resonances, and appears to over-predict the flux above 1 MeV.
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/sodiumpin_spec.pdf}
-\caption{Volume-averaged flux spectra inside the fuel of the reflective steel clad, sodium cooled pin test case. \label{sodiumpin_spec} }
+\caption{Volume-averaged flux spectra inside the fuel of the reflective, steel clad, sodium cooled pin test case. \label{sodiumpin_spec} }
 \end{figure}
 
 
@@ -627,7 +669,8 @@ Figure \ref{sodiumpin_spec} shows the volume-averaged flux spectrum in the fuel 
 \newpage
 \subsubsection{Test 6 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
 
-Figure \ref{assembly-lw_spec} shows the volume-averaged flux spectrum in the center pin of the Zr-clad hexagonal oxide fuel pin lattice in light water test case.  Again, the relative difference is generally less than 1\% where the flux is large, and is always within the statistical error of both MCNP and Serpent, unlike the other test cases.  There is no constant offset, and resonance regions appear to be treated correctly.  
+Figure \ref{assembly-lw_spec} shows the volume-averaged flux spectrum in the center pin of the Zr-clad hexagonal oxide fuel pin lattice in light water test case. The relative difference is generally less than 1\% where the flux is large, but this time the WARP results are always within the statistical error of both MCNP and Serpent. This is the first test case where the spectra match across the entire energy range; there is not a constant offset, and resonance regions appear to be treated correctly.  
+% I think it's worth making sure to highlight this. By the time were at test 6 it's hard to keep paying attention to what's going on (the repeptitive nature = people skim). Maybe one more sentence pointing 
 
 \begin{figure}[h!]
 \centering
@@ -658,19 +701,22 @@ History Power / Watt   & 480	 & 160	 & 2600    \\
 \end{tabular}
 \end{table}
 
-On a Titan Black, WARP has about 3 and 8 times the history power of Serpent and MCNP, respectively, run on a single cluster node.    This figure simply states the average worth of a Titan Black card compared to the PSSC node.  If the nodes were very cheap, one could simply buy more of them to gain a history power equal to or above WARP on a single card.  The costs of the node per history compared to the cost of the GPU card per history is what determines the real-world competition between these two compute platforms.  The second line of Table \ref{history_power} shows the history power of all three codes per cost of their platforms.  The third line of the table shows the history power per electrical costs of running the platforms.  Looking at these figures, running WARP on a GPU platform is by far the best choice.  Since WARP uses single-precision data and math in order to fully exploit the capacities available on consumer GPUs like the Titan Black, its capital costs are significantly reduced.  GPUs are also more energy efficient than the CPU platforms, and WARP can outperform the CPU node by an order of magnitude on histories per watt.
+On a Titan Black, WARP has about 3 and 8 times the history power of Serpent and MCNP, respectively, run on a single cluster node.  This figure simply states the average worth of a Titan Black card compared to the PSSC node.  One could simply use more NUMA nodes to the CPU node to gain a history power equal to or above WARP on a single card. 
+% This comparison is a little weird. It feels like it needs to be normalized somehow to account for strong scaling. I am not sure how to do that fairly...divide by the product of threads and frequency? That sort of accounts for how much work can be done?
+ The cost of the node per history compared to the cost of the GPU card per history  in one of that metrics that can be used to compare the value of these compute platforms.  That comparison is shown in the second line of Table \ref{history_power}, which shows the history power of all three codes per cost of their platforms.  The third line of the table shows the history power per unit of electricity required to run the platforms.  Looking at these figures, running WARP on a GPU platform is by far the best choice.  Since WARP uses single-precision data and math in order to fully exploit the capacities available on consumer GPUs like the Titan Black, its capital costs are significantly reduced.  GPUs are also more energy efficient than the CPU platforms, and WARP can outperform the CPU node by an order of magnitude on histories per watt.
 
 \subsection{Scaling}
 
-Larger neutron datasets allow the GPU to schedule threads better, but the size of the dataset is limited by the available on-card memory.  Cross sections are also stored on-card and compete with the neutrons for space in memory (which is why the sodium pin test case had lower neutrons per cycle compared to the other test cases).  It is of interest to know where performance saturates so a user can always choose to run the number of neutrons per cycle which gives the best performance.  Figure \ref{scaling} shows the neutron processing rate of WARP compared to the neutron dataset size.
+Larger neutron datasets allow the GPU to schedule threads better, but the size of the dataset is limited by the available on-card memory.  Cross sections are also stored on-card and compete with the neutrons for space in memory (which is why the sodium pin test case had fewer neutrons per cycle compared to the other test cases).  It is of interest to know where performance saturates so a user can choose to run the number of neutrons per cycle that gives the best performance.  Figure \ref{scaling} shows the neutron processing rate of WARP compared to the neutron dataset size.
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.8\textwidth,trim= 1cm 0cm 1cm 0cm]{graphics/scaling.pdf}
-\caption{Neutron processing rate vs. number of neutrons per cycle for the hexagonal lattice test case. \label{scaling} }
+\caption{Neutron processing rate vs.\ number of neutrons per cycle for the hexagonal lattice test case. \label{scaling} }
 \end{figure}
 
-Performance increases until $5\times10^6$ neutrons per cycle, then flattens above this.  This curve was calculated using the hexagonal pin lattice test case, and may look different for different problems, but this number gives a rough estimate of where maximum performance occurs for WARP running on a Titan Black card.  This plot also shows ``tail effect'' - that the processing rate decreases with the number of active neutrons in a cycle.  
+Performance increases until $5\times10^6$ neutrons per cycle, then flattens above this.  This curve was calculated using the hexagonal pin lattice test case, and may look different for different problems, but this number gives a rough estimate of where maximum performance occurs for WARP running on a Titan Black card.  This plot also shows ``tail effect''\textemdash that the processing rate decreases with the number of active neutrons in a cycle.  
+% This is one example, do you have any incite into how this changes with problem size or complexity? Any sense of the boundaries of applicability? Should the user just do a couple of quick test runs to get a sense of this curve before running their real calculation? I feel like just a little more info would translate this into good advice :)
 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
@@ -679,13 +725,16 @@ Performance increases until $5\times10^6$ neutrons per cycle, then flattens abov
 \section{Conclusions}
 \label{sec:conc}
 
-It has been shown that WARP is able to perform high-fidelity neutron transport on GPUs.  Depending on the problem type and the card used, WARP can achieve performance equivalent to that of 2 to 13 CPU nodes with 4 AMD Opteron 6172 processors (48 cores) each.  The low capital and electrical cost of GPU platforms then lead to at least an order of magnitude more histories calculated per dollar spent.  This figure clearly shows that GPUs can be a very cost effective way to perform continuous energy Monte Carlo neutron transport.
+It has been shown that WARP is able to perform high-fidelity neutron transport on GPUs.  Depending on the problem type and the card used, WARP can achieve performance equivalent to that of 2 to 13 CPU nodes with 4 AMD Opteron 6172 processors (48 cores) each.  The low capital and electrical cost of GPU platforms then lead to at least an order of magnitude more histories calculated per dollar spent.  This figure clearly shows that GPUs can be  very cost effective for continuous energy Monte Carlo neutron transport.
 
 The development of WARP has led to important conclusions regarding how to conduct neutron transport on GPUs as well, mainly that running with large datasets, and therefore a large number of threads, is important for good performance.  It was found that in the hexagonal lattice test case, maximum performance was achieved at $5\times10^6$ neutrons per criticality cycle.  It is important to keep the GPU saturated with threads so it can effectively pipeline data loads and issue instructions.  
+% This conclusion doesn't seem to reflect what was discussed/presented above. This wasn't highlighted at all.
+% Also, you changed the geometry routine but don't talk about how that has had an impact, or if you've measured the impact at all. Is there a comparison of WARP timing and memory use with the old geometry routine compared to the new one? That seems like it would be a really useful addition... 
 
 WARP still has some bugs, as evidenced by the uniform deviation of the multiplication factors compared to MCNP/Serpent and the deviations apparent in the calculated spectra.  A large part of future development will be tracking them down to ensure that accurate results are produced.
 
 WARP will be released as open source software, pending DOE approval, at \url{http://github.com/weft}. The ``warp'' is the high-tension, longitudinal thread in a weave of cloth, whereas the ``weft'' is the low tension, transverse thread.  On a loom, the warp threads are all moved in sync, then the weft is passed through them.  Naming the repository for the single thread that defines the phase of the warp seemed appropriate.
+% love it!
 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
@@ -693,24 +742,34 @@ WARP will be released as open source software, pending DOE approval, at \url{htt
 \section{Future Development}
 \label{sec:dev}
 
-The initial goals of WARP have been completed, but there is much work still to be done if it is going to be of real use to the nuclear engineering community.  Basic functionality is currently good enough to assure the GPUs can accelerate high-fidelity Monte Carlo neutron transport calculations, but many capabilities need to be expanded and ensured to scale well to large numbers of neutrons, isotopes, and geometrical zones.  Reproducibility using the same random number seeds will also be investigated to ensure consistent results can be produced and that there are no systematic errors present in WARP.  Ensuring reproducibility will also be necessary in making a test suite for WARP, so future users can have confidence in their results and future developers can know their modifications do not introduce new errors into WARP.
+The initial goals of WARP have been completed, but there is much work still to be done if it is going to be of real use to the nuclear engineering community.  Basic functionality is currently good enough to assure the GPUs can accelerate high-fidelity Monte Carlo neutron transport calculations, but many capabilities need to be expanded and ensured to scale well to large numbers of neutrons, isotopes, and geometric zones.  
+% You might want to spend the rest of the paragraph previewing what you will talk about in the rest of this section so we have a roadmap before entering it. 
 
-The geometry is currently handled by OptiX since it provides a convenient way to obtain high-performance results, but its execution had to be coerced into providing WARP with the information it needed, namely the material number via the point-in-polygon (PIP) algorithm.  The way OptiX executes this algorithm is not efficient since it must be done iteratively using OptiX's native functions instead of calculating the ordered list of intersections in a single trace.  NVIDIA is releasing ``OptiX Prime'' with OptiX 3.5 \cite{optix3.5}, which promises to provide a more ``to the metal'' ray tracing experience, and might be leveraged to provide more efficient single-traverse functionality.  OptiX could also be replaced by Rayforce \cite{rayforce}, a high-performance GPU ray tracing library developed by VSL that has this functionality built-in and is currently available free of charge for noncommercial use.
+Reproducibility of results when using the same random number seeds will also be investigated to ensure consistent results can be produced and that there are no systematic errors present in WARP.  Ensuring reproducibility will also be necessary in making a test suite for WARP, so future users can have confidence in their results and future developers can know their modifications do not introduce new errors into WARP.
 
-The geometry routines could also be replaced by handwritten routines that use combinatorial solid geometry like Serpent and MCNP.  This would make writing input for WARP more like what most nuclear engineers are already used to and, more importantly, could provide a potential performance increase.  A universe-based CSG representation may map very well to the GPU and may even be able to fit inside of shared memory for small numbers of surfaces.  Using an efficient CSG method would further lend itself to using Woodcock delta-tracking for the neutrons and thus getting rid of the tracing algorithms and libraries altogether.   The new PIP algorithm now uses surface sense in order to eliminate a surface hit list and greatly improves the scalability of WARP's geometry routines, and in this way is like a hybrid CSG and ray tracing algorithm.  The algorithm uses OptiX to determine which surfaces lie along a flight path, then calculates the normals to determine if a neutron is nested in the cell or not.
+The geometry is currently handled by OptiX, which provides a convenient way to obtain high-performance results, but OptiX had to be coerced into providing WARP with the information it needed, namely the material number via the point-in-polygon (PIP) algorithm.  The way OptiX executes this algorithm is not efficient since it must be done iteratively using OptiX's native functions instead of calculating the ordered list of intersections in a single trace.  NVIDIA is releasing ``OptiX Prime'' with OptiX 3.5 \cite{optix3.5}, which promises to provide a more ``to the metal'' ray tracing experience, and might be leveraged to provide more efficient single-traverse functionality.  OptiX could also be replaced by Rayforce \cite{rayforce}, a high-performance GPU ray tracing library developed by VSL that has this functionality built-in and is currently available free of charge for noncommercial use.
 
-WARP's execution can also be improved.  The amount of memory required per neutron was not tracked in this initial development, much less optimized, since developing a functioning code was the main priority.  Reducing the memory needed per neutron would be highly beneficial in the sense that more concurrent neutrons could be launched using the reclaimed memory space.  Dynamic parallelism can be implemented to minimize kernel launch overhead and host-device communication in the inner transport loop.  Dynamic parallelism is a feature introduced into the NVIDA Kepler GPUs that allows kernels to be launched from kernels, and could eliminate the host needing to contain the main transport loop.  Neither CUDPP or OptiX support its use, however.  CUDPP could be replaced with newer, higher-performance libraries (e.g.\ CUB) that do support dynamic parallelism, but OptiX would have to be replaced by a handwritten kernel to perform the necessary geometric tasks.  Textures could be thoroughly investigated as they might provide better performance in tasks where their free linear interpolation and spatial caching could provide a performance boost, like in an energy grid search on a tree structure.   Alternatively, using optimized graph search libraries, such as ``gunrock,'' could be used to perform the energy grid search \cite{gunrock}.
+The geometry routines could also be replaced by handwritten routines that use combinatorial solid geometry like Serpent and MCNP.  This would make writing input for WARP more like what most nuclear engineers are already used to and, more importantly, could provide a potential performance increase.  A universe-based CSG representation may map very well to the GPU and may even be able to fit inside of shared memory for small numbers of surfaces.  Using an efficient CSG method would further lend itself to using Woodcock delta-tracking for the neutrons and thus getting rid of the tracing algorithms and libraries altogether.   The new PIP algorithm uses surface sense in order to eliminate a surface hit list and greatly improves the scalability of WARP's geometry routines, and in this way is like a hybrid CSG and ray tracing algorithm. 
+% again, there isn't any evidence provided that shows the impact of the new geometry routine.
+ The new algorithm uses OptiX to determine which surfaces lie along a flight path, then calculates the surface normals to determine if a neutron is nested in the cell or not.
+
+WARP's execution can also be improved.  The amount of memory required per neutron was not tracked in this initial development, much less optimized, since developing a functioning code was the main priority.  Reducing the memory needed per neutron would be highly beneficial in the sense that more concurrent neutrons could be launched using the reclaimed memory space.  Dynamic parallelism can be implemented to minimize kernel launch overhead and host-device communication in the inner transport loop.  Dynamic parallelism is a feature introduced into the NVIDA Kepler GPUs that allows kernels to be launched from kernels, and could eliminate the host needing to contain the main transport loop.  Neither CUDPP nor OptiX support its use, however.  CUDPP could be replaced with newer, higher-performance libraries (e.g.\ CUB) that do support dynamic parallelism, but OptiX would have to be replaced by a handwritten kernel to perform the necessary geometric tasks.  Textures could be thoroughly investigated as they might provide better performance in tasks where their free linear interpolation and spatial caching could provide a performance boost, like in an energy grid search on a tree structure.   Alternatively, using optimized graph search libraries, such as ``gunrock,'' could be used to perform the energy grid search \cite{gunrock}.
 
 %WARP also currently only supports fixed-source mode in the non-remapping version as it requires popping secondary neutrons back into the active neutron pool after every iteration of the inner transport loop.  This operation is expensive since it is a global operation that must be done often.  This algorithm could be changed to be more like a criticality run, where the primary neutrons are all transported together, then the next (smaller) generation of secondary particles are transported, then the next, and so on.  This way, the pop routine is only executed in the outer loop, and could produce faster results.  
 
-WARP suffers from ``tail effect,'' where performance drops off as the number of active neutrons drops.  Developing a method that keeps the active neutron number high would greatly improve performance, but could become quite complicated as generations would start to overlap and calculation of the multiplication factor couldn't be done in between cycles  as it is now.  Multi-GPU support should also be added so that WARP can be used effectively on computers with more than one GPU.
+WARP suffers from ``tail effect,'' where performance drops off as the number of active neutrons decreases.  Developing a method that keeps the active neutron number high would greatly improve performance, but could become quite complicated as generations would start to overlap and calculation of the multiplication factor couldn't be done in between cycles  as it is now.  Multi-GPU support should also be added so that WARP can be used effectively on computers with more than one GPU.
 
-If an entire overhaul of the WARP transport algorithm is feasible, using a streaming multiprocessor (SM)-based algorithm might be investigated instead of current global one.  This type of algorithm would treat each SM as an independent processor and would provide each a bank of neutrons to transport, as is done by Liu and Henderson \cite{tianyu,henderson}.   This way, neutron data could be stored in very fast shared memory, but using this memory space would compete with storing geometric information there.  Also, since a smaller set of neutrons could be stored, the SMs would need to communicate to determine which of the next neutrons they would take out of the global bank, or they would need to periodically rendezvous to shared source information and ensure that the distributions they use are each converged.  This type of transport algorithm would also preclude using OptiX, since it does not have SM-level functionality \cite{optix}.
+If an entire overhaul of the WARP transport algorithm is feasible, using a streaming multiprocessor (SM)-based algorithm might be investigated for replacing the current global one.  This type of algorithm would treat each SM as an independent processor and would provide each a bank of neutrons to transport, as is done by Liu and Henderson \cite{tianyu,henderson}.   This way, neutron data could be stored in very fast shared memory, but using this memory space would compete with storing geometric information there.  Also, since a smaller set of neutrons could be stored, the SMs would need to communicate to determine which of the next neutrons they would take out of the global bank, or they would need to periodically rendezvous to shared source information and ensure that the distributions they use are each converged.  This type of transport algorithm would also preclude using OptiX, since it does not have SM-level functionality \cite{optix}.
 
-Since global memory comes at a premium on GPUs, an on-the-fly temperature treatment for nuclides would likely be required if more than a handful of isotopes are desired at more than one temperature.  Methods like those used in Serpent could be adapted for use on the GPU \cite{serpent}.  On-the-fly methods reduce the amount of storage needed, but they require more computation per data element loaded since the loaded value is adjusted according to the temperature of the material.  This kind of method may work well on the GPU since GPUs have a larger FLOP/byte ratio than CPUs and the additional work may cost little.  Other than the how to represent and adjust the data, an efficient way to handle situations where there are many different material and isotopes present needs to be explored.  The work done by Scudiero on porting OpenMC's macroscopic cross section processing benchmarking tool, ``xsbench,'' may elucidate this endeavor \cite{openmc,scudiero}.   Fractional cascading may also help reduce the memory footprint of the cross section data while keeping energy search cost low, and should be investigated for use in WARP\cite{Lund2015}.
+Since global memory comes at a premium on GPUs, an on-the-fly temperature treatment for nuclides would likely be required if more than a handful of isotopes are desired at more than one temperature.  Methods like those used in Serpent could be adapted for use on the GPU \cite{serpent}.  On-the-fly methods reduce the amount of storage needed, but they require more computation per data element loaded since the loaded value is adjusted according to the temperature of the material.  This kind of method may work well on the GPU since GPUs have a larger FLOP/byte ratio than CPUs and the additional work may cost little.  
 
-WARP would gain usability if more features were incorporated as well.  Importance cutoffs could be used to terminate neutrons, leading to shorter runtimes; cell importances (easily attached to cell primitives), track length tallies, and implicit absorption could help improve tally statistics.  Developing an efficient way to include many reaction rate tallies would also make WARP useful for performing depletion analysis.  It would also be helpful for WARP to have statistical tests like Shannon entropy to ensure the fission source is fully converged before tallies and multiplication factors are accumulated.  Accuracy would also be improved by adding S($\alpha,$$\beta$) thermal scattering tables and unresolved resonance parameters.
+Beyond how to represent and adjust the data, an efficient way to handle situations where there are many different material and isotopes present needs to be explored.  The work done by Scudiero on porting OpenMC's macroscopic cross section processing benchmarking tool, ``xsbench,'' may elucidate this endeavor \cite{openmc,scudiero}.   Fractional cascading may also help reduce the memory footprint of the cross section data while keeping energy search cost low \cite{Lund2015}.
 
+WARP would gain usability if more features were incorporated as well.  Importance cutoffs could be used to terminate neutrons, leading to shorter runtimes; cell importances (easily attached to cell primitives), track length tallies, and implicit absorption could help improve tally statistics.  Developing an efficient way to include many reaction rate tallies would also make WARP useful for performing depletion analysis.  It would also be helpful for WARP to have statistical tests like Shannon entropy to ensure the fission source is fully converged before tallies and multiplication factors are accumulated.  Accuracy would also be improved by adding S($\alpha,\beta$) thermal scattering tables and unresolved resonance parameters.
+
+% If the paper ends up long, you could cut out a lot of future development. While this stuff is great (and we need to at the minimum keep this internally and it would be good to have on the public github page as tickets), the list of possible improvements does nothing to address the current problem that the results are wrong. Much of me feels like this entire section should be dropped or dramatically cut down in favor of a strong disucssion section. 
+
+% Also, a closing paragraph is needed.
 
 \section*{Acknowledgements}
 \label{sec:ack}
