@@ -1,3 +1,3 @@
-runtime =  7.63554932E+01 m    k_eff =  1.09710944E+00   rel. err. =  5.52869642E-05     
+runtime =  2.05719991E+01 m    k_eff =  1.09852958E+00   rel. err. =  1.83366123E-04     
 cycles total 60 skipped 20 scored 40 
- 6000000 source neutrons per cycle
+ 1000000 source neutrons per cycle
