@@ -95,7 +95,7 @@ if sys.argv[2] == 'homfuel' or sys.argv[2]=='test':
 	mcnp_vol = 50.0*100.0*100.0#60*60*60
 if sys.argv[2] == 'pincell':
 	err_range_mcnp = 0.05
-	err_range_serp = 0.025
+	err_range_serp = 0.015
 	xlims=[1e-8,20]
 	mcnp_vol = 40.0*2.*2.*numpy.pi
 if sys.argv[2] == 'assembly':
