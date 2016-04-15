@@ -76,8 +76,8 @@ def get_warp_data(filepath):
 
 
 warpdata   = get_warp_data(     'warp/'+sys.argv[1]+'/'+sys.argv[2]+'.tally')
-serpdata   = get_serpent_det('serpent/'+sys.argv[1]+'/'+sys.argv[2]+'_det0.m')
-mcnpdata   = get_mcnp_mctal(    'mcnp/'+sys.argv[1]+'/'+sys.argv[2]+'.mctal')
+serpdata   = get_serpent_det('serpent/savio/'+sys.argv[2]+'_det0.m')
+mcnpdata   = get_mcnp_mctal(    'mcnp/k20/'+sys.argv[2]+'.mctal')
 
 tallybins = warpdata[0]
 tally     = warpdata[1]
