@@ -1,0 +1,25 @@
+#!/bin/sh
+#SBATCH --mem_bind=verbose,local
+#SBATCH --job-name=mcnp
+#SBATCH --output=slurm.out
+#SBATCH --error=slurm.err
+#SBATCH --partition=savio2
+#SBATCH --time=2-00:00:00
+#SBATCH --cpus-per-task=24
+#SBATCH --ntasks=1
+#SBATCH --exclusive
+
+export SERPENT_DATA=/global/scratch/rmb/SERPENT/xsdata/endfb7
+export DATAPATH=/global/scratch/rmb/SERPENT/xsdata/endfb7
+export name=jezebel
+mpirun mcnp6.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
+export name=homfuel
+mpirun mcnp6.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
+export name=pincell
+mpirun mcnp6.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
+export name=flibe
+mpirun mcnp6.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
+export name=sodiumpin
+mpirun mcnp6.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
+export name=assembly-lw
+mpirun mcnp6.mpi tasks $SLURM_CPUS_PER_TASK i=$name o=$name.o mctal=$name.mctal runtpe=$name.runtpe xsdir=xsdir
