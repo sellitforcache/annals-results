@@ -242,6 +242,11 @@ The Python wrapping approach deviates from the standard flat text input file str
 
 WARP only has collision estimators implemented for both flux and multiplication factor estimation.  The relative error of these estimations are calculated, but any additional convergence estimation beyond relative error has not been implemented.  WARP is also only able to estimate the flux in a single volume and developing a GPU-efficient algorithm for multiple tallies is a major area of future development.  Since path lengths are already calculated in OptiX, implementing track length tallies could be a straight-forward variance reduction technique to introduce into WARP in the future.
 
+Make sure to include the new tally algorithm where the .
+
+%If fission pop isn't in the last paper, include is here, add picture from PSI postdoc interview?
+
+
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
@@ -726,6 +731,8 @@ Performance increases until $5\times10^6$ neutrons per cycle, then flattens abov
 \label{sec:conc}
 
 It has been shown that WARP is able to perform high-fidelity neutron transport on GPUs.  Depending on the problem type and the card used, WARP can achieve performance equivalent to that of 2 to 13 CPU nodes with 4 AMD Opteron 6172 processors (48 cores) each.  The low capital and electrical cost of GPU platforms then lead to at least an order of magnitude more histories calculated per dollar spent.  This figure clearly shows that GPUs can be  very cost effective for continuous energy Monte Carlo neutron transport.
+
+mention the rounding suspicion for the resonances.
 
 The development of WARP has led to important conclusions regarding how to conduct neutron transport on GPUs as well, mainly that running with large datasets, and therefore a large number of threads, is important for good performance.  It was found that in the hexagonal lattice test case, maximum performance was achieved at $5\times10^6$ neutrons per criticality cycle.  It is important to keep the GPU saturated with threads so it can effectively pipeline data loads and issue instructions.  
 % This conclusion doesn't seem to reflect what was discussed/presented above. This wasn't highlighted at all.
