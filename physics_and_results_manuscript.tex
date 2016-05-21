@@ -330,9 +330,7 @@ Cells & Isotopes & (Atm. \%)& Density \\
 %%%%%%%%%%%%%%%%%%%
 \subsection{Test 2 - Homogenized Fuel Block}
 
-The homogenized block criticality test is a bare cube with vacuum boundary conditions.  This test keeps the same boundary condition, temperature, and number of cells as test 1, but it introduces multiple isotopes into the cell material. 
-% It looks like test 1 has multiple isotopes...what?  oops, left over from dissertation
-  The geometry and materials are outlined in Table \ref{homfuel_geom}.  
+The homogenized block criticality test is a bare cube with vacuum boundary conditions.  This test keeps the same boundary condition, temperature, and number of cells as test 1, but is larger, reducing leakage, and contains light isotopes, which readily produce thermal neutrons, and introduces new isotopes.  Introducing new isotopes into the simulation is significant in that new isotopes may use any of the various sampling laws outlines earlier.  Comparing spectra from calculations containing many different isotopes simply shows that WARP can handle sampling the laws correctly.  The geometry and materials are outlined in Table \ref{homfuel_geom}.  
 
 \begin{table}[h]
 \centering
@@ -383,10 +381,7 @@ Cells & Isotopes & (Atm. \%)& Densities \\
 %%%%%%%%%%%%%%%%%%%
 \subsection{Test 4 - Homogenized Fuel Pebble in FLiBe}
 
-This criticality test consists of a single sphere of homogenized UO$_2$ and C surrounded by molten FLiBe (Li$_2$BeF$_4$) salt.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  This test introduces more isotopes, uses two temperatures simultaneously, and tests the reflective boundary condition setting.
-% This test has fewer isotopes than the previous one. 
-  The geometry and materials are outlined in Table \ref{pebble_geom}.  The FLiBe cross sections used were processed at 900 K and the pebble cross sections at 1200 K.
-% In the table, is r the length of one of the sides?  That's not completely clear.
+This criticality test consists of a single sphere of homogenized UO$_2$ and C surrounded by molten FLiBe (Li$_2$BeF$_4$) salt.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  This test uses two temperatures simultaneously and tests the reflective boundary condition setting.  The geometry and materials are outlined in Table \ref{pebble_geom} where ``r'' shown for the hex prism is the length of the apothem.  The FLiBe cross sections used were processed at 900 K and the pebble cross sections at 1200 K.
 
 \begin{table}[h]
 \centering
@@ -409,11 +404,7 @@ Cells & Isotopes & (Atm.  \%)& Densities \\
 %%%%%%%%%%%%%%%%%%%
 \subsection{Test 5 - Stainless Steel Clad Metallic Uranium Pin in Liquid Sodium}
 
-This criticality test consists of a single cylinder of metallic uranium surrounded by molten sodium.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  The reflective boundary condition approximates an infinite lattice of fuel spheres, or a very large volume of pin cells like that in a sodium-cooled reactor. 
-% What? Fuel spheres? This sentence is unclear.
- This test serves to benchmark a fast system with a coolant as well as introduces more isotopes.
-% It just occurred to me that you haven't mentioned why the number of isotopes matters. I'd add some brief discussion about this in the features of warp section. The reader might not know why this is so important in warp.
-   The geometry and materials are outlined in Table \ref{sodium_geom}.  The fuel and clad cross sections used were processed at 900 K, and the sodium coolant cross sections were processed at 600 K.  In order to keep the specification tenable, only the major components of 316 stainless steel were included in the clad material. 
+This criticality test consists of a single cylinder of metallic uranium surrounded by molten sodium.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  The reflective boundary condition approximates the very large number of fuel rods like that of a sodium-cooled reactor.  This test serves to benchmark a fast system with a coolant as well as introduces more and different isotopes.  The geometry and materials are outlined in Table \ref{sodium_geom}.  The fuel and clad cross sections used were processed at 900 K, and the sodium coolant cross sections were processed at 600 K.  In order to keep the specification tenable, only the major components of 316 stainless steel were included in the clad material. 
 
 \begin{table}[h]
 \centering
@@ -445,8 +436,7 @@ This criticality test consists of 631 Zr-clad UO$_2$ cylinders laid out in a hex
 
 \begin{table}[h]
 \centering
-\caption{Geometry and materials used in the UO$_2$ pin hexagonal lattice in light water benchmark.}
-% This doesn't seem like the correct caption.
+\caption{Geometry and materials used in the Zr-clad UO$_2$ pin hexagonal lattice in light water benchmark.}
 \label{hex_geom}
 \begin{tabular}{| l | c  c | c |}
 \hline
@@ -477,14 +467,13 @@ Cells & Isotopes & (Atm. \%) & Densities \\
 %I'd add an opening paragraph about the results. What measures will you use? What does success look like? Tell us know to know if something is good or not before giving the next paragraph of details.
 
 The multiplication factor differences shown in this section are reported in ``per cent mille'' (pcm), which is a thousandth of a percent, or $10^{-5}$.  This is a standard way of reporting differences in the multiplication factor, as any small deviation can cause a significant change in system behavior.
-% Not all of these systems are critical :)
+% Not all of these systems are critical :) RMB - umm I never say they are!
 The difference in runtimes are reported in speedup factors ($t/t_\mathrm{WARP}$).
   The flux spectra are normalized per source neutron and per unit lethargy.   ``Lethargy'' means the logarithm of the neutron energy, $\ln(E_0/E)$ \cite{duderstadt}.  Normalizing the flux per unit lethargy accentuates the high energy region, but, used in conjunction with plotting on a logarithmic scale, also yields a plot where the area under the curve gives the fraction of neutrons (flux) in a specific energy bin.  
 
 \subsection{Multiplication Factors and Runtimes}
 
-  In the following tables, the $\Delta$M column is for WARP's difference from MCNP, and the $\Delta$S column is for WARP's difference from Serpent.  
-  The (y/n) in the $\Delta$ columns signifies if the WARP value is inside (y) or outside (n) two standard deviations of the production code's value. 
+In the following tables, the $\Delta$M column is for WARP's difference from MCNP, and the $\Delta$S column is for WARP's difference from Serpent.  The (y/n) in the $\Delta$ columns signifies if the WARP value is inside (y) or outside (n) two standard deviations of the production code's value. 
 
 Table \ref{results_table_titan} shows the multiplication factor deviations and the speedup factors for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.21 for WARP running on an NVIDIA Titan Black.   All cases were run with 20 discard cycles and 40 active cycles with 9.5$\times10^{6}$ neutrons per cycle.  The sodium pin test case used a slightly larger cross section dataset than the other tests, so only 8.5$\times10^{6}$ neutrons per cycle were possible for this case.  Table  \ref{results_table_k20} shows the same information, but for for WARP running on an NVIDIA Tesla K20.  All cases were again run with 20 discard cycles and 40 active cycles with 6.5$\times10^{6}$ neutrons per cycle except for the sodium pin test case, where 6.0$\times10^{6}$ neutrons per cycle were used because of memory limitations.
 
@@ -611,8 +600,7 @@ Despite the very encouraging speedup factors, the multiplication factors calcula
 
 WARP also produces spectra that have slight differences from Serpent and MCNP (shown in the next section), indicating that the reaction rates are different at certain energies.  Even though they are small, spectral differences may point to a bug in the reaction sampling routines.  CURAND can be seeded with the same number across runs, which should lead to the same sequence of random numbers in the kernel linear congruential random number generators (LCRNGs), but exact reproducibility has not been attempted.  Reproducibility is an important feature in validating results and will be an area of future development for WARP.
 
-\newpage
-% why newpage?
+
 \subsection{Spectra}
 
 %%%%%
