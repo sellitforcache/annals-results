@@ -181,7 +181,7 @@ This new approach was named ``event-based'' Monte Carlo, since the neutron event
 
 WARP uses an event-based algorithm, but with some important differences.  Vectorizing the Monte Carlo algorithm should allow for efficient GPU execution, but a paper by Zhang \cite{on_the_fly_remapping} also shows that by remapping data references, the thread divergence in GPU warps can be minimized.  Moving data is expensive, so WARP uses a remapping vector of pointer/index pairs to direct GPU threads to the data they need to access.  The remapping vector is sorted  by reaction type after every transport iteration using a high-efficiency parallel radix sort, which serves to keep the reaction types as contiguous as possible and removes completed histories from the transport cycle.  Sorting reduces the amount of divergence in GPU ``thread blocks,'' keeps the SIMD units as full as possible, and eliminates using memory bandwidth to check if a neutron in the batch has been terminated or not.  Using a remapping vector means the data access pattern is irregular, but this is mitigated by using large batch sizes where the GPU can effectively eliminate the high cost of irregular global memory access.
 
-Developing WARP was motivated by modern supercomputers commonly being built with graphics processing units (GPU) coprocessor cards in their nodes to increase their computational efficiency and performance.  Compared to more common central processing units, or CPUs, GPUs have a larger aggregate memory bandwidth, much larger rate of floating-point operations per second (FLOPS), and lower energy consumption per FLOP.  GPUs execute efficiently on data-parallel problems, and since most CPU codes are task-parallel, the algorithms used had to be reconsidered.  Data-parallelism is simply parallelism that arises from operating on many different pieces of data at one time, whereas task-parallelism is parallelism that arises from running many concurrent tasks that act on a single piece of data.   Figure \ref{datavtask} shows an illustration of the difference between a data-parallel and a task-parallel neutron transport loop.
+The goal of WARP is to be the first step in creating a full-featured, continuous energy, Monte Carlo neutron transport code that is \emph{accelerated} by running on GPUs.  The crux of the effort is to make Monte Carlo calculations faster while producing accurate results.  Modern supercomputers are commonly being built with graphics processing units (GPU) coprocessor cards in their nodes to increase their computational efficiency and performance.  Compared to more common central processing units, or CPUs, GPUs have a larger aggregate memory bandwidth, much larger rate of floating-point operations per second (FLOPS), and lower energy consumption per FLOP.  GPUs execute efficiently on data-parallel problems, and since most CPU codes are task-parallel, the algorithms used had to be reconsidered.  Data-parallelism is simply parallelism that arises from operating on many different pieces of data at one time, whereas task-parallelism is parallelism that arises from running many concurrent tasks that act on a single piece of data.   Figure \ref{datavtask} shows an illustration of the difference between a data-parallel and a task-parallel neutron transport loop.
 
 \begin{figure}[h!] 
   \centering
@@ -203,7 +203,7 @@ In this paper, the features of WARP are summarized while highlighting the newest
 \section{Features of WARP}
 \label{sec:features}
 
-WARP has only existed since 2013, and is not as fully-featured as more mature Monte Carlo codes.  However, it has the functionality necessary to compare its performance against  Serpent 2.1.21 and MCNP 6.1, and this section outlines the current set of features available in WARP.  
+WARP has only existed since 2013, and is not as fully-featured as more mature Monte Carlo codes.  However, it has the functionality necessary to compare its performance against Serpent 2.1.21 and MCNP 6.1, and this section outlines the current set of features available in WARP.  
 
 \subsection{Physics}
 
@@ -303,9 +303,7 @@ NVIDIA Telsa k80      &      \multicolumn{2}{r|}{ 15 }  &       & $2^{32}-1$    
 \end{tabular}
 \end{table}
 
-All tests use ENDF/B-VII cross sections that ship with the Serpent 1.1.7 release from RSICC.
-% you need to say what RSICC is, either a citation or description.
-  These cross sections contain fewer energy grid points than the ENDF/B-VII.1 cross sections that ship with the MCNP 6.1 release from RSICC and allow more isotopes to be used by WARP since it does not perform any type of grid thinning after energy grid unionization.
+All tests use ENDF/B-VII cross sections that ship with the Serpent 1.1.7 release from RSICC (Radiation Safety Information Computational Center), which regulates the licensing and distribution of the MCNP and ENDF data worldwide, and also distributes Serpent 1.1.7.  These cross sections contain fewer energy grid points than the ENDF/B-VII.1 cross sections that ship with the MCNP 6.1 release from RSICC and allow more isotopes to be used by WARP.% since it does not perform any type of grid thinning after energy grid unionization.
 % It's not clear to me that someone reading this paper would know what this sentence means. I'd add another one with more information or leave the second part of this sentence out. If you do that, I'd combine this paragraph with the previous one. 
 
 
@@ -333,7 +331,7 @@ Cells & Isotopes & (Atm. \%)& Density \\
 \subsection{Test 2 - Homogenized Fuel Block}
 
 The homogenized block criticality test is a bare cube with vacuum boundary conditions.  This test keeps the same boundary condition, temperature, and number of cells as test 1, but it introduces multiple isotopes into the cell material. 
-% It looks like test 1 has multiple isotopes...what?
+% It looks like test 1 has multiple isotopes...what?  oops, left over from dissertation
   The geometry and materials are outlined in Table \ref{homfuel_geom}.  
 
 \begin{table}[h]
@@ -485,9 +483,7 @@ The difference in runtimes are reported in speedup factors ($t/t_\mathrm{WARP}$)
 
 \subsection{Multiplication Factors and Runtimes}
 
-The goal of WARP is to be the first step in creating a full-featured, continuous energy, Monte Carlo neutron transport code that is \emph{accelerated} by running on GPUs.  The crux of the effort is to make Monte Carlo calculations faster while producing accurate results.  
-% I think these two sentences should be moved to the introduction. Tell us the goal at the start, not 11 pages in!
-In the following tables, the $\Delta$M column is for WARP's difference from MCNP, and the $\Delta$S column is for WARP's difference from Serpent.  
+  In the following tables, the $\Delta$M column is for WARP's difference from MCNP, and the $\Delta$S column is for WARP's difference from Serpent.  
   The (y/n) in the $\Delta$ columns signifies if the WARP value is inside (y) or outside (n) two standard deviations of the production code's value. 
 
 Table \ref{results_table_titan} shows the multiplication factor deviations and the speedup factors for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.21 for WARP running on an NVIDIA Titan Black.   All cases were run with 20 discard cycles and 40 active cycles with 9.5$\times10^{6}$ neutrons per cycle.  The sodium pin test case used a slightly larger cross section dataset than the other tests, so only 8.5$\times10^{6}$ neutrons per cycle were possible for this case.  Table  \ref{results_table_k20} shows the same information, but for for WARP running on an NVIDIA Tesla K20.  All cases were again run with 20 discard cycles and 40 active cycles with 6.5$\times10^{6}$ neutrons per cycle except for the sodium pin test case, where 6.0$\times10^{6}$ neutrons per cycle were used because of memory limitations.
@@ -769,9 +765,12 @@ Reproducibility of results when using the same random number seeds will also be 
 
 The geometry is currently handled by OptiX, which provides a convenient way to obtain high-performance results, but OptiX had to be coerced into providing WARP with the information it needed, namely the material number via the point-in-polygon (PIP) algorithm.  The way OptiX executes this algorithm is not efficient since it must be done iteratively using OptiX's native functions instead of calculating the ordered list of intersections in a single trace.  NVIDIA is releasing ``OptiX Prime'' with OptiX 3.5 \cite{optix3.5}, which promises to provide a more ``to the metal'' ray tracing experience, and might be leveraged to provide more efficient single-traverse functionality.  OptiX could also be replaced by Rayforce \cite{rayforce}, a high-performance GPU ray tracing library developed by VSL that has this functionality built-in and is currently available free of charge for noncommercial use.
 
-The geometry routines could also be replaced by handwritten routines that use combinatorial solid geometry like Serpent and MCNP.  This would make writing input for WARP more like what most nuclear engineers are already used to and, more importantly, could provide a potential performance increase.  A universe-based CSG representation may map very well to the GPU and may even be able to fit inside of shared memory for small numbers of surfaces.  Using an efficient CSG method would further lend itself to using Woodcock delta-tracking for the neutrons and thus getting rid of the tracing algorithms and libraries altogether.   The new PIP algorithm uses surface sense in order to eliminate a surface hit list and greatly improves the scalability of WARP's geometry routines, and in this way is like a hybrid CSG and ray tracing algorithm. 
+%grid thinning?
+
+The geometry routines could also be replaced by handwritten routines that use combinatorial solid geometry like Serpent and MCNP.  This would make writing input for WARP more like what most nuclear engineers are already used to and, more importantly, could provide a potential performance increase.  A universe-based CSG representation may map very well to the GPU and may even be able to fit inside of shared memory for small numbers of surfaces.  Using an efficient CSG method would further lend itself to using Woodcock delta-tracking for the neutrons and thus getting rid of the tracing algorithms and libraries altogether.   
+%The new PIP algorithm uses surface sense in order to eliminate a surface hit list and greatly improves the scalability of WARP's geometry routines, and in this way is like a hybrid CSG and ray tracing algorithm. 
 % again, there isn't any evidence provided that shows the impact of the new geometry routine.
- The new algorithm uses OptiX to determine which surfaces lie along a flight path, then calculates the surface normals to determine if a neutron is nested in the cell or not.
+% The new algorithm uses OptiX to determine which surfaces lie along a flight path, then calculates the surface normals to determine if a neutron is nested in the cell or not.
 
 WARP's execution can also be improved.  The amount of memory required per neutron was not tracked in this initial development, much less optimized, since developing a functioning code was the main priority.  Reducing the memory needed per neutron would be highly beneficial in the sense that more concurrent neutrons could be launched using the reclaimed memory space.  Dynamic parallelism can be implemented to minimize kernel launch overhead and host-device communication in the inner transport loop.  Dynamic parallelism is a feature introduced into the NVIDA Kepler GPUs that allows kernels to be launched from kernels, and could eliminate the host needing to contain the main transport loop.  Neither CUDPP nor OptiX support its use, however.  CUDPP could be replaced with newer, higher-performance libraries (e.g.\ CUB) that do support dynamic parallelism, but OptiX would have to be replaced by a handwritten kernel to perform the necessary geometric tasks.  Textures could be thoroughly investigated as they might provide better performance in tasks where their free linear interpolation and spatial caching could provide a performance boost, like in an energy grid search on a tree structure.   Alternatively, using optimized graph search libraries, such as ``gunrock,'' could be used to perform the energy grid search \cite{gunrock}.
 
