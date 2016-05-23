@@ -598,7 +598,7 @@ Despite the very encouraging speedup factors, the multiplication factors calcula
 % This feels like just blind results reporting, which is fine, but there's no discussion about what they mean to follow it. Additional analysis would really strengthen this paper. 
 % Warp can be as fast and cost efficient as all get out, but if it can't get the right answers, who cares? This is a pretty serious concern and needs to really be addressed.
 
-WARP also produces spectra that have slight differences from Serpent and MCNP (shown in the next section), indicating that the reaction rates are different at certain energies.  Even though they are small, spectral differences may point to a bug in the reaction sampling routines.  CURAND can be seeded with the same number across runs, which should lead to the same sequence of random numbers in the kernel linear congruential random number generators (LCRNGs), but exact reproducibility has not been attempted.  Reproducibility is an important feature in validating results and will be an area of future development for WARP.
+WARP also produces spectra that have slight differences from Serpent and MCNP (shown in the next section), indicating that the reaction rates are different at certain energies.  Even though they are small, spectral differences may point to a bug in the reaction sampling routines.  
 
 
 \subsection{Spectra}
