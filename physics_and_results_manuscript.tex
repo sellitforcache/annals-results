@@ -261,8 +261,7 @@ WARP only has collision estimators implemented for both flux and multiplication 
 \label{sec:tests}
 
 A small set of CPU and GPU hardwares that were easily accessible from UC Berkeley were chosen for use in testing WARP.  For the CPU platforms, a single cluster node of both Berkelium, the departmental cluster, and SAVIO, the shared campus high performance computing cluster, were used.  For the GPU platforms, a consumer-level graphics card and two compute-specific cards were used.  Descriptions of each piece of hardware can be found in Table~\ref{platform_table}. For the GPUs, the costs include the retail price of a minimal host computer with at least as much memory as the card ({\raise.17ex\hbox{$\scriptstyle\sim$}}\$400).
-
-The benchmark cases were run with $6.5\times10^6$ neutrons per criticality bach with 20 initial batches discard and 40 batches with statistic accumulated (60 batches total).  Fomr the scaling results shown later in this section, the neutron processing rate of the GPU cards all saturated near this number of neutrons per batch.  The CPU codes were run with identical identical batch parameters.  The CPU cases were run with the optimal number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole.    
+  
 
 \begin{table}[h]
 \centering
@@ -463,13 +462,13 @@ Cells & Isotopes & (Atm. \%) & Densities \\
 \newpage
 \section{Results}
 \label{sec:results}
+ 
 
-%I'd add an opening paragraph about the results. What measures will you use? What does success look like? Tell us know to know if something is good or not before giving the next paragraph of details.
+The accuracy of the WARP calculations were measured by comparing the multiplcation factors and neutron spectra of the aforemetioned geometries against those calculated by Serpent 2.1.24 and MCNP 6.1, two production-level Monte Carlo beutron transport codes.  The multiplication factor differences shown in this section are reported in ``per cent mille'' (pcm), which is a thousandth of a percent, or $10^{-5}$.  This is a standard way of reporting differences in the multiplication factor, as any small deviation can cause a significant change in system behavior.  The flux spectra are normalized per source neutron and per unit lethargy.   ``Lethargy'' means the logarithm of the neutron energy, $\ln(E_0/E)$ \cite{duderstadt}.  Normalizing the flux per unit lethargy accentuates the high energy region, but, used in conjunction with plotting on a logarithmic scale, also yields a plot where the area under the curve gives the fraction of neutrons (flux) in a specific energy bin. 
 
-The multiplication factor differences shown in this section are reported in ``per cent mille'' (pcm), which is a thousandth of a percent, or $10^{-5}$.  This is a standard way of reporting differences in the multiplication factor, as any small deviation can cause a significant change in system behavior.
-% Not all of these systems are critical :) RMB - umm I never say they are!
-The difference in runtimes are reported in speedup factors ($t/t_\mathrm{WARP}$).
-  The flux spectra are normalized per source neutron and per unit lethargy.   ``Lethargy'' means the logarithm of the neutron energy, $\ln(E_0/E)$ \cite{duderstadt}.  Normalizing the flux per unit lethargy accentuates the high energy region, but, used in conjunction with plotting on a logarithmic scale, also yields a plot where the area under the curve gives the fraction of neutrons (flux) in a specific energy bin.  
+The performane of the WARP calculations are measured by comparing the run times of the WARP simulations against those of the production codes.  The run times do not include the time it takes to load and process cross sections before the simulations.  In other words, it is only the time of the transport cycles.  The difference in runtimes are reported in speedup factors ($t/t_\mathrm{WARP}$). 
+
+The benchmark cases were run with $6.5\times10^6$ neutrons per criticality bach with 20 initial batches discard and 40 batches with statistic accumulated (60 batches total).  Fomr the scaling results shown later in this section, the neutron processing rate of the GPU cards all saturated near this number of neutrons per batch.  The CPU codes were run with identical identical batch parameters.  The CPU cases were run with the optimal number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole. 
 
 \subsection{Multiplication Factors and Runtimes}
 
