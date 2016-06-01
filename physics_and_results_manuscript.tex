@@ -260,7 +260,7 @@ WARP only has collision estimators implemented for both flux and multiplication 
 \section{Tests}
 \label{sec:tests}
 
-A small set of CPU and GPU hardwares that were easily accessible from UC Berkeley were chosen for use in testing WARP.  For the CPU platforms, a single cluster node of both Berkelium, the departmental cluster, and SAVIO, the shared campus high performance computing cluster, were used.  For the GPU platforms, a consumer-level graphics card and two compute-specific cards were used.  Descriptions of each piece of hardware can be found in Table~\ref{platform_table}. For the GPUs, the costs include the retail price of a minimal host computer with at least as much memory as the card ({\raise.17ex\hbox{$\scriptstyle\sim$}}\$400).
+A small set of CPU and GPU hardwares that were easily accessible from UC Berkeley were chosen for use in testing WARP.  For the CPU platforms, a single cluster node of both Berkelium, the departmental cluster, and SAVIO2, the shared campus high performance computing cluster, were used.  For the GPU platforms, a consumer-level graphics card and two compute-specific cards were used.  Descriptions of each piece of hardware can be found in Table~\ref{platform_table}. For the GPUs, the costs include the retail price of a minimal host computer with at least as much memory as the card ({\raise.17ex\hbox{$\scriptstyle\sim$}}\$400).
   
 
 \begin{table}[h]
@@ -275,13 +275,13 @@ A small set of CPU and GPU hardwares that were easily accessible from UC Berkele
 \hline
 Bk PSSC PowerWulf Blade       &    9,310   & 460 &  96 GB        &  1.6 GHz                    \\
 \hline
-SAVIO Dell       &       &  &   GB        &   GHz                    \\
+SAVIO2 Lenovo NeXtScale nx360m5       &   6,770    &  210  &  64 GB        & 2.133  GHz                    \\
 \hline
 NVIDIA Tesla k20         &    3,325     & 225 &  4.8  GB      &  2.6 GHz                  \\
 \hline
-NVIDIA Titan Black       &     1,521   & 250 &  6.14 GB        & 3.5 GHz              \\
+NVIDIA Titan Black       &    1,521   & 250 &  6.14 GB        & 3.5 GHz              \\
 \hline
-NVIDIA Tesla k80       &        &  &   GB        &  GHz              \\
+NVIDIA Tesla k80       &    5,000    & 300 &  12 GB        &  2.505 GHz              \\
 \hline
 \hline
 \hline
@@ -290,13 +290,13 @@ NVIDIA Tesla k80       &        &  &   GB        &  GHz              \\
 \hline
 Bk PSSC PowerWulf Blade       &   \multicolumn{2}{r|}{4x AMD Opteron 6172 }  &  2.1 GHz     &  48           \\
 \hline
-SAVIO Dell                     &   \multicolumn{2}{r|}{ }  &   GHz     &  24           \\
+SAVIO2 Lenovo NeXtScale nx360m5   &   \multicolumn{2}{r|}{ }  &  2.3 GHz     &  24           \\
 \hline
 NVIDIA Tesla k20         &       \multicolumn{2}{r|}{13}   &  705.5 MHz     &  $2^{32}-1$           \\
 \hline
 NVIDIA Titan Black       &      \multicolumn{2}{r|}{ 15 }  &  1071.5 MHz     & $2^{32}-1$           \\
 \hline
-NVIDIA Telsa k80      &      \multicolumn{2}{r|}{ 15 }  &       & $2^{32}-1$           \\
+NVIDIA Telsa k80      &      \multicolumn{2}{r|}{ 13 }  &  823.5 MHz     & $2^{32}-1$           \\
 \hline
 
 \end{tabular}
@@ -464,11 +464,11 @@ Cells & Isotopes & (Atm. \%) & Densities \\
 \label{sec:results}
  
 
-The accuracy of the WARP calculations were measured by comparing the multiplcation factors and neutron spectra of the aforemetioned geometries against those calculated by Serpent 2.1.24 and MCNP 6.1, two production-level Monte Carlo beutron transport codes.  The multiplication factor differences shown in this section are reported in ``per cent mille'' (pcm), which is a thousandth of a percent, or $10^{-5}$.  This is a standard way of reporting differences in the multiplication factor, as any small deviation can cause a significant change in system behavior.  The flux spectra are normalized per source neutron and per unit lethargy.   ``Lethargy'' means the logarithm of the neutron energy, $\ln(E_0/E)$ \cite{duderstadt}.  Normalizing the flux per unit lethargy accentuates the high energy region, but, used in conjunction with plotting on a logarithmic scale, also yields a plot where the area under the curve gives the fraction of neutrons (flux) in a specific energy bin. 
+The accuracy of the WARP calculations were measured by comparing the multiplication factors and neutron spectra of the aforementioned geometries against those calculated by Serpent 2.1.24 and MCNP 6.1, two production-level Monte Carlo neutron transport codes.  The multiplication factor differences shown in this section are reported in ``per cent mille'' (pcm), which is a thousandth of a percent, or $10^{-5}$.  This is a standard way of reporting differences in the multiplication factor, as any small deviation can cause a significant change in system behavior.  The flux spectra are normalized per source neutron and per unit lethargy.   ``Lethargy'' means the logarithm of the neutron energy, $\ln(E_0/E)$ \cite{duderstadt}.  Normalizing the flux per unit lethargy accentuates the high energy region, but, used in conjunction with plotting on a logarithmic scale, also yields a plot where the area under the curve gives the fraction of neutrons (flux) in a specific energy bin. 
 
-The performane of the WARP calculations are measured by comparing the run times of the WARP simulations against those of the production codes.  The run times do not include the time it takes to load and process cross sections before the simulations.  In other words, it is only the time of the transport cycles.  The difference in runtimes are reported in speedup factors ($t/t_\mathrm{WARP}$). 
+The performance of the WARP calculations are measured by comparing the run times of the WARP simulations against those of the production codes.  The run times do not include the time it takes to load and process cross sections before the simulations.  In other words, it is only the time of the transport cycles.  The difference in runtimes are reported in speedup factors ($t/t_\mathrm{WARP}$). 
 
-The benchmark cases were run with $6.5\times10^6$ neutrons per criticality bach with 20 initial batches discard and 40 batches with statistic accumulated (60 batches total).  Fomr the scaling results shown later in this section, the neutron processing rate of the GPU cards all saturated near this number of neutrons per batch.  The CPU codes were run with identical identical batch parameters.  The CPU cases were run with the optimal number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole. 
+The benchmark cases were run with $6.5\times10^6$ neutrons per criticality bach with 20 initial batches discard and 40 batches with statistic accumulated (60 batches total).  Form the scaling results shown later in this section, the neutron processing rate of the GPU cards all saturated near this number of neutrons per batch.  The CPU codes were run with identical identical batch parameters.  The CPU cases were run with the optimal number of MPI processes and/or threads in the station or node to accurately measure the performance of the unit as a whole. 
 
 \subsection{Multiplication Factors and Runtimes}
 
@@ -476,7 +476,7 @@ In the following tables, the $\Delta$M column is for WARP's difference from MCNP
 
 Table \ref{results_table_titan} shows the multiplication factor deviations and the speedup factors for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.21 for WARP running on an NVIDIA Titan Black.   All cases were run with 20 discard cycles and 40 active cycles with 9.5$\times10^{6}$ neutrons per cycle.  The sodium pin test case used a slightly larger cross section dataset than the other tests, so only 8.5$\times10^{6}$ neutrons per cycle were possible for this case.  Table  \ref{results_table_k20} shows the same information, but for for WARP running on an NVIDIA Tesla K20.  All cases were again run with 20 discard cycles and 40 active cycles with 6.5$\times10^{6}$ neutrons per cycle except for the sodium pin test case, where 6.0$\times10^{6}$ neutrons per cycle were used because of memory limitations.
 
-Since the PSSC node contains 4 processors that each contain 2 non-uniform memory access (NUMA) nodes, the most efficient configuration for running the CPU codes was to use 8 MPI processes (one for each NUMA node), which each ran 6 threads for the 6 cores in each NUMA node.  In this configuration, Serpent could not fit the neutron data set into the available memory, so the neutrons per cycle and the total number of cycles were changed to allow Serpent to run in its most efficient mode.  The number of neutrons per cycle was divided by 8, while the number of cycles was increased by a factor of 8.  This way, the neutron data structures could fit into memory and the total number of histories was preserved.
+Since the PowerWulf PSSC node contains 4 processors that each contain 2 non-uniform memory access (NUMA) nodes, the most efficient configuration for running the CPU codes was to use 8 MPI processes (one for each NUMA node), which each ran 6 threads for the 6 cores in each NUMA node.  The Lenovo SAVIO2 runs were done in a similar way, but with 4 MPI processes that each ran 6 threads.
 
 \begin{table}[h]
 \centering
