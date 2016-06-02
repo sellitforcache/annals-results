@@ -472,116 +472,66 @@ The benchmark cases were run with $6.5\times10^6$ neutrons per criticality bach 
 
 \subsection{Multiplication Factors and Runtimes}
 
-In the following tables, the $\Delta$M column is for WARP's difference from MCNP, and the $\Delta$S column is for WARP's difference from Serpent.  The (y/n) in the $\Delta$ columns signifies if the WARP value is inside (y) or outside (n) two standard deviations of the production code's value.  Table \ref{results_table_titan} shows the multiplication factor deviations and the speedup factors for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.21 for WARP running on an NVIDIA Titan Black.  Table  \ref{results_table_k20} shows the same information, but for for WARP running on an NVIDIA Tesla K20.  
+Table \ref{results_table_keff} shows the multiplication factor deviations for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.21 for WARP running on an NVIDIA Titan Black, K20, and K80 cards.  In the following tables, the $\Delta$MCNP row is for WARP's difference from MCNP, and the $\Delta$ Serpent column is for WARP's difference from Serpent.  
+
+The (x,x) in the $\Delta$ row signifies if the WARP value is inside (y) or outside (n) two standard deviations of the production code's value.  
+
+
+
 
 \begin{table}[h]
 \centering
 \caption{The test case multiplication factors and runtimes for WARP using a Titan Black GPU versus those of Serpent 2.1.21 and MCNP 6.1.}
-\label{results_table_titan}
+\label{results_table_keff}
 \footnotesize
-\begin{tabular}{| l | r | r | r || r | r |}
+\begin{tabular}{| l | l | l | l |}
+\cline{2-4}
+\multicolumn{1}{c|}{}               & Jezebel                 &  Homogenized Block      & Pin Cell                  \\
 \hline
-Test & Serpent 2.1.21 & MCNP 6.1 & WARP & $\Delta$ Serp. & $\Delta$ MCNP  \\
+Serpent 2.1.21                      & 0.9997840 $\pm$ 9.50E-5 & 0.5934090 $\pm$ 1.20E-4 & 0.2750510 $\pm$ 1.80E-4   \\
 \hline
+MCNP 6.1                            & 0.9999600 $\pm$ 7.00E-5 & 0.5933000 $\pm$ 4.00E-5 & 0.2752100 $\pm$ 4.00E-5   \\
 \hline
-\multicolumn{6}{|l|}{Jezebel} \\
+WARP Titan Black                    & 1.0000620 $\pm$ 9.58E-5 & 0.5933724 $\pm$ 1.24E-4 & 0.2750294 $\pm$ 1.46E-4   \\
+    \qquad\qquad   $\Delta$ Serpent & 27.80                   & -3.66                   &  -2.16                    \\
+    \qquad\qquad   $\Delta$ MCNP    & 10.20                   &  7.24                   & -18.06                    \\
 \hline
-$k_\mathrm{eff}$ & 1.00005$\pm$7.7E-5 &	0.99995$\pm$5.0E-5 &	0.999771$\pm$9.6E-5 &	-28 pcm (n) &	 -18 pcm (n) \\
+WARP K20                            & 1.0000212 $\pm$ 7.82E-5 & 0.5934539 $\pm$ 1.66E-4 & 0.2751048 $\pm$ 2.07E-4   \\
+    \qquad\qquad   $\Delta$ Serpent & 23.72                   & 4.49                    &   5.38                    \\
+    \qquad\qquad   $\Delta$ MCNP    &  6.12                   & 15.39                   & -10.52                    \\
 \hline
-Runtime & 10.34 m  &	37.2  m &	4.6  m &	  2.2x      &	8.1x \\
+WARP K80                            & 0.9999602 $\pm$ 9.58E-5 & 0.5932266 $\pm$ 1.24E-4 & 0.2749884 $\pm$ 1.56E-4   \\
+    \qquad\qquad   $\Delta$ Serpent & 17.6                    & -18.2                   &  -6.3                     \\
+    \qquad\qquad   $\Delta$ MCNP    &  0.02                   &  -7.3                   & -22.2                     \\
 \hline
+\end{tabular}
+
+\smallskip
+
+\begin{tabular}{| l | l | l | l |}
+\cline{2-4}
+\multicolumn{1}{c|}{}               & FLiBe Cell              & Sodium Pin Cell         & Hex Assembly              \\
 \hline
-\multicolumn{6}{|l|}{Homogenized Block }\\
+Serpent 2.1.21                      & 0.8804900 $\pm$ 8.70E-5 & 1.0987100 $\pm$ 2.20E-4 & 1.0503300 $\pm$ 7.20E-5   \\
 \hline
-$k_\mathrm{eff}$ & 0.593385$\pm$9.8E-5 &	0.59273$\pm$3.0E-5 &	0.592295$\pm$9.6E-5 &	-109  pcm (n)&	-44 pcm  (n)\\
+MCNP 6.1                            & 0.8805100 $\pm$ 6.00E-5 & 1.0987700 $\pm$ 6.00E-5 & 1.0499500 $\pm$ 7.00E-5   \\
 \hline
-Runtime & 57.84  m &	133.37 m  &	10.93 m  &	5.3x &	12.2x \\
+WARP Titan Black                    & 0.8807005 $\pm$ 9.58E-5 & 1.0986860 $\pm$ 7.82E-5 & 1.0510795 $\pm$ 9.58E-5   \\
+    \qquad\qquad   $\Delta$ Serpent & 21.05                   & -2.40                   &  74.95                    \\
+    \qquad\qquad   $\Delta$ MCNP    & 19.05                   & -8.40                   & 112.95                    \\
 \hline
+WARP K20                            & 0.8807086 $\pm$ 9.58E-5 & 1.0987912 $\pm$ 5.53E-5 & 1.0510620 $\pm$ 9.58E-5   \\
+    \qquad\qquad   $\Delta$ Serpent & 21.86                   & 8.12                    &  73.20                    \\
+    \qquad\qquad   $\Delta$ MCNP    & 19.86                   & 2.12                    & 111.20                    \\
 \hline
-\multicolumn{6}{|l|}{Pin Cell}\\
-\hline
-$k_\mathrm{eff}$ & 0.275401$\pm$4.5E-4 &	0.27517$\pm$3.0E-5 &	0.274106$\pm$9.6E-5 &	-130  pcm (n)&	-106  pcm (n)\\
-\hline
-Runtime & 198.57 m &	177.38 m &	30.43  m &	6.5x &	5.8x \\
-\hline
-\hline
-\multicolumn{6}{|l|}{FLiBe Cell}\\
-\hline
-$k_\mathrm{eff}$ & 0.88049$\pm$7.0E-5 &	0.88086$\pm$2.0E-5 &	0.875701$\pm$9.6E-5 &	-479  pcm (n) &	-516 pcm  (n)\\
-\hline
-Runtime & 114.65 m  &	416.77 m  &	31.99 m  &	3.6x &	13.0x \\
-\hline
-\hline
-\multicolumn{6}{|l|}{Sodium Pin Cell}\\
-\hline
-$k_\mathrm{eff}$ & 1.09868$\pm$6.4E-5 &	1.10099$\pm$2.0E-5 &	1.096884$\pm$9.6E-5 &	-180  pcm (n) &	-411 pcm (n) \\
-\hline
-Runtime & 185.78 m  &	494.3 m  &	73.73  m &	2.5x &	6.7x \\
-\hline
-\hline
-\multicolumn{6}{|l|}{Hex Assembly}\\
-\hline
-$k_\mathrm{eff}$ & 1.05057$\pm$1.90E-04 &	1.05012$\pm$5.00E-05 &	1.048896$\pm$5.53E-05 &	-167 pcm (n) &	-122 pcm (n)  \\
-\hline
-Runtime & 120.42 m  &	321.27 m  &	43.15  m &	2.79x &	7.44x \\
+WARP K80                            & 0.8807546 $\pm$ 9.58E-5 & 1.0985898 $\pm$ 5.53E-5 & 1.0511035 $\pm$ 1.24E-4   \\
+    \qquad\qquad   $\Delta$ Serpent & 26.5                    & -12.0                   &  77.3                     \\
+    \qquad\qquad   $\Delta$ MCNP    & 24.5                    & -18.0                   & 115.3                     \\
 \hline
 \end{tabular}
 \end{table}
 
 
-\begin{table}[h]
-\centering
-\caption{The test case multiplication factors and runtimes for WARP using a Tesla K20 GPU versus those of Serpent 2.1.21 and MCNP 6.1.}
-\label{results_table_k20}
-\footnotesize
-\begin{tabular}{| l | r | r | r || r | r |}
-\hline
-Test & Serpent 2.1.21 & MCNP 6.1 & WARP & $\Delta$ Serp. & $\Delta$ MCNP  \\
-\hline
-\hline
-\multicolumn{6}{|l|}{Jezebel} \\
-\hline
-$k_\mathrm{eff}$ & 0.999784$\pm$9.5E-5 &		0.99982$\pm$5E-5 &		0.999771$\pm$9.6E-5	 &	-1 (y) &		-5 (y)\\
-\hline
-Runtime & 7.24	 m  &		30.56666667 m 	 &		5.24 m 	 &		1.4x	& 5.8x  \\
-\hline
-\hline
-\multicolumn{6}{|l|}{Homogenized Block }\\
-\hline
-$k_\mathrm{eff}$ & 0.593409$\pm$1.2E-4 &		0.59277$\pm$3E-5 &		0.592259$\pm$1.4E-4 &		-115	(n) &	-51 (n)  \\
-\hline
-Runtime & 39.41 m 	 &		98.4 m  &		12.26 m 	 &		3.2x &		8.0x \\
-\hline
-\hline
-\multicolumn{6}{|l|}{Pin Cell}\\
-\hline
-$k_\mathrm{eff}$ & 	 0.275051$\pm$0.00018&		0.27517$\pm$3.0E-5	 &	0.274162$\pm$1.6E-4	 &	-89 (n)	 &	-101 (n) \\
-\hline
-Runtime & 	146.15 &		131.2666667 m 	 &		33.7 m  &			4.3x	 &	3.9x \\
-\hline
-\hline
-\multicolumn{6}{|l|}{FLiBe Cell}\\
-\hline
-$k_\mathrm{eff}$ & 0.88049$\pm$8.7E-5	 &	0.88088$\pm$2.0E-5	 &	0.875728$\pm$9.6E-5	 &	-476 (n)	 &	-515  (n)\\
-\hline
-Runtime & 79.16 m 	 &		269.4666667 m 		 &	32.03 m 	 &		2.5x	 &	8.4x \\
-\hline
-\hline
-\multicolumn{6}{|l|}{Sodium Pin Cell}\\
-\hline
-$k_\mathrm{eff}$ & 	1.09871$\pm$0.00022 &		1.10098$\pm$3.0E-5	 &	1.097109$\pm$5.5E-5	 &	-160 (n)&		-387 (n)\\
-\hline
-Runtime & 	120.86	 &	320.4 m 	 &		76.46 m  &			1.6x &		4.2x \\
-\hline
-\hline
-\multicolumn{6}{|l|}{Hex Assembly}\\
-\hline
-$k_\mathrm{eff}$ & 1.05033$\pm$7.20E-05	 &	1.05019$\pm$0.00006	 &	1.04886055$\pm$5.53E-05	 &	-147 (n) & -133 (n) \\
-\hline
-Runtime & 81.5 m 		 &	160.68 m 	 &		45.06 m  &			1.8x	 &	3.6x \\
-\hline
-\end{tabular}
-\end{table}
 
 
 It can be seen that WARP performs 2.2 to 13.0 times faster than the production codes while running on a Titan Black card and 1.4 to 8.4 times faster on a K20 card.  This speedup factor is calculated over an entire compute node, so these cards can have performance equivalent to 1.4 to 13 compute nodes, depending on the type of simulation.   The smallest speedup is in the Jezebel test, and the largest speedups are on the FLiBe and pin cell tests.
