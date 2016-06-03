@@ -532,35 +532,35 @@ From Table \ref{results_table_keff}, it can be seen that WARP agrees with either
 \subsection{Runtimes}
 
 
-Table \ref{results_table_times} shows the multiplication factor deviations for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.21 for WARP running on an NVIDIA Titan Black, K20, and K80 cards.  The ``$\Delta$MCNP'' row contains WARP's difference (in PCM) from MCNP, and the ``$\Delta$ Serpent'' row contains WARP's difference from Serpent.  The speedup factor is reported in this way blah blah
+Table \ref{results_table_times} shows the transport cycle runtimes for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.21 for WARP running on an NVIDIA Titan Black, K20, and K80 cards.  The valies in the time rows are reported in minutes.  The ``$\Delta$MCNP'' row contains WARP's speedup factor over MCNP, and the ``$\Delta$ Serpent'' row contains WARP's speedup factor over Serpent.
 
 
 \begin{table}[h]
 \centering
-\caption{The test case multiplication factors and runtimes for WARP using a Titan Black GPU versus those of Serpent 2.1.21 and MCNP 6.1.}
+\caption{The test case transport cycle run times (in minutes) for WARP, Serpent 2.1.21, and MCNP 6.1.  Values in the ``$\Delta$'' rows contain the speedup factor of WARP compared the the corresponding production code running on a Berkelium PSSC node and a SAVIO2 node.}
 \label{results_table_times}
 \footnotesize
 \begin{tabular}{| l r | r | r | r |}
 \cline{3-5}
-\multicolumn{2}{c|}{}               & Jezebel                         &  Homogenized Block               & Pin Cell                          \\
+\multicolumn{2}{c|}{}                            & Jezebel     & Homogenized Block & Pin Cell     \\
 \hline                          
-Serpent 2.1.21   &    bk               & 7.24    & 39.41   & 146.15      \\
-                 &    savio2           & 6.32    & 24.10    & 76.51      \\
+Serpent 2.1.21   &    Bk PSSC                    & 7.24        & 39.41             & 146.15       \\
+                 &    SAVIO2                     & 6.32        & 24.10             & 76.51        \\
+\hline                                        
+MCNP 6.1         &    Bk PSSC                    &  30.57      & 98.40             & 131.27       \\
+                 &    SAVIO2                     &   4.95      & 44.03             & 64.18        \\
 \hline                          
-MCNP 6.1        &       bk             &  30.57  & 98.40    &   131.27   \\
-                &       savio2         &   4.95  & 44.03   &    64.18    \\
-\hline                          
-\multicolumn{2}{|l|}{WARP Titan Black}                   &  1.47 & 7.53 & 26.47           \\
-\multicolumn{2}{|r|}{$\Delta$ Serpent (bk, s2)} & 4.91  4.29  &  5.23  3.20  &  5.52  2.89    \\
-\multicolumn{2}{|r|}{$\Delta$ MCNP    (bk, s2)} & 20.74 3.36 &  13.07 5.85 &  4.96  2.42  \\
+\multicolumn{2}{|l|}{WARP Titan Black}           &  1.47       & 7.53              &  26.47       \\
+\multicolumn{2}{|r|}{$\Delta$ Serpent (bk, s2)}  & 4.91  4.29  & 5.23  3.20        &  5.52  2.89  \\
+\multicolumn{2}{|r|}{$\Delta$ MCNP    (bk, s2)}  & 20.74 3.36  & 13.07 5.85        &  4.96  2.42  \\
 \hline
-\multicolumn{2}{|l|}{WARP K20}                            & 2.45 & 12.60 & 42.55     \\
-\multicolumn{2}{|r|}{$\Delta$ Serpent (bk, s2)} & 2.96  2.58   & 3.13  1.91   & 3.44  1.80    \\
-\multicolumn{2}{|r|}{$\Delta$ MCNP    (bk, s2)} & 12.49 2.02 & 7.81  3.50 & 3.09  1.51  \\
+\multicolumn{2}{|l|}{WARP K20}                   & 2.45         & 12.60            & 42.55        \\
+\multicolumn{2}{|r|}{$\Delta$ Serpent (bk, s2)}  & 2.96  2.58   & 3.13  1.91       & 3.44  1.80   \\
+\multicolumn{2}{|r|}{$\Delta$ MCNP    (bk, s2)}  & 12.49 2.02   & 7.81  3.50       & 3.09  1.51   \\
 \hline
-\multicolumn{2}{|l|}{WARP K80}                            & 1.18 & 5.79 & 20.91     \\
-\multicolumn{2}{|r|}{$\Delta$ Serpent (bk, s2)} & 6.11  5.34   & 6.81  4.17   & 6.99  3.66   \\
-\multicolumn{2}{|r|}{$\Delta$ MCNP    (bk, s2)} & 25.80 4.18 & 17.01 7.61 & 6.28  3.07 \\
+\multicolumn{2}{|l|}{WARP K80}                   & 1.18         & 5.79             & 20.91        \\
+\multicolumn{2}{|r|}{$\Delta$ Serpent (bk, s2)}  & 6.11  5.34   & 6.81  4.17       & 6.99  3.66   \\
+\multicolumn{2}{|r|}{$\Delta$ MCNP    (bk, s2)}  & 25.80 4.18   & 17.01 7.61       & 6.28  3.07   \\
 \hline
 \end{tabular}
 
@@ -568,25 +568,25 @@ MCNP 6.1        &       bk             &  30.57  & 98.40    &   131.27   \\
 
 \begin{tabular}{| l r | r | r | r |}
 \cline{3-5}
-\multicolumn{2}{c|}{}               & FLiBe Cell                      & Sodium Pin Cell                  & Hex Assembly                      \\
+\multicolumn{2}{c|}{}                            & FLiBe Cell   & Sodium Pin Cell & Hex Assembly  \\
+\hline                                    
+Serpent 2.1.21   &   Bk PSSC                     & 79.16        & 120.86          & 81.54         \\
+                 &   SAVIO2                      & 45.08        &  68.46          &  44.32        \\
+\hline                                        
+MCNP 6.1         &   Bk PSSC                     & 269.47       & 320.40          & 160.68        \\
+                 &   SAVIO2                      & 81.03        & 199.15          & 112.25        \\
 \hline                       
-Serpent 2.1.21   &   bk                & 79.16    & 120.86   & 81.54            \\
-                 &   savio                & 45.08    &  68.46    &  44.32    \\
-\hline                       
-MCNP 6.1       &     bk                & 269.47 &   320.40 & 160.68        \\
-                &   savio          & 81.03 & 199.15 & 112.25   \\
-\hline                       
-\multicolumn{2}{|l|}{WARP Titan Black }                   &  25.78 & 81.18 & 34.91         \\
-\multicolumn{2}{|r|}{$\Delta$ Serpent (bk, s2)}  &  3.07  1.75   & 1.49  0.84   & 2.34  1.27   \\
-\multicolumn{2}{|r|}{$\Delta$ MCNP    (bk, s2)}  &  10.45 3.14 & 3.95  2.45 & 4.60  3.22 \\
+\multicolumn{2}{|l|}{WARP Titan Black }          &  25.78       & 81.18           & 34.91         \\
+\multicolumn{2}{|r|}{$\Delta$ Serpent (Bk, S2)}  &  3.07  1.75  & 1.49  0.84      & 2.34  1.27    \\
+\multicolumn{2}{|r|}{$\Delta$ MCNP    (Bk, S2)}  &  10.45 3.14  & 3.95  2.45      & 4.60  3.22    \\
 \hline
-\multicolumn{2}{|l|}{WARP K20 }                           & 39.83 & 121.34 & 56.03         \\
-\multicolumn{2}{|r|}{$\Delta$ Serpent (bk, s2)}  &  1.99  1.13   & 1.00  0.56   & 1.46  0.79   \\
-\multicolumn{2}{|r|}{$\Delta$ MCNP    (bk, s2)}  &  6.77  2.03 & 2.64  1.64 & 2.87  2.00 \\
+\multicolumn{2}{|l|}{WARP K20 }                  & 39.83        & 121.34          & 56.03         \\
+\multicolumn{2}{|r|}{$\Delta$ Serpent (Bk, S2)}  &  1.99  1.13  & 1.00  0.56      & 1.46  0.79    \\
+\multicolumn{2}{|r|}{$\Delta$ MCNP    (Bk, S2)}  &  6.77  2.03  & 2.64  1.64      & 2.87  2.00    \\
 \hline
-\multicolumn{2}{|l|}{WARP K80   }                         & 24.68 & 81.40 & 35.63        \\
-\multicolumn{2}{|r|}{$\Delta$ Serpent (bk, s2)}  & 3.21  1.83    &  1.48  0.84    &  2.29  1.24   \\
-\multicolumn{2}{|r|}{$\Delta$ MCNP    (bk, s2)}  & 10.92 3.28  &  3.94  2.45  &  4.51  3.15 \\
+\multicolumn{2}{|l|}{WARP K80   }                & 24.68        & 81.40           & 35.63         \\
+\multicolumn{2}{|r|}{$\Delta$ Serpent (Bk, S2)}  & 3.21  1.83   &  1.48  0.84     &  2.29  1.24   \\
+\multicolumn{2}{|r|}{$\Delta$ MCNP    (Bk, S2)}  & 10.92 3.28   &  3.94  2.45     &  4.51  3.15   \\
 \hline
 \end{tabular}
 \end{table}
@@ -692,18 +692,24 @@ For productivity, the ``history power,'' or  number of neutron histories a syste
 \caption{The history power and costs of performing Monte Carlo neutron transport on GPU and CPU systems.}
 \label{history_power}
 \small
-\begin{tabular}{| l | r | r | r |}
-\hline
-              &  Serpent 2.1.21 & MCNP 6.1 & WARP  \\
-\hline
-History Power   &  2.2$\times10^5$	 & 7.5$\times10^4$	 & 6.5$\times10^5$    \\
-\hline
-History Power / USD    & 24 & 	8.1	 & 430    \\
-\hline
-History Power / Watt   & 480	 & 160	 & 2600    \\
+\begin{tabular}{| l r | r | r | r |}
+\cline{3-5}
+\multicolumn{2}{c|}{}             & H. Power   & H.P. / Capital   & H.P. / Watt  \\
+\hline                            
+Serpent 2.1.21   &   Bk PSSC      & 1.32E+7    &  1,416           &  28,667      \\
+                 &   SAVIO2       & 1.76E+7    &  2,601           &  83,865      \\
+\hline                                 
+MCNP 6.1         &   Bk PSSC      & 4.12E+6    &    442           &   8,946      \\
+                 &   SAVIO2       & 1.73E+7    &  2,556           &  82,394      \\
+\hline                            
+WARP             &   Titan Black  & 6.03E+7    & 39,654           & 241,255      \\
+                 &   K20          & 3.65E+7    & 10,987           & 162,370      \\
+                 &   K80          & 7.44E+7    & 14,880           & 247,996      \\
 \hline
 \end{tabular}
 \end{table}
+
+
 
 On a Titan Black, WARP has about 3 and 8 times the history power of Serpent and MCNP, respectively, run on a single cluster node.  This figure simply states the average worth of a Titan Black card compared to the PSSC node.  One could simply use more NUMA nodes to the CPU node to gain a history power equal to or above WARP on a single card. 
 % This comparison is a little weird. It feels like it needs to be normalized somehow to account for strong scaling. I am not sure how to do that fairly...divide by the product of threads and frequency? That sort of accounts for how much work can be done?
