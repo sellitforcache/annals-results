@@ -49,8 +49,8 @@ res_k20   = import_results('warp/k20/scaling_results')
 res_k80   = import_results('warp/k80/scaling_results')
 res_titan = import_results('warp/titan/scaling_results')
 
-ax.semilogx(res_k20  [0],numpy.divide(60.0*res_k20  [0],60.0*res_k20  [1]),'b',marker='o',label='k20')
-ax.semilogx(res_k80  [0],numpy.divide(60.0*res_k80  [0],60.0*res_k80  [1]),'r',marker='o',label='k80')
+ax.semilogx(res_k20  [0],numpy.divide(60.0*res_k20  [0],60.0*res_k20  [1]),'b',marker='o',label='K20')
+ax.semilogx(res_k80  [0],numpy.divide(60.0*res_k80  [0],60.0*res_k80  [1]),'r',marker='o',label='K80')
 ax.semilogx(res_titan[0],numpy.divide(60.0*res_titan[0],60.0*res_titan[1]),'k',marker='o',label='Titan Black')
 
 handles, labels = ax.get_legend_handles_labels()

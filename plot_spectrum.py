@@ -75,9 +75,9 @@ def get_warp_data(filepath):
 
 
 
-warpdata   = get_warp_data(     'warp/'+sys.argv[1]+'/'+sys.argv[2]+'.tally')
-serpdata   = get_serpent_det('serpent/savio/'+sys.argv[2]+'_det0.m')
-mcnpdata   = get_mcnp_mctal(    'mcnp/k20-savio/'+sys.argv[2]+'.mctal')
+warpdata   = get_warp_data('warp/'+sys.argv[1]+'/'+sys.argv[2]+'.tally')
+serpdata   = get_serpent_det(    'serpent/k20-bk/'+sys.argv[2]+'_det0.m')
+mcnpdata   = get_mcnp_mctal(        'mcnp/k20-bk/'+sys.argv[2]+'.mctal')
 
 tallybins = warpdata[0]
 tally     = warpdata[1]
@@ -89,7 +89,7 @@ if sys.argv[2] == 'godiva':
 	err_range = 0.02
 	mcnp_vol = 555.647209455
 if sys.argv[2] == 'homfuel' or sys.argv[2]=='test':
-	err_range_mcnp = 0.005
+	err_range_mcnp = 0.0025
 	err_range_serp = 0.005
 	xlims=[1e-6,20]
 	mcnp_vol = 50.0*100.0*100.0#60*60*60
@@ -120,8 +120,8 @@ if sys.argv[2] == 'assembly-lw':
 	xlims=[1e-8,20]
 	mcnp_vol = 40.0*1.0*1.0*numpy.pi
 if sys.argv[2] == 'sodiumpin':
-	err_range_mcnp = 0.01
-	err_range_serp = 0.01
+	err_range_mcnp = 0.005
+	err_range_serp = 0.005
 	xlims=[1e-4,20]
 	mcnp_vol = 40.0*1.0*1.0*numpy.pi
 
