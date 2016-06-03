@@ -543,6 +543,7 @@ WARP K80                            & 0.8807546 $\pm$ 9.58E-5         & 1.098589
 
 From Table \ref{results_table_keff}, it can be seen that WARP agrees with either MCNP \emph{or} Serpent (they sometimes do not exactly agree with each other!) on the $1\sigma$ level for all cases except the FliBe cell and the hex assembly cases.  The FliBe cell case agrees on the $2\sigma$ level, but the hex assembly case does not, indicating that there is a problem with the way WARP is solving the hex assembly case.  Speculation on what could be casuing this is discussed in Section \ref{sec:disc}.
 
+\newpage
 \subsection{Runtimes}
 
 
@@ -692,7 +693,7 @@ Figure \ref{assembly-lw_spec} shows the volume-averaged flux spectrum in the cen
 
 \subsection{History Power}
 
-For productivity, the ``history power,'' or  number of neutron histories a system can process per unit time, is of primary interest when deciding what kind of system to purchase since it determines how quickly results can be produced.  In addition to this, the history power per harware cost is of interest for initial capital investment, and the history power per unit energy are of interest for operational costs.  Table \ref{history_power} shows the history power (neutron histories per second) and relative costs of GPU system running WARP compared to MCNP and Serpent running on a the aforementioned CPU platforms.  The history powers shown in Table \ref{history_power} were calculated by summing the total number of neutron processed in all six test cases and dividing this number by the sum of the run times of the six cases for each code/platform combination (i.e. $3.9\times10^8 / \textrm{sum of run times}$).  This way, the average is not biased towards a special case that allows a code to process neutrons especially fast.  The history power per capital is simply the averaged neutron processing rate divided by the hardware cost of the plotform.  The history power per watt is similar, except divided by the platform's total maximum electrical power consumption rather than the cost.  The costs and electrica powers used are shown in Table \ref{platform_table}.
+For productivity, the ``history power,'' or  number of neutron histories a system can process per unit time, is of primary interest when deciding what kind of system to purchase since it determines how quickly results can be produced.  In addition to this, the history power per harware cost is of interest for initial capital investment, and the history power per unit energy are of interest for operational costs.  Table \ref{history_power} shows the history power (neutron histories per second) and relative costs of GPU system running WARP compared to MCNP and Serpent running on a the aforementioned CPU platforms.  
 
 \begin{table}[h]
 \centering
@@ -715,6 +716,8 @@ WARP             &   Titan Black  & 1.32E+7    & 8,675           & 52,778       
 \hline
 \end{tabular}
 \end{table}
+
+The history powers shown in Table \ref{history_power} were calculated by summing the total number of neutron processed in all six test cases and dividing this number by the sum of the run times of the six cases for each code/platform combination (i.e. $3.9\times10^8 / \textrm{sum of run times}$).  This way, the average is not biased towards a special case that allows a code to process neutrons especially fast.  The history power per capital is simply the averaged neutron processing rate divided by the hardware cost of the plotform.  The history power per watt is similar, except divided by the platform's total maximum electrical power consumption rather than the cost.  The costs and electrica powers used are shown in Table \ref{platform_table}.
 
 
 Table \ref{history_power} shows that, on average, for the test cases considered, a new NVIDIA GPU card can process neutrons about 1.6 times as fast as a new multiprocessor/multicore CPU node running Serpent and about 3 times as fast as a CPU node running MCNP.  From a capital investment standpoint, the a K80 card costs about half as much as a SAVIO2 node per neutron processing power and consumes about the same amount of electricity.  The Titan Black, however, performs about as well as a K80 from the neutron processing rate standpoint, but costs about a third as much and consumes 20\% less electricity.  Since WARP uses single-precision data and math in order to fully exploit the capacities available on consumer GPUs (like the Titan Black), the capital and electrical costs of running WARP can be greatly reduced.  
