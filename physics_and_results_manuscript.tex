@@ -152,7 +152,7 @@ Berkeley, CA 94720-1730}
 
 \begin{abstract}
 
-In this companion paper to ``Algorithmic Choices in WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs'' (doi:10.1016/j.anucene.2014.10.039), the WARP Monte Carlo neutron transport framework for GPUs is benchmarked against production-level CPU Monte Carlo neutron transport codes for both performance and accuracy.  Flux spectra and multiplication factors calculated by WARP are compared to those from Serpent 2.1.21 and MCNP 6.1 for identical materials and geometries.  Runtimes, speedup factors, and cost comparisons are also reported.
+In this companion paper to ``Algorithmic Choices in WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs'' (doi:10.1016/j.anucene.2014.10.039), the WARP Monte Carlo neutron transport framework for graphics processing units (GPUs) is benchmarked against production-level central processing unit (CPU) Monte Carlo neutron transport codes for both performance and accuracy.  Flux spectra, multiplication factors, runtimes, speedup factors, and costs of various GPU and CPU platforms running either WARP, Serpent 2.1.21, or MCNP 6.1 are compared.  WARP compares well with the results of the production-level codes, and it is shown that on the newest hardware considered, GPU platforms running WARP are about 0.8 to 7.6 times as fast as new CPU platforms while being about half as expensive.  
 
 \end{abstract}
 
@@ -173,13 +173,13 @@ Monte Carlo \sep Neutron Transport \sep GPU \sep CUDA \sep CUDPP \sep OptiX
 
 %I would add an introductory paragraph here mentioning that warp solves the neutron transport equation, that the specific application is reactor physics, and the overall goals of the project. The current start is a bit out of nowhere.
 % RMB - added intro from last paper
-WARP, which can stand for ``Weaving All the Random Particles,'' is a three-dimensional (3D) continuous energy Monte Carlo neutron transport code developed at UC Berkeley to efficiently execute on a CPU/GPU platform.  WARP accelerates Monte Carlo simulations while preserving the benefits of using the Monte Carlo method, namely, that very few physical and geometrical simplifications are applied.  WARP is able to calculate multiplication factors, flux tallies, and fission source distributions for time-independent problems, and can run in both criticality or fixed source modes (but fixed source mode is not robust or optimized).  WARP can currently transport neutrons in unrestricted arrangements of parallelepipeds, hexagonal prisms, cylinders, and spheres.
+WARP, which can stand for ``Weaving All the Random Particles,'' is a three-dimensional (3D) continuous energy Monte Carlo neutron transport code developed at UC Berkeley to efficiently execute on NVIDIA graphics processing unit (GPU) platforms.  WARP accelerates Monte Carlo simulations while preserving the benefits of using the Monte Carlo method, namely, that very few physical and geometrical simplifications are applied.  WARP is able to calculate multiplication factors, flux spectra, and fission source distributions for time-independent neutron transport problems, and can run in both criticality or fixed source modes. Fixed source mode is currently not robust or optimized, however.  WARP can transport neutrons in unrestricted arrangements of parallelepipeds, hexagonal prisms, cylinders, and spheres.
 
 The impetus for developing WARP was the research done by Martin and Brown in 1984 \cite{vector} for Monte Carlo and by Vuji\'{c} and Martin in 1991 \cite{vujic_vector} for collosion probability method.  In the 1984 paper, a method for mapping the Monte Carlo problem onto SIMD (single instruction multiple data) vector computers is described.  SIMD is an execution model some processors use in order to lower the number of instructions needed per amount of computation done, which increases both power and computational efficiency \cite{simd_power}.  SIMD requires the same instructions to be carried out over every element in a concurrently-processed data vector.  The essential idea in the 1984 paper is to bank the neutrons into vectors based on their required operation.  If a neutron is scattering, its data is placed in the scattering buffer.  If a neutron needs to do a surface crossing, it is put in the crossing buffer, and so on.  Once a buffer becomes full, it is processed in a SIMD fashion by the vector computer.  Processing the neutrons makes the buffers contain non-uniform reactions, however, and a ``shuffle'' operation is done that actually moves data back into contiguous blocks based on the reaction type.  
 
 This new approach was named ``event-based'' Monte Carlo, since the neutron events are tracked and processed as a group \cite{vector}.  This was a very different way of performing a Monte Carlo simulation at the time.  Almost all computers were strictly serial, and SIMD lanes were only available in supercomputers.  Therefore, the pervasive method was the ``task-based" method in which neutrons are tracked for their entire lifetime in series.  Since GPUs are massively parallel and rely on SIMD, an event-based algorithm seems to be the appropriate approach to GPU-accelerated neutron transport.  
 
-WARP uses an event-based algorithm, but with some important differences.  Vectorizing the Monte Carlo algorithm should allow for efficient GPU execution, but a paper by Zhang \cite{on_the_fly_remapping} also shows that by remapping data references, the thread divergence in GPU warps can be minimized.  Moving data is expensive, so WARP uses a remapping vector of pointer/index pairs to direct GPU threads to the data they need to access.  The remapping vector is sorted  by reaction type after every transport iteration using a high-efficiency parallel radix sort, which serves to keep the reaction types as contiguous as possible and removes completed histories from the transport cycle.  Sorting reduces the amount of divergence in GPU ``thread blocks,'' keeps the SIMD units as full as possible, and eliminates using memory bandwidth to check if a neutron in the batch has been terminated or not.  Using a remapping vector means the data access pattern is irregular, but this is mitigated by using large batch sizes where the GPU can effectively eliminate the high cost of irregular global memory access.
+WARP uses an event-based algorithm, but with some important differences.  Vectorizing the Monte Carlo algorithm should allow for efficient GPU execution, but a paper by Zhang \cite{on_the_fly_remapping} also shows that by remapping data references, the thread divergence in GPU warps can be minimized.  Moving data is expensive, so WARP uses a remapping vector of pointer/index pairs to direct GPU threads to the data they need to access.  The remapping vector is sorted  by reaction type after every transport iteration using a high-efficiency parallel radix sort (via the CUDPP library \cite{CUDPP}), which serves to keep the reaction types as contiguous as possible and removes completed histories from the transport cycle.  Sorting reduces the amount of divergence in GPU ``thread blocks,'' keeps the SIMD units as full as possible, and eliminates using memory bandwidth to check if a neutron in the batch has been terminated or not.  Using a remapping vector means the data access pattern is irregular, but this is mitigated by using large batch sizes where the GPU can effectively eliminate the high cost of irregular global memory access.
 
 The goal of WARP is to be the first step in creating a full-featured, continuous energy, Monte Carlo neutron transport code that is \emph{accelerated} by running on GPUs.  The crux of the effort is to make Monte Carlo calculations faster while producing accurate results.  Modern supercomputers are commonly being built with graphics processing units (GPU) coprocessor cards in their nodes to increase their computational efficiency and performance.  Compared to more common central processing units, or CPUs, GPUs have a larger aggregate memory bandwidth, much larger rate of floating-point operations per second (FLOPS), and lower energy consumption per FLOP.  GPUs execute efficiently on data-parallel problems, and since most CPU codes are task-parallel, the algorithms used had to be reconsidered.  Data-parallelism is simply parallelism that arises from operating on many different pieces of data at one time, whereas task-parallelism is parallelism that arises from running many concurrent tasks that act on a single piece of data.   Figure \ref{datavtask} shows an illustration of the difference between a data-parallel and a task-parallel neutron transport loop.
 
@@ -257,6 +257,7 @@ WARP only has collision estimators implemented for both flux and multiplication 
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
+\newpage
 \section{Tests}
 \label{sec:tests}
 
@@ -307,9 +308,16 @@ All tests use ENDF/B-VII cross sections that ship with the Serpent 1.1.7 release
 
 
 %%%%%%%%%%%%%%%%%%%
+\newpage
 \subsection{Test 1 - ``Jezebel'' Bare Pu Sphere}
 
 The ``Jezebel'' criticality test is a bare plutonium/gallium sphere with vacuum boundary conditions.   The fission neutron rate from $^{239}$Pu is balanced by the leakage rate from the 5.1 cm radius to give a $k_\mathrm{eff}$ of approximately 1.  Since this system is so leaky, producing results consistent with MCNP and Serpent ensures that the boundary conditions are correctly being enforced.  The Jezebel test is a standard test used to validate neutron transport codes and is described in the International Handbook of Evaluated Criticality Safety Test Experiments under the name ``Pu-MET-FAST-001'' \cite{bench_handbook}.  The geometry and materials are outlined in Table \ref{jezebel_geom}.  All cross sections used were processed at 273.5 K.
+
+\begin{figure}[h!] 
+  \centering
+    \includegraphics[width=0.4\textwidth]{graphics/jezebel-xy.png}
+     \caption{  \label{jezebel_geom_pic} }
+\end{figure}
 
 \begin{table}[h]
 \centering
@@ -327,9 +335,16 @@ Cells & Isotopes & (Atm. \%)& Density \\
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%
+\newpage
 \subsection{Test 2 - Homogenized Fuel Block}
 
 The homogenized block criticality test is a bare cube with vacuum boundary conditions.  This test keeps the same boundary condition, temperature, and number of cells as test 1, but is larger, reducing leakage, and contains light isotopes, which readily produce thermal neutrons, and introduces new isotopes.  Introducing new isotopes into the simulation is significant in that new isotopes may use any of the various sampling laws outlines earlier.  Comparing spectra from calculations containing many different isotopes simply shows that WARP can handle sampling the laws correctly.  The geometry and materials are outlined in Table \ref{homfuel_geom}.  
+
+\begin{figure}[h!] 
+  \centering
+    \includegraphics[width=0.4\textwidth]{graphics/homfuel-xy.png}
+     \caption{  \label{homfuel_geom_pic} }
+\end{figure}
 
 \begin{table}[h]
 \centering
@@ -351,9 +366,16 @@ Cells & Isotopes & (Atm. \%)& Density \\
 
 
 %%%%%%%%%%%%%%%%%%%
+\newpage
 \subsection{Test 3 - Zr-Clad UO$_2$ Pin in Heavy Water}
 
 This criticality test consists of a UO$_2$ cylinder clad in zirconium surrounded by a block of light water.  This test increases complexity by having three materials, each with multiple isotopes, and three cells.  The water block has vacuum boundary conditions.  Its dimensions are relatively large and the absorption is low, so the mean neutron lifetime should be large.  This test serves to highlight that all the processing routines work simultaneously, the effect of introducing more than one cell, and the effect of long-lived neutrons.  The geometry and materials are outlined in Table \ref{uo2_pincell_geom}.  All cross sections used were also processed at 273.5 K.
+
+\begin{figure}[h!] 
+  \centering
+    \includegraphics[width=0.4\textwidth]{graphics/pincell-xy.png}
+     \caption{  \label{pincell_geom_pic} }
+\end{figure}
 
 \begin{table}[h]
 \centering
@@ -378,9 +400,16 @@ Cells & Isotopes & (Atm. \%)& Densities \\
 
 
 %%%%%%%%%%%%%%%%%%%
+\newpage
 \subsection{Test 4 - Homogenized Fuel Pebble in FLiBe}
 
 This criticality test consists of a single sphere of homogenized UO$_2$ and C surrounded by molten FLiBe (Li$_2$BeF$_4$) salt.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  This test uses two temperatures simultaneously and tests the reflective boundary condition setting.  The geometry and materials are outlined in Table \ref{pebble_geom} where ``r'' shown for the hex prism is the length of the apothem.  The FLiBe cross sections used were processed at 900 K and the pebble cross sections at 1200 K.
+
+\begin{figure}[h!] 
+  \centering
+    \includegraphics[width=0.4\textwidth]{graphics/flibe-xy.png}
+     \caption{  \label{flibe_geom_pic} }
+\end{figure}
 
 \begin{table}[h]
 \centering
@@ -401,9 +430,16 @@ Cells & Isotopes & (Atm.  \%)& Densities \\
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%
+\newpage
 \subsection{Test 5 - Stainless Steel Clad Metallic Uranium Pin in Liquid Sodium}
 
 This criticality test consists of a single cylinder of metallic uranium surrounded by molten sodium.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  The reflective boundary condition approximates the very large number of fuel rods like that of a sodium-cooled reactor.  This test serves to benchmark a fast system with a coolant as well as introduces more and different isotopes.  The geometry and materials are outlined in Table \ref{sodium_geom}.  The fuel and clad cross sections used were processed at 900 K, and the sodium coolant cross sections were processed at 600 K.  In order to keep the specification tenable, only the major components of 316 stainless steel were included in the clad material. 
+
+\begin{figure}[h!] 
+  \centering
+    \includegraphics[width=0.4\textwidth]{graphics/sodiumpin-xy.png}
+     \caption{  \label{sodiumpin_geom_pic} }
+\end{figure}
 
 \begin{table}[h]
 \centering
@@ -429,9 +465,16 @@ Cells & Isotopes & (Atm. \%)     & Densities \\
 
 
 %%%%%%%%%%%%%%%%%%%
+\newpage
 \subsection{Test 6 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
 
 This criticality test consists of 631 Zr-clad UO$_2$ cylinders laid out in a hexagonal lattice surrounded by light water.  The material compositions, densities, and cylinder dimensions are similar to the pin cell test case, but, since this test has two orders of magnitude more objects, it serves to highlight the effect of introducing many geometric objects into the problem and will further validate that the geometry processing routines work correctly.  The lattice is in the x-y plane, has a pitch to diameter ratio of 1.164, and has 15 elements on a side.  The geometry and materials are outlined in Table \ref{hex_geom}.  All cross sections used were processed at 273.5 K.
+
+\begin{figure}[h!] 
+  \centering
+    \includegraphics[width=0.4\textwidth]{graphics/assembly-lw-xy.png}
+     \caption{  \label{hex_geom_pic} }
+\end{figure}
 
 \begin{table}[h]
 \centering
