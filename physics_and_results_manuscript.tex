@@ -277,7 +277,7 @@ WARP now uses ``cell sense'' to reduce the memory impact of determining in which
 \begin{figure}[h!]
 \centering
 \includegraphics[width=0.75\textwidth]{graphics/whereami-new.pdf}
-\caption{The improved point-in-polygon ``where am I?'' algorithm. \label{whereami} }
+\caption{The improved geometry query algorithm showing how the cell number is calculated through ray tracing.  A ray is iteratively drawn from the neutron starting position to the outer cell, and the surface normal values are summed along the way.  When the sum reaches -1, the cell in which the neutron resides has been found and the trace stops. \label{whereami} }
 \end{figure}
 
  When the cumulative sense becomes negative, the containing cell has been intersected and tracing can stop.  This approach can be used because all bodies must be closed.  This scheme takes advantage of the acceleration structure in OptiX while still using the simplicity of combinatorial solid geometry.  It essentially is the same scheme as MCNP/Serpent, except that the acceleration structures allow surfaces that are part of cells that are far away to be skipped.  Also, compared to the past scheme of storing a list of doubles, this method requires a single integer to be stored and operated on instead of a potentially large and slow list. 
