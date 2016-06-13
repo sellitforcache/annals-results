@@ -291,7 +291,7 @@ Since OptiX allows variables to be attached to individual geometrical objects, t
 \section{Tests}
 \label{sec:tests}
 
-A small set of CPU and GPU platforms were chosen for use in testing WARP.  These platforms were chosen simply because they were easily accessible from UC Berkeley.  For the CPU platforms, a single cluster node of both Berkelium, the departmental cluster, and Savio2, the shared campus high performance computing cluster, were used.  For the GPU platforms, a consumer-level graphics card and two compute-specific cards were used.  Descriptions of each piece of hardware can be found in Table~\ref{platform_table}. For the GPUs, the costs include the retail price of a minimal host computer with at least as much memory as the card ({\raise.17ex\hbox{$\scriptstyle\sim$}}\$400).
+A small set of CPU and GPU platforms were chosen for use in testing WARP.  These platforms were chosen simply because they were easily accessible from UC Berkeley.  For the CPU platforms, a single cluster node of both Berkelium (Bk), the departmental cluster, and Savio2, the shared campus high performance computing cluster, were used.  For the GPU platforms, a consumer-level graphics card and two compute-specific cards were used.  Descriptions of each piece of hardware can be found in Table~\ref{platform_table}. For the GPUs, the costs include the retail price of a minimal host computer with at least as much memory as the card ({\raise.17ex\hbox{$\scriptstyle\sim$}}\$400).
   
 
 \begin{table}[h]
@@ -306,7 +306,7 @@ A small set of CPU and GPU platforms were chosen for use in testing WARP.  These
 \hline
 Bk PSSC PowerWulf Blade       &    9,310   & 460 &  96 GB        &  1.6 GHz                    \\
 \hline
-Savio2 Lenovo NeXtScale nx360m5       &   6,770    &  210  &  64 GB        & 2.133  GHz                    \\
+Savio2 Lenovo NeXtScale nx360 M5       &   6,770    &  210  &  64 GB        & 2.133  GHz                    \\
 \hline
 NVIDIA Tesla K20         &    3,325     & 225 &  4.8  GB      &  2.6 GHz                  \\
 \hline
@@ -321,13 +321,13 @@ NVIDIA Tesla K80       &    5,000    & 300 &  12 GB        &  2.505 GHz         
 \hline
 Bk PSSC PowerWulf Blade       &   \multicolumn{2}{r|}{4x AMD Opteron 6172 }  &  2.1 GHz     &  48           \\
 \hline
-Savio2 Lenovo NeXtScale nx360m5   &   \multicolumn{2}{r|}{ }  &  2.3 GHz     &  24           \\
+Savio2 Lenovo NeXtScale nx360 M5   &   \multicolumn{2}{r|}{ }  &  2.3 GHz     &  24           \\
 \hline
 NVIDIA Tesla K20         &       \multicolumn{2}{r|}{13}   &  705.5 MHz     &  $2^{32}-1$           \\
 \hline
 NVIDIA Titan Black       &      \multicolumn{2}{r|}{ 15 }  &  1071.5 MHz     & $2^{32}-1$           \\
 \hline
-NVIDIA Telsa K80      &      \multicolumn{2}{r|}{ 13 }  &  823.5 MHz     & $2^{32}-1$           \\
+NVIDIA Tesla K80      &      \multicolumn{2}{r|}{ 13 }  &  823.5 MHz     & $2^{32}-1$           \\
 \hline
 
 \end{tabular}
@@ -340,7 +340,7 @@ All tests use ENDF/B-VII cross sections that are distributed with the Serpent 1.
 \newpage
 \subsection{Test 1 - ``Jezebel'' Bare Pu Sphere}
 
-The ``Jezebel'' criticality test is a bare plutonium/gallium sphere with vacuum boundary conditions.   The fission neutron rate from $^{239}$Pu is balanced by the leakage rate from the 5.1 cm radius to give a $k_\mathrm{eff}$ of approximately 1.  Since this system is so leaky, producing results consistent with MCNP and Serpent ensures that the boundary conditions are correctly being enforced.  The Jezebel test is a standard test used to validate neutron transport codes and is described in the International Handbook of Evaluated Criticality Safety Test Experiments under the name ``Pu-MET-FAST-001'' \cite{bench_handbook}.  The geometry and materials are outlined in Table \ref{jezebel_geom}.  All cross sections used were processed at 273.5 K.
+The ``Jezebel'' criticality test is a bare plutonium/gallium sphere with vacuum boundary conditions.   The fission neutron rate from $^{239}$Pu is balanced by the leakage rate from the 6.6595 cm radius to give a $k_\mathrm{eff}$ of approximately 1.  Since this system is so leaky, producing results consistent with MCNP and Serpent ensures that the boundary conditions are correctly being enforced.  The Jezebel test is a standard test used to validate neutron transport codes and is described in the International Handbook of Evaluated Criticality Safety Test Experiments under the name ``Pu-MET-FAST-001'' \cite{bench_handbook}.  The geometry and materials are outlined in Table \ref{jezebel_geom}.  All cross sections used were processed at 273.5 K.
 
 \begin{figure}[h!] 
   \centering
