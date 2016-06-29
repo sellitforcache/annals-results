@@ -566,11 +566,15 @@ Larger neutron datasets allow the GPU to schedule threads better, but the size o
 \caption{Neutron processing rate vs.\ number of neutrons per cycle for the hexagonal lattice test case. \label{scaling} }
 \end{figure}
 
-Performance increases until about $5\times10^6$ neutrons per cycle, then flattens above this for all cards.  This curve was calculated using the hexagonal pin lattice test case, and may change if a different model were input.  Despite this, $5\times10^6$ neutrons per cycle is a rough estimate of where maximum performance occurs for WARP, and $6.5\times10^6$ neutrons per cycle was used for the test cases. 
+Performance increases until about $5\times10^6$ neutrons per cycle, then flattens above this for all cards.  This curve was calculated using the hexagonal pin lattice test case, and may change if a different model were input.  
+% Is there a one-sentence argument for why this is reasonably representative or a good choice? Or, was it selected at random? coin toss?
+Despite this, $5\times10^6$ neutrons per cycle is a rough estimate of where maximum performance occurs for WARP, and $6.5\times10^6$ neutrons per cycle was used for the test cases. 
 
 \subsection{Multiplication Factors}
 
-Table \ref{results_table_keff} shows the multiplication factor deviations for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.24 for WARP running on an NVIDIA Titan Black, K20, and K80 cards.  The ``$\Delta$MCNP'' row contains WARP's difference (in PCM) from MCNP, and the ``$\Delta$ Serpent'' row contains WARP's difference from Serpent.  These difference rows also contain $1\sigma$ and $2\sigma$ values that indicate the level at which the multiplication factors calculated by WARP agree with either Serpent or MCNP.  A ``y'' in the $1\sigma$ position indicates that the multiplication factor values are mutually within 1 standard deviation of each other, i.e. that $\Delta \textrm{MCNP}<\sigma_{\textrm{MCNP}}+\sigma_{\textrm{WARP}}$.  This is the 90\% confidence interval and there is a 10\% probability that the the two codes could produce results outside of this interval.  The $2\sigma$ position is simply double the $1\sigma$ width and corresponds to the 99.8\% confidence interval (0.2\% chance of being outside).
+Table \ref{results_table_keff} shows the multiplication factor deviations for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.24 for WARP running on an NVIDIA Titan Black, K20, and K80 cards.  The ``$\Delta$MCNP'' rows contains WARP's difference (in PCM) from MCNP, and the ``$\Delta$ Serpent'' rows contains WARP's difference from Serpent.  These difference rows also contain $1\sigma$ and $2\sigma$ values that indicate the level at which the multiplication factors calculated by WARP agree with either Serpent or MCNP.  A ``y'' in the $1\sigma$ position indicates that the multiplication factor values are mutually within 1 standard deviation of each other, i.e.\ that $\Delta \textrm{MCNP}<\sigma_{\textrm{MCNP}}+\sigma_{\textrm{WARP}}$.  This is the 90\% confidence interval and there is a 10\% probability that the the two codes could produce results outside of this interval.  The $2\sigma$ position is simply double the $1\sigma$ width and corresponds to the 99.8\% confidence interval (0.2\% chance of being outside).
+% I think those confidence interval numbers oringinally here are wrong: https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule
+% Oh, maybe I'm misunderanding. This is the sigma interval overlaps? You might want to specify more conretely or add a citation b/c I think a lot of engineers use this idea incorrectly.
 
 
 \begin{table}[h]
@@ -626,12 +630,10 @@ WARP K80                            & 0.8807546 $\pm$ 9.58E-5         & 1.098589
 \end{table}
 
 
-From Table \ref{results_table_keff}, it can be seen that WARP agrees with either MCNP \emph{or} Serpent (they sometimes do not exactly agree with each other!) on the $1\sigma$ level for all cases except the FliBe cell and the hex assembly cases.  The FliBe cell case agrees on the $2\sigma$ level, but the hex assembly case does not, indicating that there is a problem with the way WARP is solving the hex assembly case.  Speculation on what could be causing this is discussed in Section \ref{sec:disc}.
+From Table \ref{results_table_keff}, it can be seen that WARP agrees with either MCNP \emph{or} Serpent (they sometimes do not exactly agree with each other!) at the $1\sigma$ level for all cases except the FliBe cell and the hex assembly cases.  The FliBe cell case agrees on the $2\sigma$ level, but the hex assembly case does not, indicating that there is a problem with the way WARP is solving the hex assembly case.  Speculation on what could be causing this is discussed in Section \ref{sec:disc}.
 
-\newpage
+
 \subsection{Runtimes}
-
-
 Table \ref{results_table_times} shows the transport cycle runtimes for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.24 for WARP running on an NVIDIA Titan Black, K20, and K80 cards.  The values in the time rows are reported in minutes.  The ``$\Delta$ MCNP'' row contains WARP's speedup factor over MCNP, and the ``$\Delta$ Serpent'' row contains WARP's speedup factor over Serpent.
 
 
@@ -692,7 +694,7 @@ MCNP 6.1         &   Bk PSSC                     & 269.47       & 320.40        
 \end{table}
 
 
-It can be seen from Table \ref{results_table_times} that WARP runs fastest on the K80 card, and both Serpent and MCNP run fastest on the Savio2 node.  This makes sense since these are the two newest pieces of hardware considered.  It is important to note that the Titan Black card performs almost as well as the K80 card, however.  Comparing the K80 card to a Savio2 node (the most relevant comparison), WARP runs 0.84 to 5.34 times as fast as Serpent and 2.45 to 7.61 times as fast as MCNP.   The largest speedup over Serpent is for the Jezebel test, the largest speedup over MCNP is for the homogenized block test, and the smallest speedup is for the sodium pin cell test over both Serpent and MCNP.  This speedup factor is calculated over an entire compute node, so WARP can have performance equivalent to 0.84 to 7.61 compute nodes, depending on the type of simulation hardware considered.  For the sodium pin case, where there is a relatively large amount of cross section processing, a Savio2 node running Serpent actually performs better than WARP on a K80 card.  For problems where there is less cross section processing (higher geometry processing fraction), WARP tends to perform better than a Savio2 node running Serpent.  WARP always performs better than a Savio2 node running MCNP, even with relatively heavy cross section processing, but this isn't a great surprise considering that MCNP doesn't use a unionized energy grid structure when processing cross sections.
+It can be seen from Table \ref{results_table_times} that WARP runs fastest on the K80 card, and both Serpent and MCNP run fastest on the Savio2 node.  This makes sense since these are the two newest pieces of hardware considered.  It is important to note that the Titan Black card performs almost as well as the K80 card, however.  Comparing the K80 card to a Savio2 node (the most relevant comparison), WARP runs 0.84 to 5.34 times as fast as Serpent and 2.45 to 7.61 times as fast as MCNP.   The largest speedup over Serpent is for the Jezebel test, the largest speedup over MCNP is for the homogenized block test, and the smallest speedup is for the sodium pin cell test over both Serpent and MCNP.  This speedup factor is calculated over an entire compute node, so WARP on a GPU gives a performance equivalent to 0.84 to 7.61 compute nodes, depending on the type of simulation hardware considered.  For the sodium pin case, where there is a relatively large amount of cross section processing, a Savio2 node running Serpent actually performs better than WARP on a K80 card.  For problems where there is less cross section processing (higher geometry processing fraction), WARP tends to perform better than a Savio2 node running Serpent.  WARP always performs better than a Savio2 node running MCNP, even with relatively heavy cross section processing, but this isn't a great surprise considering that MCNP doesn't use a unionized energy grid structure when processing cross sections.
 
 
 \subsection{Spectra}
@@ -715,9 +717,7 @@ Figure \ref{jezebel_spec} shows the volume-averaged flux spectra in the Jezebel 
 \newpage
 \subsubsection{Test 2 - Homogenized Fuel Block}
 
-Figure \ref{homfuel_spec} shows the volume-averaged flux spectra in the homogenized fuel block.  The relative difference compared to MCNP and Serpent is again shown in the lower subplots.  The relative difference compared to MCNP again generally less than 0.15\% and appears to have a zero mean, but the error compared to Serpent has a constant positive offset, indicating a slightly different normalization.  This kind of offset appears in other spectra as well, but only when comparing to Serpent.  This indicates a possible normalization discrepancy between MCNP and Serpent.  There also appears to be some  deviations with similar structure from 0.1 to 0.3 MeV, indicating that some kind of reaction sampling may not be treated exactly the same way as in Serpent and MCNP.
-
-% you might want to say how it differs from serpent as well to give a hint about which normalization might be more correct. The current comparison feels incomplete.
+Figure \ref{homfuel_spec} shows the volume-averaged flux spectra in the homogenized fuel block.  The relative difference compared to MCNP and Serpent is again shown in the lower subplots.  The relative difference compared to MCNP is again generally less than 0.15\% and appears to have a zero mean, but the error compared to Serpent has a constant positive offset, indicating a slightly different normalization.  This kind of offset appears in other spectra as well, but only when comparing to Serpent.  This indicates a possible normalization discrepancy between MCNP and Serpent.  There also appears to be some  deviations with similar structure from 0.1 to 0.3 MeV, indicating that some kind of reaction sampling may not be treated exactly the same way as in Serpent and MCNP.
 
 \begin{figure}[h!]
 \centering
@@ -729,7 +729,8 @@ Figure \ref{homfuel_spec} shows the volume-averaged flux spectra in the homogeni
 \newpage
 \subsubsection{Test 3 - Zr-Clad UO$_2$ Pin in Heavy Water}
 
-Figure \ref{pincell_spec} shows the volume-averaged flux spectra inside the fuel rod in the Zr-clad UO$_2$ pin in heavy water test case.  Again, the relative difference is generally less than 1\% where the flux is large.  Compared to Serpent, the WARP spectrum again appears to have a small constant offset.  The entire energy range agrees well with MCNP, however, indicating that all the reaction laws were processed identically to MCNP for the nuclides present in this test case.
+Figure \ref{pincell_spec} shows the volume-averaged flux spectra inside the fuel rod in the Zr-clad UO$_2$ pin in the heavy water test case.  Again, the relative difference is generally less than 1\% where the flux is large.  Compared to Serpent, the WARP spectrum again appears to have a small, constant offset.  The entire energy range agrees well with MCNP, however, indicating that all the reaction laws were processed identically to MCNP for the nuclides present in this test case.
+% in the previous case it was 0.15%; before that you didn't mention a number, now it's 1. I'd explicitly differentiate between confidence interval and rel err, because the use of percentages in both cases could be misleading. 
 
 
 \begin{figure}[h!]
@@ -787,7 +788,7 @@ For productivity, the ``history power,'' or  number of neutron histories process
 \small
 \begin{tabular}{| l r | r | r | r |}
 \cline{3-5}
-\multicolumn{2}{c|}{}             & H. Power   & H.P. / Capital   & H.P. / Watt  \\
+\multicolumn{2}{c|}{}             & H. Power   & H.P. / Capital   & H.P. / watt  \\
 \hline                            
 Serpent 2.1.24   &   Bk PSSC      & 2.32E+6    &   249           &  5,033        \\
                  &   Savio2       & 8.84E+6    & 1,305           & 42,082        \\
@@ -801,11 +802,13 @@ WARP             &   Titan Black  & 1.32E+7    & 8,675           & 52,778       
 \hline
 \end{tabular}
 \end{table}
+% I'd put the /Capital in units. Is it $ or cents?
 
-The history powers shown in Table \ref{history_power} were calculated by summing the total number of neutrons processed in all six test cases and dividing this number by the sum of the runtimes of the six cases for each code/platform combination (i.e. $3.9\times10^8 / \textrm{sum of run times}$).  This way, the average is not biased towards a special case that allows a code to process neutrons especially quickly.  The history power per capital is simply the averaged neutron processing rate divided by the hardware cost of the platform.  The history power per watt is similar, except divided by the platform's total maximum electrical power consumption rather than the cost.  The costs and electrical power consumptions used to calculate these values were shown in Table \ref{platform_table}.
+The history powers shown in Table \ref{history_power} were calculated by summing the total number of neutrons processed in all six test cases and dividing this number by the sum of the runtimes of the six cases for each code/platform combination (i.e.\ $3.9\times10^8 / \textrm{sum of run times}$).  This way, the average is not biased towards a special case that allows a code to process neutrons especially quickly.  The history power per capital is simply the averaged neutron processing rate divided by the hardware cost of the platform.  The history power per watt is similar, except divided by the platform's total maximum electrical power consumption rather than the cost.  The costs and electrical power consumptions used to calculate these values were shown in Table \ref{platform_table}.
 
 
-Table \ref{history_power} shows that, on average, for the test cases considered, a new NVIDIA GPU card can process neutrons about 1.6 times as fast as a new multiprocessor/multicore CPU node running Serpent and about 3 times as fast as a CPU node running MCNP.  From a capital investment standpoint, the a K80 card costs about half as much as a Savio2 node per neutron processing power and consumes about the same amount of electricity.  The Titan Black, however, performs about as well as a K80 from the neutron processing rate standpoint, but costs about a third as much and consumes 20\% less electricity.  Since WARP uses single-precision data and math in order to fully exploit the capabilities available on consumer GPUs (like the Titan Black), the capital and electrical costs of running WARP can be greatly reduced.  
+Table \ref{history_power} shows that, on average, for the test cases considered, a new NVIDIA GPU card can process neutrons about 1.6 times as fast as a new multiprocessor/multicore CPU node running Serpent and about 3 times as fast as a CPU node running MCNP.  From a capital investment standpoint, the a K80 card costs about half as much as a Savio2 node per neutron processing power and consumes about the same amount of electricity.  The Titan Black, however, performs about as well as a K80 from the neutron processing rate standpoint, but costs about a third as much and consumes 20\% less electricity.  Since WARP uses single-precision data and math in order to fully exploit the capabilities available on consumer GPUs (like the Titan Black), the capital and electrical costs of running WARP can be greatly reduced. 
+% I don't understand the logical connection of this last sentence. Reduced by doing what?  
 
 
 %%%%%%%%%%%%%%%%%%%
