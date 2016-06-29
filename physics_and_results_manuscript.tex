@@ -152,7 +152,7 @@ Berkeley, CA 94720-1730}
 
 \begin{abstract}
 
-In this companion paper to ``Algorithmic Choices in WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs'' (doi:10.1016/j.anucene.2014.10.039), the WARP Monte Carlo neutron transport framework for graphics processing units (GPUs) is benchmarked against production-level central processing unit (CPU) Monte Carlo neutron transport codes for both performance and accuracy.  Flux spectra, multiplication factors, runtimes, speedup factors, and costs of various GPU and CPU platforms running either WARP, Serpent 2.1.21, or MCNP 6.1 are compared.  WARP compares well with the results of the production-level codes, and it is shown that on the newest hardware considered, GPU platforms running WARP are between 0.8 to 7.6 times as fast as CPU platforms running Serpent and MCNP (?) while being about half as expensive.  
+In this companion paper to ``Algorithmic Choices in WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs'' (doi:10.1016/j.anucene.2014.10.039), the WARP Monte Carlo neutron transport framework for graphics processing units (GPUs) is benchmarked against production-level central processing unit (CPU) Monte Carlo neutron transport codes for both performance and accuracy.  Flux spectra, multiplication factors, runtimes, speedup factors, and costs of various GPU and CPU platforms running either WARP, Serpent 2.1.24, or MCNP 6.1 are compared.  WARP compares well with the results of the production-level codes, and it is shown that on the newest hardware considered, GPU platforms running WARP are between 0.8 to 7.6 times as fast as CPU platforms running Serpent and MCNP (?) while being about half as expensive.  
 % This last sentence is awkward; not super clear.
 
 \end{abstract}
@@ -182,7 +182,7 @@ The goal of developing WARP is to investigate algorithms that can grow into a fu
      \caption{A data-parallel neutron transport loop vs.\ a task-parallel transport loop for transporting N neutrons in parallel.  \label{datavtask} }
 \end{figure}
 
-In this paper, we start in Section~\ref{sec:background} discussing background information about GPUs and CPUs in the context of Monte Carlo neutral particle transport. Then, in Section~\ref{sec:features}, the current features of WARP are summarized while highlighting the newest developments.  The results of criticality calculations performed by WARP are compared against those from Serpent 2.1.21 \cite{jaakko,serpent} and MCNP 6.1 \cite{mcnp6}, two widely-used production-level Monte Carlo neutron transport codes, in Section~\ref{sec:results}.  This comparison is done to ensure the accuracy of WARP and to highlight its performance differences.  The test case models used to conduct the comparisons are outlined in detail, then the run times, multiplication factors, and flux spectra calculated for the test cases are compared in detail, after which a discussion is given summarizing comparisons and addressing any discrepancies shown.  Finally, conclusions about the initial development of WARP are drawn and future work is roughly outlined in Section~\ref{sec:concdev}. 
+In this paper, we start in Section~\ref{sec:background} discussing background information about GPUs and CPUs in the context of Monte Carlo neutral particle transport. Then, in Section~\ref{sec:features}, the current features of WARP are summarized while highlighting the newest developments.  The results of criticality calculations performed by WARP are compared against those from Serpent 2.1.24 \cite{jaakko,serpent} and MCNP 6.1 \cite{mcnp6}, two widely-used production-level Monte Carlo neutron transport codes, in Section~\ref{sec:results}.  This comparison is done to ensure the accuracy of WARP and to highlight its performance differences.  The test case models used to conduct the comparisons are outlined in detail, then the run times, multiplication factors, and flux spectra calculated for the test cases are compared in detail, after which a discussion is given summarizing comparisons and addressing any discrepancies shown.  Finally, conclusions about the initial development of WARP are drawn and future work is roughly outlined in Section~\ref{sec:concdev}. 
 
 
 \section{Background}
@@ -253,7 +253,7 @@ To use NVIDIA GPUs, parts of software must be written in a language that facilit
 \section{Features of WARP}
 \label{sec:features}
 
-WARP has only existed since 2013, and is not as fully-featured as more mature Monte Carlo codes.  However, it has the functionality necessary to compare its performance against Serpent 2.1.21 and MCNP 6.1; this section outlines the current set of features available in WARP.  WARP is mainly written in C/C++ and is compiled to a shared library.  With the shared library compiled, a user must write a \texttt{main()} function that calls the library routines and directs program flow.  Pythonic wrapping of the shared library is done via SWIG \cite{swig}, which automatically wraps compiled languages like C/C++ in high-level scripting languages.  With the C++ classes exposed in Python, the \texttt{main()} function can be replaced with a Python script, eliminating the need to recompile a main function and link it to the WARP library when different geometries or different run parameters are desired.  This is why WARP is termed a ``framework'' rather than a ``program.''  Of course, there is flexibility in the setup as well, and a user could write a main function that could handle all conceivable input cases and would never have to recompile the \texttt{main()} function.  
+WARP has only existed since 2013, and is not as fully-featured as more mature Monte Carlo codes.  However, it has the functionality necessary to compare its performance against Serpent 2.1.24 and MCNP 6.1; this section outlines the current set of features available in WARP.  WARP is mainly written in C/C++ and is compiled to a shared library.  With the shared library compiled, a user must write a \texttt{main()} function that calls the library routines and directs program flow.  Pythonic wrapping of the shared library is done via SWIG \cite{swig}, which automatically wraps compiled languages like C/C++ in high-level scripting languages.  With the C++ classes exposed in Python, the \texttt{main()} function can be replaced with a Python script, eliminating the need to recompile a main function and link it to the WARP library when different geometries or different run parameters are desired.  This is why WARP is termed a ``framework'' rather than a ``program.''  Of course, there is flexibility in the setup as well, and a user could write a main function that could handle all conceivable input cases and would never have to recompile the \texttt{main()} function.  
 % The way this is written now, it's not clear why it needs to be recompiled as is and what would need to be different to avoid this.
 
 The Python wrapping approach deviates from the standard flat text input file structure that many Monte Carlo codes use.  Flat text input/output relies on keywords  and/or regular formatting, which adds a layer between simulation and analysis.  Using Python to directly access the classes and their data removes this layer and allows a user to build complex, custom applications as desired.  With Python, the results of a calculation are also resident in a Python session and are therefore easily available to the user for plotting with scripts or processing with other analysis tools.  To process data in the same way from a text file output, the output would need to be parsed with a user-written function or processed by hand, which is time-consuming and can lead to human error.
@@ -570,19 +570,19 @@ Performance increases until about $5\times10^6$ neutrons per cycle, then flatten
 
 \subsection{Multiplication Factors}
 
-Table \ref{results_table_keff} shows the multiplication factor deviations for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.21 for WARP running on an NVIDIA Titan Black, K20, and K80 cards.  The ``$\Delta$MCNP'' row contains WARP's difference (in PCM) from MCNP, and the ``$\Delta$ Serpent'' row contains WARP's difference from Serpent.  These difference rows also contain $1\sigma$ and $2\sigma$ values that indicate the level at which the multiplication factors calculated by WARP agree with either Serpent or MCNP.  A ``y'' in the $1\sigma$ position indicates that the multiplication factor values are mutually within 1 standard deviation of each other, i.e. that $\Delta \textrm{MCNP}<\sigma_{\textrm{MCNP}}+\sigma_{\textrm{WARP}}$.  This is the 90\% confidence interval and there is a 10\% probability that the the two codes could produce results outside of this interval.  The $2\sigma$ position is simply double the $1\sigma$ width and corresponds to the 99.8\% confidence interval (0.2\% chance of being outside).
+Table \ref{results_table_keff} shows the multiplication factor deviations for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.24 for WARP running on an NVIDIA Titan Black, K20, and K80 cards.  The ``$\Delta$MCNP'' row contains WARP's difference (in PCM) from MCNP, and the ``$\Delta$ Serpent'' row contains WARP's difference from Serpent.  These difference rows also contain $1\sigma$ and $2\sigma$ values that indicate the level at which the multiplication factors calculated by WARP agree with either Serpent or MCNP.  A ``y'' in the $1\sigma$ position indicates that the multiplication factor values are mutually within 1 standard deviation of each other, i.e. that $\Delta \textrm{MCNP}<\sigma_{\textrm{MCNP}}+\sigma_{\textrm{WARP}}$.  This is the 90\% confidence interval and there is a 10\% probability that the the two codes could produce results outside of this interval.  The $2\sigma$ position is simply double the $1\sigma$ width and corresponds to the 99.8\% confidence interval (0.2\% chance of being outside).
 
 
 \begin{table}[h]
 \centering
-\caption{The test case multiplication factors for WARP versus those of Serpent 2.1.21 and MCNP 6.1.}
+\caption{The test case multiplication factors for WARP versus those of Serpent 2.1.24 and MCNP 6.1.}
 \label{results_table_keff}
 \scriptsize
 \begin{tabular}{| l | r | r | r |}
 \cline{2-4}
 \multicolumn{1}{c|}{}               & Jezebel                         &  Homogenized Block               & Pin Cell                          \\
 \hline                          
-Serpent 2.1.21                      & 0.9997840 $\pm$ 9.50E-5         & 0.5934090 $\pm$ 1.20E-4          & 0.2750510 $\pm$ 1.80E-4           \\
+Serpent 2.1.24                      & 0.9997840 $\pm$ 9.50E-5         & 0.5934090 $\pm$ 1.20E-4          & 0.2750510 $\pm$ 1.80E-4           \\
 \hline                          
 MCNP 6.1                            & 0.9999600 $\pm$ 7.00E-5         & 0.5933000 $\pm$ 4.00E-5          & 0.2751700 $\pm$ 7.00E-5           \\
 \hline                          
@@ -606,7 +606,7 @@ WARP K80                            & 0.9999602 $\pm$ 9.58E-5         & 0.593226
 \cline{2-4}
 \multicolumn{1}{c|}{}               & FLiBe Cell                      & Sodium Pin Cell                  & Hex Assembly                      \\
 \hline                       
-Serpent 2.1.21                      & 0.8804900 $\pm$ 8.70E-5         & 1.0987100 $\pm$ 2.20E-4          & 1.0503300 $\pm$ 7.20E-5           \\
+Serpent 2.1.24                      & 0.8804900 $\pm$ 8.70E-5         & 1.0987100 $\pm$ 2.20E-4          & 1.0503300 $\pm$ 7.20E-5           \\
 \hline                       
 MCNP 6.1                            & 0.8805100 $\pm$ 6.00E-5         & 1.0987700 $\pm$ 6.00E-5          & 1.0506500 $\pm$ 9.00E-5           \\
 \hline                       
@@ -632,19 +632,19 @@ From Table \ref{results_table_keff}, it can be seen that WARP agrees with either
 \subsection{Runtimes}
 
 
-Table \ref{results_table_times} shows the transport cycle runtimes for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.21 for WARP running on an NVIDIA Titan Black, K20, and K80 cards.  The values in the time rows are reported in minutes.  The ``$\Delta$ MCNP'' row contains WARP's speedup factor over MCNP, and the ``$\Delta$ Serpent'' row contains WARP's speedup factor over Serpent.
+Table \ref{results_table_times} shows the transport cycle runtimes for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.24 for WARP running on an NVIDIA Titan Black, K20, and K80 cards.  The values in the time rows are reported in minutes.  The ``$\Delta$ MCNP'' row contains WARP's speedup factor over MCNP, and the ``$\Delta$ Serpent'' row contains WARP's speedup factor over Serpent.
 
 
 \begin{table}[h]
 \centering
-\caption{The test case transport cycle run times (in minutes) for WARP, Serpent 2.1.21, and MCNP 6.1.  Values in the ``$\Delta$'' rows contain the speedup factor of WARP compared the the corresponding production code running on a Berkelium (Bk) PSSC node and a Savio2 node.}
+\caption{The test case transport cycle run times (in minutes) for WARP, Serpent 2.1.24, and MCNP 6.1.  Values in the ``$\Delta$'' rows contain the speedup factor of WARP compared the the corresponding production code running on a Berkelium (Bk) PSSC node and a Savio2 node.}
 \label{results_table_times}
 \scriptsize
 \begin{tabular}{| l r | r | r | r |}
 \cline{3-5}
 \multicolumn{2}{c|}{}                            & Jezebel     & Homogenized Block & Pin Cell     \\
 \hline                          
-Serpent 2.1.21   &    Bk PSSC                    & 7.24        & 39.41             & 146.15       \\
+Serpent 2.1.24   &    Bk PSSC                    & 7.24        & 39.41             & 146.15       \\
                  &    Savio2                     & 6.32        & 24.10             & 76.51        \\
 \hline                                        
 MCNP 6.1         &    Bk PSSC                    &  30.57      & 98.40             & 131.27       \\
@@ -670,7 +670,7 @@ MCNP 6.1         &    Bk PSSC                    &  30.57      & 98.40          
 \cline{3-5}
 \multicolumn{2}{c|}{}                            & FLiBe Cell   & Sodium Pin Cell & Hex Assembly  \\
 \hline                                    
-Serpent 2.1.21   &   Bk PSSC                     & 79.16        & 120.86          & 81.54         \\
+Serpent 2.1.24   &   Bk PSSC                     & 79.16        & 120.86          & 81.54         \\
                  &   Savio2                      & 45.08        &  68.46          &  44.32        \\
 \hline                                        
 MCNP 6.1         &   Bk PSSC                     & 269.47       & 320.40          & 160.68        \\
@@ -789,7 +789,7 @@ For productivity, the ``history power,'' or  number of neutron histories process
 \cline{3-5}
 \multicolumn{2}{c|}{}             & H. Power   & H.P. / Capital   & H.P. / Watt  \\
 \hline                            
-Serpent 2.1.21   &   Bk PSSC      & 2.32E+6    &   249           &  5,033        \\
+Serpent 2.1.24   &   Bk PSSC      & 2.32E+6    &   249           &  5,033        \\
                  &   Savio2       & 8.84E+6    & 1,305           & 42,082        \\
 \hline                                 
 MCNP 6.1         &   Bk PSSC      & 2.32E+6    &   249           &  5,033        \\
