@@ -351,12 +351,12 @@ All tests use ENDF/B-VII cross sections that are distributed with the Serpent 1.
 \newpage
 \subsection{Test 1 - ``Jezebel'' Bare Pu Sphere}
 
-The ``Jezebel'' criticality test is a bare plutonium/gallium sphere with vacuum boundary conditions.   The fission neutron rate from $^{239}$Pu is balanced by the leakage rate from the 6.6595 cm radius to give a $k_\mathrm{eff}$ of approximately 1.  Since this system is so leaky, producing results consistent with MCNP and Serpent ensures that the boundary conditions are correctly being enforced.  The Jezebel test is a standard test used to validate neutron transport codes and is described in the International Handbook of Evaluated Criticality Safety Test Experiments under the name ``Pu-MET-FAST-001'' \cite{bench_handbook}.  The geometry and materials are outlined in Table \ref{jezebel_geom}.  All cross sections used were processed at 273.5 K.
+The ``Jezebel'' criticality test is a bare plutonium/gallium sphere with vacuum boundary conditions, which can be seen in Figure~\ref{jezebel_geom_pic}.  The fission neutron rate from $^{239}$Pu is balanced by the leakage rate from the 6.6595 cm radius to give a $k_\mathrm{eff}$ of approximately 1.  Since this system is so leaky, producing results consistent with MCNP and Serpent ensures that the boundary conditions are correctly being enforced.  The Jezebel test is a standard test used to validate neutron transport codes and is described in the International Handbook of Evaluated Criticality Safety Test Experiments under the name ``Pu-MET-FAST-001'' \cite{bench_handbook}.  The geometry and materials are outlined in Table \ref{jezebel_geom}.  All cross sections used were processed at 273.5 K.
 
 \begin{figure}[h!] 
   \centering
     \includegraphics[width=0.4\textwidth]{graphics/jezebel-xy.png}
-     \caption{  \label{jezebel_geom_pic} }
+     \caption{``Jezebel'' bare Pu/Ga sphere. \label{jezebel_geom_pic}}
 \end{figure}
 
 \begin{table}[h]
@@ -378,12 +378,12 @@ Cells & Isotopes & (Atm. \%)& Density \\
 \newpage
 \subsection{Test 2 - Homogenized Fuel Block}
 
-The homogenized block criticality test is a bare cube with vacuum boundary conditions.  This test keeps the same boundary condition, temperature, and number of cells as test 1, but is larger (reducing leakage), contains light isotopes (which readily produce thermal neutrons), and introduces new isotopes.  Introducing new isotopes into the simulation is significant in that new isotopes may use any of the various sampling laws outlines earlier.  Comparing spectra from calculations containing many different isotopes simply shows that WARP can handle sampling the laws correctly.  The geometry and materials are outlined in Table \ref{homfuel_geom}.  All cross sections used were processed at 273.5 K.
+The homogenized block criticality test is a bare cube with vacuum boundary conditions as seen in Figure~\ref{homfuel_geom_pic}.  This test keeps the same boundary condition, temperature, and number of cells as test 1, but is larger (reducing leakage), contains light isotopes (which readily produce thermal neutrons), and introduces new isotopes.  Introducing new isotopes into the simulation is significant in that new isotopes may use any of the various sampling laws outlined earlier.  Comparing spectra from calculations containing many different isotopes simply shows that WARP can handle sampling the laws correctly.  The geometry and materials are outlined in Table \ref{homfuel_geom}.  All cross sections used were processed at 273.5 K.
 
 \begin{figure}[h!] 
   \centering
     \includegraphics[width=0.4\textwidth]{graphics/homfuel-xy.png}
-     \caption{  \label{homfuel_geom_pic} }
+     \caption{Homogenized fuel block geometry.  \label{homfuel_geom_pic} }
 \end{figure}
 
 \begin{table}[h]
@@ -409,12 +409,14 @@ Cells & Isotopes & (Atm. \%)& Density \\
 \newpage
 \subsection{Test 3 - Zr-Clad UO$_2$ Pin in Heavy Water}
 
-This criticality test consists of a UO$_2$ cylinder clad in zirconium surrounded by a block of light water.  This test increases complexity by having three materials, each with multiple isotopes, and three cells.  The water block has vacuum boundary conditions.  Its dimensions are relatively large and the absorption is low, so the mean neutron lifetime should be large.  This test serves to highlight that all the processing routines work simultaneously, the effect of introducing more than one cell, and the effect of long-lived neutrons.  The geometry and materials are outlined in Table \ref{uo2_pincell_geom}.  All cross sections used were also processed at 273.5 K.
+This criticality test, shown in Figure~\ref{pincell_geom_pic}, consists of a UO$_2$ cylinder clad in zirconium surrounded by a large block of light water.  This test increases complexity by having three materials, each with multiple isotopes, and three cells.  The water block has vacuum boundary conditions.  Its dimensions are relatively large and the absorption is low, so the mean neutron lifetime should be large.  This test serves to demonstrate that all the processing routines work simultaneously,
+% what does that mean?
+ the effect of introducing more than one cell, and the effect of long-lived neutrons.  The geometry and materials are outlined in Table \ref{uo2_pincell_geom}.  All cross sections used were also processed at 273.5 K.
 
 \begin{figure}[h!] 
   \centering
     \includegraphics[width=0.4\textwidth]{graphics/pincell-xy.png}
-     \caption{  \label{pincell_geom_pic} }
+     \caption{Zr-clad UO$_2$ pin in heavy water geometry.  \label{pincell_geom_pic} }
 \end{figure}
 
 \begin{table}[h]
@@ -437,18 +439,19 @@ Cells & Isotopes & (Atm. \%)& Densities \\
 \end{tabular}
 \end{table}
 
+% Everywhere, I'd consider bolding table headings so they stick out a bit more.
 
 
 %%%%%%%%%%%%%%%%%%%
 \newpage
 \subsection{Test 4 - Homogenized Fuel Pebble in FLiBe}
 
-This criticality test consists of a single sphere of homogenized UO$_2$ and C surrounded by molten FLiBe (Li$_2$BeF$_4$) salt.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  This test uses two temperatures simultaneously and tests the reflective boundary condition setting.  The geometry and materials are outlined in Table \ref{pebble_geom}, where ``r'' shown for the hex prism is the length of the apothem.  The FLiBe cross sections used were processed at 900 K and the pebble cross sections at 1200 K.
+This criticality test consists of a single sphere of homogenized UO$_2$ and C surrounded by molten FLiBe (Li$_2$BeF$_4$) salt, shown in Figure~\ref{flibe_geom_pic}.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  This test uses two temperatures simultaneously and tests the reflective boundary condition setting.  The geometry and materials are outlined in Table \ref{pebble_geom}, where ``r'' shown for the hex prism is the length of the apothem.  The FLiBe cross sections used were processed at 900 K and the pebble cross sections at 1200 K.
 
 \begin{figure}[h!] 
   \centering
     \includegraphics[width=0.4\textwidth]{graphics/flibe-xy.png}
-     \caption{  \label{flibe_geom_pic} }
+     \caption{Homogenized fuel pebble in FLiBe geometry.  \label{flibe_geom_pic} }
 \end{figure}
 
 \begin{table}[h]
@@ -473,12 +476,12 @@ Cells & Isotopes & (Atm.  \%)& Densities \\
 \newpage
 \subsection{Test 5 - Stainless Steel Clad Metallic Uranium Pin in Liquid Sodium}
 
-This criticality test consists of a single cylinder of metallic uranium surrounded by molten sodium.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  This test serves to benchmark a fast system with a coolant as well as introduces more and different isotopes.  The geometry and materials are outlined in Table \ref{sodium_geom}.  The fuel and clad cross sections used were processed at 900 K, and the sodium coolant cross sections were processed at 600 K.  In order to keep the specification tenable, only the major components of 316 stainless steel were included in the clad material. 
+The criticality test in Figure~\ref{sodiumpin_geom_pic} consists of a single cylinder of metallic uranium surrounded by molten sodium.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  This test serves to benchmark a fast system with a coolant as well as introduce more and different isotopes.  The geometry and materials are outlined in Table \ref{sodium_geom}.  The fuel and clad cross sections used were processed at 900 K, and the sodium coolant cross sections were processed at 600 K.  In order to keep the specification tenable, only the major components of 316 stainless steel were included in the clad material. 
 
 \begin{figure}[h!] 
   \centering
     \includegraphics[width=0.4\textwidth]{graphics/sodiumpin-xy.png}
-     \caption{  \label{sodiumpin_geom_pic} }
+     \caption{Stailness steel clas metallic uranium pin geometry.  \label{sodiumpin_geom_pic} }
 \end{figure}
 
 \begin{table}[h]
@@ -508,12 +511,12 @@ Cells & Isotopes & (Atm. \%)     & Densities \\
 \newpage
 \subsection{Test 6 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
 
-This criticality test consists of 631 Zr-clad UO$_2$ cylinders laid out in a hexagonal lattice surrounded by light water.  The material compositions, densities, and cylinder dimensions are similar to the pin cell test case, but, since this test has two orders of magnitude more objects, it serves to highlight the effect of introducing many geometric objects into the problem and further validates that the geometry processing routines work correctly.  The lattice is in the x-y plane, has a pitch to diameter ratio of 1.164, and has 15 elements on a side.  The geometry and materials are outlined in Table \ref{hex_geom}.  All cross sections used were processed at 273.5 K.
+This criticality test consists of 631 Zr-clad UO$_2$ cylinders laid out in a hexagonal lattice surrounded by light water, as shown in Figure~\ref{hex_geom_pic}.  The material compositions, densities, and cylinder dimensions are similar to the pin cell test case, but, since this test has two orders of magnitude more objects, it serves to highlight the effect of introducing many geometric objects into the problem and further validates that the geometry processing routines work correctly.  The lattice is in the x-y plane, has a pitch to diameter ratio of 1.164, and has 15 elements on a side.  The geometry and materials are outlined in Table \ref{hex_geom}.  All cross sections used were processed at 273.5 K.
 
 \begin{figure}[h!] 
   \centering
     \includegraphics[width=0.4\textwidth]{graphics/assembly-lw-xy.png}
-     \caption{  \label{hex_geom_pic} }
+     \caption{Zr-clad heaxagonal UO$_2$ pin cell lattice in light water geometry.  \label{hex_geom_pic} }
 \end{figure}
 
 \begin{table}[h]
