@@ -1,4 +1,7 @@
 *.aux
+*.bak
+*.bbl
+*.blg
 *.dvi
 *.gz
 *.out
