@@ -410,7 +410,7 @@ Cells & Isotopes & (Atm. \%)& Density \\
 \newpage
 \subsection{Test 3 - Zr-Clad UO$_2$ Pin in Heavy Water}
 
-This criticality test, shown in Figure~\ref{pincell_geom_pic}, consists of a UO$_2$ cylinder clad in zirconium surrounded by a large block of light water.  This test increases complexity by having three materials, each with multiple isotopes, and three cells.  The water block has vacuum boundary conditions.  Its dimensions are relatively large and the absorption is low, so the mean neutron lifetime should be large.  This test serves to demonstrate that all the processing routines work simultaneously,
+This criticality test, shown in Figure~\ref{pincell_geom_pic}, consists of a UO$_2$ cylinder clad in zirconium surrounded by a large block of heavy water.  This test increases complexity by having three materials, each with multiple isotopes, and three cells.  The water block has vacuum boundary conditions.  Its dimensions are relatively large and the absorption is low, so the mean neutron lifetime should be large.  This test serves to demonstrate that all the processing routines work simultaneously,
 % what does that mean?
  the effect of introducing more than one cell, and the effect of long-lived neutrons.  The geometry and materials are outlined in Table \ref{uo2_pincell_geom}.  All cross sections used were also processed at 273.5 K.
 
@@ -422,7 +422,7 @@ This criticality test, shown in Figure~\ref{pincell_geom_pic}, consists of a UO$
 
 \begin{table}[h]
 \centering
-\caption{Geometry and materials used in the single UO$_2$ pin in H$_2$O test case.}
+\caption{Geometry and materials used in the single UO$_2$ pin in D$_2$O test case.}
 \label{uo2_pincell_geom}
 \begin{tabular}{| l | c  c | c |}
 \hline
@@ -535,7 +535,7 @@ Cells & Isotopes & (Atm. \%) & Densities \\
                                            &   $^{92}$Zr   (0.1715) &    $^{94}$Zr   (0.1738)& \\
                                            &   $^{96}$Zr   (0.0280) &                        & \\
 \hline
-\multirow{1}{*}{1 box, r= 1.0 cm }         &   $^{1}$H     (2.0)    &   $^{16}$O  (1.0) & \multirow{1}{*}{1 g/cm$^3$} \\
+\multirow{1}{*}{1 box, 48x48x48 cm }         &   $^{1}$H     (2.0)    &   $^{16}$O  (1.0) & \multirow{1}{*}{1 g/cm$^3$} \\
 \hline
 \end{tabular}
 \end{table}
@@ -589,7 +589,7 @@ Table \ref{results_table_keff} shows the multiplication factor deviations for th
 \hline                          
 Serpent 2.1.24                      & 0.9997840 $\pm$ 9.50E-5         & 0.5934090 $\pm$ 1.20E-4          & 0.2750510 $\pm$ 1.80E-4           \\
 \hline                          
-MCNP 6.1                            & 0.9999600 $\pm$ 7.00E-5         & 0.5933000 $\pm$ 4.00E-5          & 0.2751700 $\pm$ 7.00E-5           \\
+MCNP 6.1                            & 0.9999600 $\pm$ 7.00E-5         & 0.5933000 $\pm$ 4.00E-5          & 0.2751500 $\pm$ 7.00E-5           \\
 \hline                          
 WARP Titan Black                    & 1.0000620 $\pm$ 9.58E-5         & 0.5933724 $\pm$ 1.24E-4          & 0.2750294 $\pm$ 1.46E-4           \\
     \qquad\qquad   $\Delta$ Serpent & 27.80, $1\sigma$ n, $2\sigma$ y & -3.66, $1\sigma$ y, $2\sigma$ y  &  -2.16, $1\sigma$ y, $2\sigma$ y  \\
