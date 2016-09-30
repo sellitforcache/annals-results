@@ -1,3 +1,4 @@
+#! /usr/local/bin/python
 #! /home/l_bergmann/anaconda/bin/python -W ignore
 
 from pyne import mcnp, ace
