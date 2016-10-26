@@ -13,9 +13,8 @@
 
 \pagenumbering{gobble}
 
-
-\title{Cover Letter for: \\ ``Criticality Performance and Accuracy of WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs''}
-\author{Ryan M. Bergmann, Kelly L. Rowland, Nikola Radnovi\'c, Rachel N. Slaybaugh, Jasmina L. Vuji\'c}
+\title{Cover Letter for: \\ ``Performance and Accuracy of Criticality Calculations Performed Using WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs''}
+\author{Ryan M. Bergmann, Kelly L. Rowland, Nikola Radnovi\'c, \\ Rachel N. Slaybaugh, Jasmina L. Vuji\'c}
 \maketitle
 
 \begin{description}
@@ -25,11 +24,11 @@ Numerical Methods Development for Reactor Physics
 
 \item[Author Agreement and Assurance] \hfill
 \\
-Authors Ryan M. Bergmann and Jasmina L. Vuji\'c mutually agree that this article should be submitted to Annals of Nuclear Engineering.  It is the original work of the authors and has not been previously submitted to Annals of Nuclear Engineering or any other journal.
+Authors Ryan M. Bergmann, Kelly L. Rowland, Nikola Radnovi\'c, Rachel N. Slaybaugh, and Jasmina L. Vuji\'c mutually agree that this article should be submitted to Annals of Nuclear Engineering.  It is the original work of the authors and has not been previously submitted to Annals of Nuclear Engineering or any other journal.
 
 \item[Novelty and Significance of Results] \hfill
 \\
-General purpose graphics processing units (GPGPUs) are becoming a significant contributor to modern supercomputer computational capacities.  In order for popular, but compute-intensive, Monte Carlo reactor physics codes to take advantage of these powerful coprocessors cards, codes must be rewritten to use algorithms that perform efficiently on GPU hardware.  WARP is a code that has been developed at UC Berkeley that adapts the event-based transport method (which was developed for old vector computers) and the unionized energy grid layout for cross section data to efficiently perform continuous energy Monte Carlo neutron transport on GPUs.  It also incorporates the NVIDIA OptiX ray tracing framework and the CUDPP operations library to maximize performance.   The first development phase of WARP has shown that all aspects of the Monte Carlo transport cycle can be performed on the GPU, and that the architectural differences of GPUs can be accommodated via algorithmic choices.  WARP is currently a first step in Monte Carlo neutron transport on GPUs, and will be subject to vigorous development and feature improvement in the future.  
+General purpose graphics processing units (GPGPUs) are becoming a significant contributor to the computational capacities of modern supercomputers.  WARP is a code that has been developed at UC Berkeley that adapts the event-based transport method (which was developed for old vector computers), implements the unionized energy grid layout for cross section data, and uses high-performance libraries to efficiently perform continuous energy Monte Carlo neutron transport on GPUs.   In this companion paper to doi:10.1016/j.anucene.2014.10.039, neutron flux spectra, multiplication factors, runtimes, speedup factors, and costs of various GPU and CPU platforms running either WARP, Serpent 2.1.24, or MCNP 6.1 are compared.  WARP is currently a first step in continuous energy Monte Carlo neutron transport on GPUs, and will be subject to vigorous development and feature improvement in the future.  The results presented serve to benchmark its current performance.
 
 \end{description}
 
