@@ -253,7 +253,9 @@ To use NVIDIA GPUs, parts of software must be written in a language that facilit
 \section{Features of WARP}
 \label{sec:features}
 
-WARP has only existed since 2013, and it is not as fully-featured as more mature Monte Carlo codes.  It has the functionality necessary to compare its performance against Serpent 2.1.24 and MCNP 6.1, however.  This section outlines the current set of features available in WARP.  WARP is mainly written in C/C++ and is compiled to a shared library.  With the shared library compiled, a user must write a \texttt{main()} function that calls the library routines and directs program flow.  In other words, there currently are no input processing routines included with WARP to interpret text file inputs.  Instead, the simulations are configured by providing arguments to the library routines themselves.  Therefore, when one wants to change the simulation, the arguments to the WARP routines must be changed, and this requires the \texttt{main()} function to be recompiled.  Pythonic wrapping of the shared library is done via SWIG \cite{python,swig}, which automatically wraps compiled languages like C/C++ in high-level scripting languages.  With the C++ classes exposed in Python, the \texttt{main()} function can be replaced with a Python script, eliminating the need to recompile a main function and link it to the WARP library when different geometries or different run parameters are desired.  This is why WARP is termed a ``framework'' rather than a ``program.''  Of course, there is flexibility in the setup as well, and a user could write a main function that could handle all conceivable input cases and would never have to recompile the \texttt{main()} function.  
+WARP has only existed since 2013, and it is not as fully-featured as more mature Monte Carlo codes.  It has the functionality necessary to compare its performance against Serpent 2.1.24 and MCNP 6.1, however.  This section outlines the current set of features available in WARP.  WARP is mainly written in C/C++ and is compiled to a shared library.  With the shared library compiled, a user must write a \texttt{main()} function that calls the library routines and directs program flow.  In other words, there currently are no input processing routines included with WARP to interpret text file inputs.  Instead, the simulations are configured by providing arguments to the library routines themselves.  Therefore, when one wants to change the simulation, the arguments to the WARP routines must be changed, and this requires the \texttt{main()} function to be recompiled.  This is why WARP is termed a ``framework'' rather than a ``program.''  Of course, there is flexibility in the setup as well, and a user could write a main function that could handle all conceivable input cases and would never have to recompile the \texttt{main()} function.  
+
+Pythonic wrapping of the shared library has been done via SWIG \cite{python,swig}, which automatically wraps compiled languages like C/C++ in high-level scripting languages.  With the C++ classes exposed in Python, the \texttt{main()} function can be replaced with a Python script, eliminating the need to recompile a main function and link it to the WARP library when different geometries or different run parameters are desired.  Using a Python script to call the WARP library is effectively equivalent to having a text input file, but also allows users to use programming structures like loops and regular expressions directly in their ``input files.'' Eliminating the text input file removes a level of developer programming effort for input parsing, and allows direct access to the results' data arrays for easy post processing and plotting.  Also, eliminating files as the sole program output removes user error and effort in parsing them for post processing and plotting.  
 
 The Python wrapping approach deviates from the standard flat text input file structure that many Monte Carlo codes use.  Flat text input/output relies on keywords  and/or regular formatting, which adds a layer between simulation and analysis.  Using Python to directly access the classes and their data removes this layer and allows a user to build complex, custom applications as desired.  With Python, the results of a calculation are also resident in a Python session and are therefore easily available to the user for plotting with scripts or processing with other analysis tools.  To process data in the same way from a text file output, the output would need to be parsed with a user-written function or processed by hand, which is time-consuming and can lead to human error.
 
@@ -331,20 +333,19 @@ NVIDIA Tesla K80       &    5,000    & 300 &  12 GB        &  2.505 GHz         
 \hline
 Bk PSSC PowerWulf Blade       &   \multicolumn{2}{r|}{4x AMD Opteron 6172 }  &  2.1 GHz     &  48           \\
 \hline
-Savio2 Lenovo NeXtScale nx360 M5   &   \multicolumn{2}{r|}{ }  &  2.3 GHz     &  24           \\
+Savio2 Lenovo NeXtScale nx360 M5   &   \multicolumn{2}{r|}{2x Intel Xeon E5-2670 v3}  &  2.3 GHz     &  24           \\
 \hline
-NVIDIA Tesla K20         &       \multicolumn{2}{r|}{13}   &  705.5 MHz     &  $2^{32}-1$           \\
+NVIDIA Tesla K20         &       \multicolumn{2}{r|}{13}   &  705.5 MHz     &  $2^{31}-1$           \\
 \hline
-NVIDIA Titan Black       &      \multicolumn{2}{r|}{ 15 }  &  1071.5 MHz     & $2^{32}-1$           \\
+NVIDIA Titan Black       &      \multicolumn{2}{r|}{ 15 }  &  1071.5 MHz     & $2^{31}-1$           \\
 \hline
-NVIDIA Tesla K80      &      \multicolumn{2}{r|}{ 13 }  &  823.5 MHz     & $2^{32}-1$           \\
+NVIDIA Tesla K80      &      \multicolumn{2}{r|}{ 13 }  &  823.5 MHz     & $2^{31}-1$           \\
 \hline
 
 \end{tabular}
 \end{table}
 
-All tests use ENDF/B-VII cross sections that are distributed with the Serpent 1.1.7 release from RSICC (Radiation Safety Information Computational Center), which regulates the licensing and distribution of the MCNP and ENDF data worldwide, and also distributes Serpent 1.1.7 \cite{serpdata}.  These cross sections contain fewer energy grid points than the ENDF/B-VII.1 cross sections that are distributed with the MCNP 6.1 release from RSICC.  Since the Serpent 1.1.7 data require less storage space, using them allows more isotopes to be used by WARP.
-
+All tests on all codes use ENDF/B-VII cross sections that are distributed with the Serpent 1.1.7 release from RSICC (Radiation Safety Information Computational Center).  RSICC regulates the licensing and distribution of the MCNP and ENDF data worldwide, and also distributes Serpent 1.1.7 \cite{serpdata}.  The cross sections distribtued with Serpent are used since they contain fewer energy grid points than the ENDF/B-VII.1 cross sections distributed with the MCNP 6.1.  The Serpent 1.1.7 data therefore require less storage space, and using them allows more isotopes to fit into card memory when running WARP.
 
 %%%%%%%%%%%%%%%%%%%
 \newpage
@@ -355,7 +356,7 @@ The ``Jezebel'' criticality test is a bare plutonium/gallium sphere with vacuum 
 \begin{figure}[h!] 
   \centering
     \includegraphics[width=0.4\textwidth]{graphics/jezebel-xy.png}
-     \caption{ Horizontal slice of the geometry of the ``Jezebel'' test case.  Colors represent cell numbers and black represents space outside the outermost boundary. \label{jezebel_geom_pic} }
+     \caption{ Horizontal slice of the geometry of the ``Jezebel'' test case.  The purple color represents the material in the single cell, and the black color represents space outside the outermost boundary. \label{jezebel_geom_pic} }
 \end{figure}
 
 \begin{table}[h]
@@ -382,7 +383,7 @@ The homogenized block criticality test is a bare cube with vacuum boundary condi
 \begin{figure}[h!] 
   \centering
     \includegraphics[width=0.4\textwidth]{graphics/homfuel-xy.png}
-     \caption{ Horizontal slice of the geometry of the homogenized fuel block test case.  Colors represent cell numbers and black represents space outside the outermost boundary. \label{homfuel_geom_pic} }
+     \caption{ Horizontal slice of the geometry of the homogenized fuel block test case.  The purple color represents the material in the single cell, and the black color represents space outside the outermost boundary. \label{homfuel_geom_pic} }
 \end{figure}
 
 \begin{table}[h]
@@ -480,7 +481,7 @@ The criticality test in Figure~\ref{sodiumpin_geom_pic} consists of a single cyl
 \begin{figure}[h!] 
   \centering
     \includegraphics[width=0.4\textwidth]{graphics/sodiumpin-xy.png}
-     \caption{ Horizontal slice of the geometry of the stainless steel clad metallic uranium pin in liquid sodium test case.  Colors represent cell numbers and black represents space outside the outermost boundary. \label{sodiumpin_geom_pic} }
+     \caption{ Horizontal slice of the geometry of the stainless steel clad metallic uranium pin in liquid sodium test case.  Colors represent cell numbers and black represents space outside the outermost boundary.  The material inside the pin cells is the same (UO$_2$ and Zr), but in this plot the colors represent cell numbers, and therefore each pin has a slightly different color. \label{sodiumpin_geom_pic} }
 \end{figure}
 
 \begin{table}[h]
