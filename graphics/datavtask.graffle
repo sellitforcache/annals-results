@@ -727,7 +727,7 @@
 \pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\qc\partightenfactor0
 
 \f1 \cf0 \uc0\u8729  Interaction Type\
-\uc0\u8729 DIstance to Interaction}</string>
+\uc0\u8729 Distance to Interaction}</string>
 			</dict>
 		</dict>
 		<dict>
@@ -2475,7 +2475,7 @@
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2017-01-16 08:04:34 +0000</string>
+	<string>2017-01-17 17:23:36 +0000</string>
 	<key>Modifier</key>
 	<string>Ryan Bergmann</string>
 	<key>NotesVisible</key>
