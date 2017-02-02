@@ -91,7 +91,7 @@
 \renewcommand{\eqref}{Eq.~\originaleqref}
 
 \hypersetup{colorlinks=true,
-  pdftitle={Performance and Accuracy of Criticality Calculations Performed Using WARP - A Framework for Continuous Energy Monte Carlo Neutron Transport in General 3D Geometries on GPUs},
+  pdftitle={Performance and accuracy of criticality calculations performed Using WARP - A framework for continuous energy Monte Carlo neutron transport in general 3D geometries on GPUs},
   pdfauthor={Ryan M. Bergmann, Kelly L. Rowland, Nikola Radnovi\'c, Rachel N. Slaybaugh, Jasmina L. Vuji\'c}}
 
 \journal{Annals of Nuclear Energy}
@@ -342,11 +342,11 @@ NVIDIA Tesla K80      &      \multicolumn{2}{r|}{ 13 }  &  823.5 MHz     & $2^{3
 \end{tabular}
 \end{table}
 
-All tests on all codes use ENDF/B-VII cross sections that are distributed with the Serpent 1.1.7 release from RSICC (Radiation Safety Information Computational Center).  RSICC regulates the licensing and distribution of the MCNP and ENDF data worldwide, and also distributes Serpent 1.1.7 \cite{serpdata}.  The cross sections distribtued with Serpent are used since they contain fewer energy grid points than the ENDF/B-VII.1 cross sections distributed with the MCNP 6.1.  The Serpent 1.1.7 data therefore require less storage space, and using them allows more isotopes to fit into card memory when running WARP.
+All tests on all codes use ENDF/B-VII cross sections that are distributed with the Serpent 1.1.7 release from RSICC (Radiation Safety Information Computational Center).  RSICC regulates the licensing and distribution of the MCNP and ENDF data worldwide, and also distributes Serpent 1.1.7 \cite{serpdata}.  The cross sections distributed with Serpent are used since they contain fewer energy grid points than the ENDF/B-VII.1 cross sections distributed with the MCNP 6.1.  The Serpent 1.1.7 data therefore require less storage space, and using them allows more isotopes to fit into card memory when running WARP.
 
 %%%%%%%%%%%%%%%%%%%
 \newpage
-\subsection{Test 1 - ``Jezebel'' Bare Pu Sphere}
+\subsection{Test 1 - ``Jezebel'' bare Pu sphere}
 
 The ``Jezebel'' criticality test is a bare plutonium/gallium sphere with vacuum boundary conditions, which can be seen in Figure~\ref{jezebel_geom_pic}.  The fission neutron rate from $^{239}$Pu is balanced by the leakage rate from the 6.6595 cm radius to give a $k_\mathrm{eff}$ of approximately 1.  Since this system is so leaky, producing results consistent with MCNP and Serpent ensures that the boundary conditions are correctly being enforced.  The Jezebel test is a standard test used to validate neutron transport codes and is described in the International Handbook of Evaluated Criticality Safety Test Experiments under the name ``Pu-MET-FAST-001'' \cite{bench_handbook}.  The geometry and materials are outlined in Table~\ref{jezebel_geom}.  All cross sections used were processed at 273.5 K.
 
@@ -373,7 +373,7 @@ Cells & Isotopes & (Atm. \%)& Density \\
 
 %%%%%%%%%%%%%%%%%%%
 \newpage
-\subsection{Test 2 - Homogenized Fuel Block}
+\subsection{Test 2 - Homogenized fuel block}
 
 The homogenized block criticality test is a bare cube with vacuum boundary conditions as seen in Figure~\ref{homfuel_geom_pic}.  This test keeps the same boundary condition, temperature, and number of cells as test 1, but is larger (reducing leakage), contains light isotopes (which readily produce thermal neutrons), and introduces new isotopes.  Introducing new isotopes into the simulation is significant in that new isotopes may use any of the various sampling laws outlined earlier.  Comparing spectra from calculations containing many different isotopes simply shows that WARP can handle sampling the laws correctly.  The geometry and materials are outlined in Table~\ref{homfuel_geom}.  All cross sections used were processed at 273.5 K.
 
@@ -404,7 +404,7 @@ Cells & Isotopes & (Atm. \%)& Density \\
 
 %%%%%%%%%%%%%%%%%%%
 \newpage
-\subsection{Test 3 - Zr-Clad UO$_2$ Pin in Heavy Water}
+\subsection{Test 3 - Zr-clad UO$_2$ pin in heavy water}
 
 This criticality test, shown in Figure~\ref{pincell_geom_pic}, consists of a UO$_2$ cylinder clad in zirconium surrounded by a large block of heavy water.  This test increases complexity by having three materials, each with multiple isotopes, and three cells.  The water block has vacuum boundary conditions.  Its dimensions are relatively large and the absorption is low, so the mean neutron lifetime should be large.  This test serves to demonstrate that all the processing routines work simultaneously,
 % what does that mean?
@@ -441,7 +441,7 @@ Cells & Isotopes & (Atm. \%)& Densities \\
 
 %%%%%%%%%%%%%%%%%%%
 \newpage
-\subsection{Test 4 - Homogenized Fuel Pebble in FLiBe}
+\subsection{Test 4 - Homogenized fuel pebble in FLiBe}
 
 This criticality test consists of a single sphere of homogenized UO$_2$ and C surrounded by molten FLiBe (Li$_2$BeF$_4$) salt, shown in Figure~\ref{flibe_geom_pic}.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  This test uses two temperatures simultaneously and tests the reflective boundary condition setting.  The geometry and materials are outlined in Table~\ref{pebble_geom}, where ``r'' shown for the hex prism is the length of the apothem.  The FLiBe cross sections used were processed at 900 K and the pebble cross sections at 1200 K.
 
@@ -471,7 +471,7 @@ Cells & Isotopes & (Atm.  \%)& Densities \\
 
 %%%%%%%%%%%%%%%%%%%
 \newpage
-\subsection{Test 5 - Stainless Steel Clad Metallic Uranium Pin in Liquid Sodium}
+\subsection{Test 5 - Stainless steel clad metallic uranium pin in liquid sodium}
 
 The criticality test in Figure~\ref{sodiumpin_geom_pic} consists of a single cylinder of metallic uranium surrounded by molten sodium.  The outer cell is a right hexagonal prism with specular reflective boundary conditions.  This test serves to benchmark a fast system with a coolant as well as introduce more and different isotopes.  The geometry and materials are outlined in Table~\ref{sodium_geom}.  The fuel and clad cross sections used were processed at 900 K, and the sodium coolant cross sections were processed at 600 K.  In order to keep the specification tenable, only the major components of 316 stainless steel were included in the clad material. 
 
@@ -506,7 +506,7 @@ Cells & Isotopes & (Atm. \%)     & Densities \\
 
 %%%%%%%%%%%%%%%%%%%
 \newpage
-\subsection{Test 6 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
+\subsection{Test 6 - Zr-clad hexagonal UO$_2$ pin cell lattice in light water}
 
 This criticality test consists of 631 Zr-clad UO$_2$ cylinders laid out in a hexagonal lattice surrounded by light water, as shown in Figure~\ref{hex_geom_pic}.  The material compositions, densities, and cylinder dimensions are similar to the pin cell test case, but, since this test has two orders of magnitude more objects, it serves to highlight the effect of introducing many geometric objects into the problem and further validates that the geometry processing routines work correctly.  The lattice is in the x-y plane, has a pitch to diameter ratio of 1.164, and has 15 elements on a side.  The geometry and materials are outlined in Table~\ref{hex_geom}.  All cross sections used were processed at 273.5 K.
 
@@ -566,7 +566,7 @@ Larger neutron datasets allow the GPU to schedule threads better, but the size o
 
 Performance increases until about $5\times10^6$ neutrons per cycle, then flattens above this for all cards.  This curve was calculated using the hexagonal pin lattice test case, and may change if a different model were input.  Despite this, $5\times10^6$ neutrons per cycle is a rough estimate of where maximum performance occurs for WARP, and $6.5\times10^6$ neutrons per cycle was used for the test cases.  There is no data point for the Titan Black at $10^7$ neutrons per cycle since a crash always occured and the simulation could not be completed.  The hexagonal pin lattice case was chosen for the scaling study because it is the most complicated geometry considered, and was assumed to be the most sensitive to thread saturation and therefore would require the most neutrons per cycle for the neutron processing rate to level out.  
 
-\subsection{Multiplication Factors}
+\subsection{Multiplication factors}
 
 Table~\ref{results_table_keff} shows the multiplication factor deviations for the six criticality tests compared to MCNP 6.1 and Serpent 2.1.24 for WARP running on an NVIDIA Titan Black, K20, and K80 cards.  The ``$\Delta$MCNP'' rows contains WARP's difference (in PCM) from MCNP, and the ``$\Delta$ Serpent'' rows contains WARP's difference from Serpent.  These difference rows also contain $1\sigma$ standard deviation values in terms of relative error. The standard deviation values indicate the level at which the multiplication factors calculated by WARP agree with either Serpent or MCNP, and have been used to produce the ``y'' and ``n''flags shown after the standard deviation value.  A ``y'' in the $1\sigma$ position indicates that the multiplication factor values are mutually within 1 standard deviation of each other, i.e.\ that $\Delta \textrm{MCNP}<\sigma_{\textrm{MCNP}}+\sigma_{\textrm{WARP}}$.  In other words, this is the space where the estimated distributions of the two codes overlap and is the interval where they could produce the same results.  For one standard deviation, there is a 68\% chance that the next calculated value will be within a single standard deviation, a 32\% chance it will be outside, and a 16\% chance it will be outside and on a single side of the mean.  Therefore, there is a $0.16^2$=2.6\% probability that the codes could produce values that are outside a the sum of their standard deviations.  Outside two standard deviation is even more unlikely (.05\%), so any results that are outside two mutual standard deviations are most likely not statistically similar at all.  The results are presented in this way to incorporate the uncertainties of both codes into the results, and to give an easy way of seeing which test cases are problematic.  If a problem is within a single mutual standard deviation, it is assumed the solutions are equivalent.  If the results are outside two mutual standard deviations, it is assumed the solutions are different.
 
@@ -697,7 +697,7 @@ In the following subsections, neutron flux spectra calculated by WARP are compar
 
 %%%%%
 \newpage
-\subsubsection{Test 1 - ``Jezebel'' Bare Pu Sphere}
+\subsubsection{Test 1 - ``Jezebel'' bare Pu sphere}
 
 Figure~\ref{jezebel_spec} shows the volume-averaged flux spectra in the Jezebel sphere.  The relative difference of WARP compared to Serpent and MCNP is very low, with the normalized tally bins being less than 0.5\% from each other in regions where the flux is large.  Of course, when the flux is small, the statistical uncertainty becomes much higher, and the relative difference becomes noisy.   The relative error is almost always inside the 2$\sigma$ confidence interval as well, indicating that the simulations are statistically identical.  
 
@@ -709,7 +709,7 @@ Figure~\ref{jezebel_spec} shows the volume-averaged flux spectra in the Jezebel 
 
 %%%%%
 \newpage
-\subsubsection{Test 2 - Homogenized Fuel Block}
+\subsubsection{Test 2 - Homogenized fuel block}
 
 Figure~\ref{homfuel_spec} shows the volume-averaged flux spectra in the homogenized fuel block.  The relative difference compared to MCNP and Serpent is again shown in the lower subplots.  The relative difference compared to MCNP is again generally less than 0.15\% and appears to have a zero mean, but the error compared to Serpent has a constant positive offset, indicating a slightly different normalization.  This kind of offset appears in other spectra as well, but only when comparing to Serpent.  This indicates a possible normalization discrepancy between MCNP and Serpent.  There also appears to be some  deviations with similar structure from 0.1 to 0.3 MeV, indicating that some kind of reaction sampling may not be treated exactly the same way as in Serpent and MCNP.
 
@@ -721,7 +721,7 @@ Figure~\ref{homfuel_spec} shows the volume-averaged flux spectra in the homogeni
 
 %%%%%
 \newpage
-\subsubsection{Test 3 - Zr-Clad UO$_2$ Pin in Heavy Water}
+\subsubsection{Test 3 - Zr-clad UO$_2$ pin in heavy water}
 
 Figure~\ref{pincell_spec} shows the volume-averaged flux spectra inside the fuel rod in the Zr-clad UO$_2$ pin in the heavy water test case.  Again, the relative difference is generally less than 1\% where the flux is large.  Compared to Serpent, the WARP spectrum again appears to have a small, constant offset.  The entire energy range agrees well with MCNP, however, with the relative error is almost always inside the 2$\sigma$ confidence interval.  This indicaties that all the reaction laws were processed identically to MCNP for the nuclides present in this test case.  The 2$\sigma$ confidence interval is larger here than the previous cases since the tally volume is much smaller than previously and it simply has fewer scores per source particle.
 
@@ -736,7 +736,7 @@ Figure~\ref{pincell_spec} shows the volume-averaged flux spectra inside the fuel
 
 %%%%%
 \newpage
-\subsubsection{Test 4 - Homogenized Fuel Pebble in FLiBe}
+\subsubsection{Test 4 - Homogenized fuel pebble in FLiBe}
 
 Figure~\ref{flibe_spec} shows the volume-averaged flux spectra in the fuel pebble for the reflective FLiBe test case.  Here, the relative difference is generally less than 0.1\% where the flux is large.  The WARP spectrum again has a constant offset compared to the Serpent spectrum, but compares well to MCNP apart from the significant deviations around large resonances in the 20 keV to 1 MeV range.  
 
@@ -748,7 +748,7 @@ Figure~\ref{flibe_spec} shows the volume-averaged flux spectra in the fuel pebbl
 
 %%%%%
 \newpage
-\subsubsection{Test 5 - Stainless Steel Clad Metallic Uranium Pin in Liquid Sodium}
+\subsubsection{Test 5 - Stainless steel clad metallic uranium pin in liquid sodium}
 
 Figure~\ref{sodiumpin_spec} shows the volume-averaged flux spectra in the fuel for the reflective sodium cooled, steel clad, metallic fuel test case.  The relative difference is generally less than 0.1\% where the flux is large.  The WARP spectrum again has a constant offset compared to the Serpent spectrum, but compares well to MCNP apart from the significant deviations around large resonances in the 20 keV to 1 MeV range.  This again highlights that there is probably a reaction law that isn't processed identically to MCNP.
 
@@ -761,7 +761,7 @@ Figure~\ref{sodiumpin_spec} shows the volume-averaged flux spectra in the fuel f
 
 %%%%%
 \newpage
-\subsubsection{Test 6 - Zr-Clad Hexagonal UO$_2$ Pin Cell Lattice in Light Water}
+\subsubsection{Test 6 - Zr-clad hexagonal UO$_2$ pin cell lattice in light water}
 
 Figure~\ref{assembly-lw_spec} shows the volume-averaged flux spectrum in the center pin of the Zr-clad hexagonal oxide fuel pin lattice in light water test case. The relative difference is generally less than 5\% where the flux is large, but this time the WARP results are always within the statistical error of both MCNP and Serpent.  There is no constant offset compared to Serpent or MCNP and no large deviations, indicating that all the reaction laws were processed identically to both Serpent and MCNP for the nuclides present in this test case.  This is also the only test case other than Jezebel where MCNP and Serpent give identical spectra.  Again the 2$\sigma$ confidence interval is large compared to other test problems because the tally volume is small compared to the overall geometry.
 
@@ -772,7 +772,7 @@ Figure~\ref{assembly-lw_spec} shows the volume-averaged flux spectrum in the cen
 \end{figure}
 
 \newpage
-\subsection{History Power}
+\subsection{History power}
 
 For productivity, the ``history power,'' or  number of neutron histories processed per unit time, is of primary interest when purchasing a system since it determines how quickly results can be produced.  In addition to this, the history power per hardware cost is of interest for initial capital investment, and the history power per unit energy is of interest for operational costs.  Table~\ref{history_power} shows the history power and relative costs of GPU systems running WARP compared to MCNP and Serpent running on the aforementioned CPU platforms.  
 
@@ -828,7 +828,7 @@ It is worth noting that MCNP and Serpent calculated somewhat different solutions
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
-\section{Conclusions and Future Development}
+\section{Conclusions and future development}
 \label{sec:concdev}
 
 It has been shown that WARP is able to accelerate high-fidelity neutron transport on GPUs.  Depending on the problem type and the card used, WARP can achieve performance equivalent to that of 0.84 to 7.61 of modern CPU nodes on a single GPU card, depending on the CPU code and type of calculation being considered.  The low capital and electrical cost of GPU platforms then lead to about 2 to 3 times more histories calculated per dollar spent.  This clearly shows that GPUs can be very cost effective for continuous energy Monte Carlo neutron transport.  This efficiency comes at the cost of precision, however, but WARP could still be a useful tool for scenarios where high computational throughput and/or low-cost calculations are of importance.
