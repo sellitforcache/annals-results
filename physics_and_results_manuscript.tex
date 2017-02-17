@@ -36,6 +36,49 @@
     urlcolor=black
 }
 
+\makeatletter
+\def\ps@pprintTitle{%
+\let\@oddhead\@empty
+\let\@evenhead\@empty
+\def\@oddfoot{
+
+    \begin{minipage}{0.1\textwidth}
+        \flushleft \tiny
+        \includegraphics[height=0.5cm]{graphics/by-nc-nd.eps} 
+    \end{minipage}%
+    \begin{minipage}{0.9\textwidth}
+        \flushleft \tiny
+        \textcopyright 2017. This manuscript version is made available under the CC-BY-NC-ND 4.0 license http://creativecommons.org/licenses/by-nc-nd/4.0/  \newline
+         FINAL ARTICLE -- doi:10.1016/j.anucene.2017.01.027
+    \end{minipage}
+
+ }%
+ \let\@evenfoot\@oddfoot}
+\makeatother
+
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{} % clear all header fields
+\renewcommand{\headrulewidth}{0pt} % no line in header area
+\fancyfoot{} % clear all footer fields
+\fancyfoot[LE,RO]{\thepage}           % page number in "outer" position of footer line
+\fancyfoot[RE,LO]{ 
+    \begin{minipage}{0.1\textwidth}
+        \flushleft \tiny
+        \includegraphics[height=0.5cm]{graphics/by-nc-nd.eps} 
+    \end{minipage}%
+    \begin{minipage}{0.9\textwidth}
+        \flushleft \tiny
+        \textcopyright 2017. This manuscript version is made available under the CC-BY-NC-ND 4.0 license http://creativecommons.org/licenses/by-nc-nd/4.0/  \newline
+         FINAL ARTICLE --  doi:10.1016/j.anucene.2017.01.027
+    \end{minipage}
+} % other 
+
+
+
+
+
 %% Use the option review to obtain double line spacing
 %% \documentclass[preprint,review,12pt]{elsarticle}
 
