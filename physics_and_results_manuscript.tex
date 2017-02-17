@@ -21,7 +21,7 @@
 %% $Id: elsarticle-template-1-num.tex 149 2009-10-08 05:01:15Z rishi $
 %% $URL: http://lenova.river-valley.com/svn/elsbst/trunk/elsarticle-template-1-num.tex $
 %%
-\documentclass[final,5p,times,twocolumn,authoryear]{elsarticle}
+\documentclass[final,times,3p,authoryear]{elsarticle}
 \usepackage{amsmath}
 \usepackage{graphicx,subcaption}
 \usepackage{listings}
@@ -207,7 +207,7 @@ Monte Carlo \sep Neutron Transport \sep GPU \sep CUDA \sep OptiX \sep Supercompu
 
 \end{frontmatter}
 
-\linenumbers
+%\linenumbers
 
 %% main text
 
@@ -220,7 +220,7 @@ The goal of developing WARP is to investigate algorithms that can grow into a fu
 
 \begin{figure}[!htbp] 
   \centering
-    \includegraphics[width=\textwidth]{graphics/datavtask.pdf}
+    \includegraphics[width=0.7\textwidth]{graphics/datavtask.pdf}
      \caption{A data-parallel neutron transport loop vs.\ a task-parallel transport loop for transporting N neutrons in parallel.  \label{datavtask} }
 \end{figure}
 
@@ -340,7 +340,7 @@ Since OptiX allows variables to be attached to individual geometrical objects, t
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%
-\newpage
+%\newpage
 \section{Tests}
 \label{sec:tests}
 
@@ -388,7 +388,7 @@ NVIDIA Tesla K80      &      \multicolumn{2}{r|}{ 13 }  &  823.5 MHz     & $2^{3
 All tests on all codes use ENDF/B-VII cross sections that are distributed with the Serpent 1.1.7 release from RSICC (Radiation Safety Information Computational Center).  RSICC regulates the licensing and distribution of the MCNP and ENDF data worldwide, and also distributes Serpent 1.1.7 \cite{serpdata}.  The cross sections distributed with Serpent are used since they contain fewer energy grid points than the ENDF/B-VII.1 cross sections distributed with the MCNP 6.1.  The Serpent 1.1.7 data therefore require less storage space, and using them allows more isotopes to fit into card memory when running WARP.
 
 %%%%%%%%%%%%%%%%%%%
-\newpage
+%\newpage
 \subsection{Test 1 - ``Jezebel'' bare Pu sphere}
 
 The ``Jezebel'' criticality test is a bare plutonium/gallium sphere with vacuum boundary conditions, which can be seen in Figure~\ref{jezebel_geom_pic}.  The fission neutron rate from $^{239}$Pu is balanced by the leakage rate from the 6.6595 cm radius to give a $k_\mathrm{eff}$ of approximately 1.  Since this system is so leaky, producing results consistent with MCNP and Serpent ensures that the boundary conditions are correctly being enforced.  The Jezebel test is a standard test used to validate neutron transport codes and is described in the International Handbook of Evaluated Criticality Safety Test Experiments under the name ``Pu-MET-FAST-001'' \cite{bench_handbook}.  The geometry and materials are outlined in Table~\ref{jezebel_geom}.  All cross sections used were processed at 273.5 K.
@@ -597,6 +597,7 @@ It must be noted that WARP uses single-precision data and math, while the produc
 
 The benchmark cases were run with $6.5\times10^6$ neutrons per criticality batch with 20 initial batches discarded and 40 batches with statistics accumulated (60 batches total).  From the scaling results shown next in this section, the neutron processing rate of the GPU cards all saturated near this number of neutrons per batch.  The CPU codes were run with identical batch parameters.  The CPU cases were run with the optimal number of MPI processes and threads per process for the specific node to fairly measure the performance of the unit as a whole.  Since the PowerWulf PSSC node contains 4 processors that each contain 2 non-uniform memory access (NUMA) nodes, the most efficient configuration for running the CPU codes was to use 8 MPI processes (one for each NUMA node), which each ran 6 threads for the 6 cores in each NUMA node.  The Lenovo Savio2 runs were done in a similar way, but with 4 MPI processes that each ran 6 threads.  The MCNP runs were launched with one additional MPI process since the master process does not perform any neutron tracking in MCNP.  All codes were set to not use thermal scattering or unresolved resonance tables and to use analog capture only.
 
+\newpage
 \subsection{Scaling}
 
 Larger neutron datasets allow the GPU to schedule threads better, but the size of the dataset is limited by the available on-card memory.  Cross sections are also stored on-card and compete with the neutrons for space in memory.  It is of interest to know where performance saturates so a user can choose to run the number of neutrons per cycle that gives the best performance.  Figure~\ref{scaling} shows the neutron processing rate of WARP compared to the neutron dataset size.
